@@ -1,30 +1,36 @@
 const fs = require('fs');
+class User {
+  
+  constructor(id, username, fullname, role, registeredAt, avaUrl, isDisabled=false) {
+    this.id = id; // number
+    this.login = login;  // string
+    this.fullname = fullname;  // string
+    this.role = role;
+    this.registeredAt = registeredAt;
+    this.avaUrl = avaUrl;
+    this.isDisabled = isDisabled;
+   }
+  
+  // static functions to access storage
 
-module.exports.Storage = function Storage(filename = "user.json"){
-
-  this.filename = filename;
-  this.getAll = getAll;
-  this.getById = getById;
-}
-
-
-
-function getAll(){
-  let rawData = fs.readFileSync(this.filename);
-  let data = JSON.parse(rawData);
-  //console.log(data);
-  return data.items; 
-}
-function getById(id = 0){
-  let rawData = fs.readFileSync(this.filename);
-  let users = JSON.parse(rawData).items;
-  let resUser;
-   users.forEach(function(user) {
-    if(user.id == id){
-      resUser = user;
-      return;
-    }
-  }, this);
-
-  return resUser;
-}
+  static getById(id, filename) {
+    let rawData = fs.readFileSync(filename);
+    let users = JSON.parse(rawData).items;
+    let resUser;
+    users.forEach(function(user) {
+      if(user.id == id){
+        resUser = user;
+        return;
+      }
+    }, this);
+    return resUser;
+  }
+  
+  // returns an array of all users in storage
+  static getAll(filename){
+    let rawData = fs.readFileSync(filename);
+    let data = JSON.parse(rawData);
+    return data.items; 
+  }
+};
+module.exports = User;
