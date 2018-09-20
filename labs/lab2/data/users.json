@@ -1,0 +1,23 @@
+{
+  "nextId": 1,
+  "items": [
+      {
+          "id": 0,
+          "login": "someUser11",
+          "role": 1,
+          "fullname": "I Am User",
+          "registeredAt": "2018-09-19T10:05:19Z",
+          "avaUrl": "http://progbase.herokuapp.com/images/progbase.jpg",
+          "isDisabled": false
+      },
+      {
+        "id": 1,
+        "login": "vityol",
+        "role": 0,
+        "fullname": "Vityok",
+        "registeredAt": "2018-09-19T10:05:19Z",
+        "avaUrl": "http://progbase.herokuapp.com/images/progbase.jpg",
+        "isDisabled": false
+    }
+  ]
+}
