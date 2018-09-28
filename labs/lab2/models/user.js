@@ -14,16 +14,10 @@ class User {
   // static functions to access storage
 
   static getById(id, filename) {
-    let rawData = fs.readFileSync(filename);
-    let users = JSON.parse(rawData).items;
-    let resUser;
-    users.forEach(function(user) {
-      if(user.id == id){
-        resUser = user;
-        return;
-      }
-    }, this);
-    return resUser;
+    let users = User.getAll(filename);
+    for(let user of users){ 
+      if(user.id === id) return user;
+    }
   }
   
   // returns an array of all users in storage
