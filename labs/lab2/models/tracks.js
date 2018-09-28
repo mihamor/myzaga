@@ -80,7 +80,7 @@ function save_to_storage(content){
 
 function check_params(track) {
   if (typeof track.id === 'number'
-    && track.id != NaN
+    && !isNaN(track.id)
     && typeof track.author === 'string'
     && typeof track.name === 'string'
     && typeof track.location === 'string'
