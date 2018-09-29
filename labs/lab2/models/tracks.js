@@ -77,21 +77,20 @@ function save_to_storage(content){
   fs.writeFileSync(storage_path, content_json);
 }
 
-function check_params(track) {
-  if (typeof track.id === 'number'
-    && !isNaN(track.id)
-    && typeof track.author === 'string'
-    && typeof track.name === 'string'
-    && typeof track.location === 'string'
-    && typeof track.length === 'number'
-    && !isNaN(track.length)
-    && typeof track.year === 'number'
-    && !isNaN(track.year)
-    && typeof track.addedAt === 'string'
-    && typeof track.album === 'string'
-  ) return true;
+function valid_number(num){
+  return  typeof num === 'number'
+  && !isNaN(num);
+}
 
-  return false;
+function check_params(track) {
+  return valid_number(track.id)
+      && typeof track.author === 'string'
+      && typeof track.name === 'string'
+      && typeof track.location === 'string'
+      && valid_number(track.length)
+      && valid_number(track.year)
+      && typeof track.addedAt === 'string'
+      && typeof track.album === 'string';
 }
 
 function getStorageData(){
