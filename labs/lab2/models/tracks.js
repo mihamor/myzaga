@@ -15,19 +15,18 @@ class Track {
     this.length = length; //number
     this.year = year; //number
     this.addedAt = addedAt; //date
-
-    if (!check_params(this)) throw new Error("Invalid arguments");
   }
 
   // static functions to access storage
   static getById(id) {
+    if (typeof id !== 'number') throw new Error("Invalid arguments");
     let tracks = Track.getAll();
     return search_for_id(id, tracks);
   }
 
   static update(x){
     if (!check_params(x)) throw new Error("Invalid argument");
-    let data = getData();
+    let data = getStorageData();
     let tracks = data.items;
 
     let old_track = search_for_id(x.id, tracks);
@@ -39,7 +38,7 @@ class Track {
 
   static insert(x){
     if ( !check_params(x)) throw new Error("Invalid argument");
-    let data = getData();
+    let data = getStorageData();
     let tracks = data.items;
     let newId = data.nextId;
     data.nextId++;
@@ -51,7 +50,7 @@ class Track {
 
   // returns an array of all users in storage
   static getAll() {
-    let data = getData();
+    let data = getStorageData();
     return data.items;
   }
   static setStoragePath(filename){
@@ -64,7 +63,7 @@ class Track {
   static delete(id){
     if(typeof id != 'number') 
       throw new Error("Invalid argument");
-    let data = getData();
+    let data = getStorageData();
     let tracks = data.items;
     let result = remove_element(id, tracks);
     save_to_storage(data);
@@ -95,7 +94,7 @@ function check_params(track) {
   return false;
 }
 
-function getData(){
+function getStorageData(){
   if(!fs.existsSync(storage_path)) 
     throw new Error("invalid storage path");
   let rawData = fs.readFileSync(storage_path);
@@ -125,6 +124,8 @@ function assign_object_value(from, to){
     to[key] = from[key];
   }
 }
+
+
 
 module.exports = { Track };
 

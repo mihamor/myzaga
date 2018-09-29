@@ -82,8 +82,16 @@ app.use("getTrack", function (req, res) {
 
 
 app.use("showUser", function (req, res) {
-  let user = User.getById(Number(req.data.id), path);
-  if (!user) {
+  let invalidData = false;
+  if(req.data.id.isEmpty()) invalidData = true; 
+
+  let user = null;
+  if(!invalidData) {
+    user = User.getById(Number(req.data.id), path);
+    if(!user) invalidData = true;
+  } 
+
+  if (invalidData) {
     res.redirect("getUser");
     return;
   }
@@ -93,8 +101,16 @@ app.use("showUser", function (req, res) {
 
 
 app.use("showTrack", function (req, res) {
-  let track = Track.getById(Number(req.data.id));
-  if (!track) {
+
+  let invalidData = false;
+  if(req.data.id.isEmpty()) invalidData = true;
+
+  let track = null;
+  if(!invalidData) {
+    track = Track.getById(Number(req.data.id));
+    if(!track) invalidData = true;
+  }
+  if (invalidData) {
     res.redirect("getTrack");
     return;
   }
@@ -145,44 +161,56 @@ app.use("delete", function (req, res) {
   res.send("Delete track", form);
 })
 app.use("proccesInsert", function (req, res) {
-  
+  let invalidData = false;
   try {
     let track = new Track(0, req.data.author,req.data.name,
-                           req.data.album, req.data.location,
-                           Number(req.data.length), Number(req.data.year) );
+                          req.data.album, req.data.location,
+                          Number(req.data.length), Number(req.data.year) );
     Track.insert(track);
-  } catch(err){
-    res.redirect("insert");
+  } catch(err){invalidData= true;}
+
+  if(invalidData){
+    res.redirect("update");
     return;
   }
+
   res.redirect("tracks");
-})
+});
 app.use("proccesUpdate", function (req, res) {
-  
-  try {
+  let invalidData = false;
+  if(req.data.id.isEmpty()) invalidData = true;
+  if (!invalidData) try {
     let track = new Track(Number(req.data.id), req.data.author,req.data.name,
-                           req.data.album, req.data.location,
-                           Number(req.data.length), Number(req.data.year) );
+                          req.data.album, req.data.location,
+                          Number(req.data.length), Number(req.data.year) );
     Track.update(track);
-  } catch(err){
+  }catch(err){invalidData = true;}
+
+  if(invalidData){
     res.redirect("update");
     return;
   }
   res.redirect("tracks");
-})
+});
 
 app.use("proccesDelete", function (req, res) {
-  
-  try {
-    let del_id = Number(req.data.id);
-    if(isNaN(del_id)) throw new Error();
-    Track.delete(del_id);
-  } catch(err){
-    res.redirect("delete");
+  let invalidData = false;
+  if(req.data.id.isEmpty()) invalidData = true;
+
+  if (!invalidData) try {   
+    Track.delete(Number(req.data.id));
+  } catch(err){ invalidData = true; }
+
+  if(invalidData){
+    res.redirect("update");
     return;
   }
   res.redirect("tracks");
-})
+});
 
 app.listen(3000);
 browser.open(3000);
+
+String.prototype.isEmpty = function(){
+  return this.length === 0;
+}

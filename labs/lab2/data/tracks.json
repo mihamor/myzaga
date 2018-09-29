@@ -1,5 +1,5 @@
 {
-    "nextId": 3,
+    "nextId": 6,
     "items": [
         {
             "id": 0,
@@ -8,8 +8,8 @@
             "album": "Filosofem",
             "location": ".",
             "length": 180,
-            "year": 1995,
-            "addedAt": "2018-09-28T21:33:46.094Z"
+            "year": 1990,
+            "addedAt": "2018-09-29T14:06:42.972Z"
         },
         {
             "id": 1,
@@ -30,6 +30,16 @@
             "length": 300,
             "year": 1992,
             "addedAt": "2018-09-28T21:26:09.022Z"
+        },
+        {
+            "id": 5,
+            "author": "Dissection",
+            "album": "The Somberlain",
+            "name": "The Somberlain",
+            "location": ".",
+            "length": 560,
+            "year": 1995,
+            "addedAt": "2018-09-29T14:09:14.357Z"
         }
     ]
 }
