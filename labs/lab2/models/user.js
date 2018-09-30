@@ -15,11 +15,8 @@ class User {
 
   static getById(id, filename) {
     let users = User.getAll(filename);
-    for(let user of users){ 
-      if(user.id === id) return user;
-    }
+    return users.find(x => x.id === id)
   }
-  
   // returns an array of all users in storage
   static getAll(filename){
     let rawData = fs.readFileSync(filename);

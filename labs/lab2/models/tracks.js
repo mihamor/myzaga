@@ -114,9 +114,7 @@ function remove_element(id, tracks){
 }
 
 function search_for_id(id, tracks){
-  for(let track of tracks){ 
-    if(track.id === id) return track;
-  }
+  return tracks.find(x => x.id === id);
 }
 function assign_object_value(from, to){
   for(let key in from){
