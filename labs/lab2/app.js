@@ -1,14 +1,11 @@
-let User = require("./models/user.js");
+let { User } = require("./models/user.js");
 let { Track } = require("./models/track.js");
-let { ServerApp } = require('webprogbase-console-view');
-let { ConsoleBrowser } = require('webprogbase-console-view');
-let { InputForm } = require('webprogbase-console-view');
-
+let { ServerApp, ConsoleBrowser, InputForm } = require('webprogbase-console-view');
 
 let app = new ServerApp();
 let browser = new ConsoleBrowser();
-let path = './data/users.json'
 Track.setStoragePath("./data/tracks.json");
+User.setStoragePath("./data/users.json");
 
 app.use("/", function (req, res) {
   let links = {
@@ -40,7 +37,7 @@ app.use("users", function (req, res) {
 })
 
 app.use("allUsers", function (req, res) {
-  let users = User.getAll(path);
+  let users = User.getAll();
   let respStr = '';
   for (let user of users) {
     respStr += 'id: ' + user.id + ' | fullname: ' + user.fullname + '\n'
@@ -87,7 +84,7 @@ app.use("showUser", function (req, res) {
 
   let user = null;
   if(!invalidData) {
-    user = User.getById(Number(req.data.id), path);
+    user = User.getById(Number(req.data.id));
     if(!user) invalidData = true;
   } 
 
@@ -170,7 +167,7 @@ app.use("proccesInsert", function (req, res) {
   } catch(err){invalidData= true;}
 
   if(invalidData){
-    res.redirect("update");
+    res.redirect("insert");
     return;
   }
 
@@ -202,7 +199,7 @@ app.use("proccesDelete", function (req, res) {
   } catch(err){ invalidData = true; }
 
   if(invalidData){
-    res.redirect("update");
+    res.redirect("delete");
     return;
   }
   res.redirect("tracks");

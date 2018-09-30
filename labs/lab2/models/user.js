@@ -1,27 +1,26 @@
-const fs = require('fs');
-class User {
+const {Storage} = require('./storage.js');
+
+class User extends Storage{
   
+  static check_params(x) {
+    return valid_number(x.id)
+        && typeof x.login === 'string'
+        && typeof x.fullname === 'string'
+        && typeof x.avaUrl === 'string'
+        && valid_number(x.role)
+        && typeof x.registeredAt === 'string'
+        && typeof x.isDisabled === 'boolean';
+  }
+
   constructor(id, username, fullname, role, registeredAt, avaUrl, isDisabled=false) {
+    super();
     this.id = id; // number
     this.login = login;  // string
     this.fullname = fullname;  // string
-    this.role = role;
-    this.registeredAt = registeredAt;
-    this.avaUrl = avaUrl;
-    this.isDisabled = isDisabled;
+    this.role = role; // number
+    this.registeredAt = registeredAt; // string
+    this.avaUrl = avaUrl; // string
+    this.isDisabled = isDisabled; // boolean
    }
-  
-  // static functions to access storage
-
-  static getById(id, filename) {
-    let users = User.getAll(filename);
-    return users.find(x => x.id === id)
-  }
-  // returns an array of all users in storage
-  static getAll(filename){
-    let rawData = fs.readFileSync(filename);
-    let data = JSON.parse(rawData);
-    return data.items; 
-  }
 };
-module.exports = User;
+module.exports = {User};
