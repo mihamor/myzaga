@@ -1,4 +1,4 @@
-let {Track} = require('./models/tracks.js');
+let {Track} = require('./models/track.js');
 Track.setStoragePath("./data/tracks.json");
 
 let track = new Track(2,"ya", "aga", "some album",".", NaN, NaN);
