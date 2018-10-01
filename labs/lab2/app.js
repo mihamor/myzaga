@@ -21,9 +21,6 @@ app.use("tracks", function (req, res) {
     "allTracks": "Show all tracks",
     "getTrack": "Get track by id",
     "insert": "Insert new track to storage",
-    "update": "Update track in storage",
-    "delete": "Delete track by id"
-
   };
   res.send("Track interaction menu", links);
 })
@@ -40,7 +37,7 @@ app.use("allUsers", function (req, res) {
   let users = User.getAll();
   let respStr = '';
   for (let user of users) {
-    respStr += 'id: ' + user.id + ' | fullname: ' + user.fullname + '\n'
+    respStr += `id: ${user.id} | fullname: ${user.fullname}\n`;
   }
   res.send(respStr);
 })
@@ -83,8 +80,9 @@ app.use("showUser", function (req, res) {
   if(req.data.id.isEmpty()) invalidData = true; 
 
   let user = null;
+  let currId = Number(req.data.id);
   if(!invalidData) {
-    user = User.getById(Number(req.data.id));
+    user = User.getById(currId);
     if(!user) invalidData = true;
   } 
 
@@ -92,7 +90,9 @@ app.use("showUser", function (req, res) {
     res.redirect("getUser");
     return;
   }
-  let respStr = 'id: ' + user.id + ' | fullname: ' + user.fullname + '\n';
+
+
+  let respStr = `id: ${user.id} | fullname: ${user.fullname}\n`;
   res.send(respStr);
 })
 
@@ -103,20 +103,38 @@ app.use("showTrack", function (req, res) {
   if(req.data.id.isEmpty()) invalidData = true;
 
   let track = null;
+  let currId = Number(req.data.id);
   if(!invalidData) {
-    track = Track.getById(Number(req.data.id));
+    track = Track.getById(currId);
     if(!track) invalidData = true;
   }
   if (invalidData) {
     res.redirect("getTrack");
     return;
   }
-  let respStr = 'id: ' + track.id
-    + ' | name: ' + track.name
-    + ' | author: ' + track.author
-    + ' | album: ' + track.album
-    + ' | year: ' + track.year + '\n';
-  res.send(respStr);
+
+  let links = {
+    "updateTrack":{
+      description: "Update current track",
+      data : {
+        trackId: currId,
+      }
+    },
+    "deleteTrack":{
+      description: "Delete current track",
+      data : {
+        trackId: currId,
+      }
+    }
+  };
+
+  let respStr =`
+  | id: ${track.id} 
+  | name: ${track.name} 
+  | author: ${track.author} 
+  | album: ${track.album} 
+  | year: ${track.year}\n`;
+  res.send(respStr, links);
 })
 
 
@@ -134,28 +152,56 @@ app.use("insert", function (req, res) {
   res.send("Insert track", form);
 })
 
-app.use("update", function (req, res) {
+app.use("updateTrack", function (req, res) {
   let nextState = "proccesUpdate";
+  let trackId = Number(req.data.trackId);
+  let track = Track.getById(trackId);
   let fields = {
-    "id": "Enter track id:",
-    "author": "Enter track author:",
-    "name": "Enter track name:",
-    "album": "Enter track album:",
-    "location": "Enter track location:",
-    "length": "Enter track length:",
-    "year": "Enter track year",
+    "id": {
+      description: "Enter track id:",
+      auto: trackId.toString()
+    },
+    "author": {
+      description: "Enter track author:",
+      default: track.author
+    },
+    "name":  {
+      description: "Enter track name:",
+      default: track.name
+    },
+    "album": {
+      description: "Enter track album:",
+      default: track.album
+    },
+    "location":  {
+      description: "Enter track location:",
+      default: track.location
+    },
+    "length":  {
+      description: "Enter track length:",
+      default: track.length.toString()
+    },
+    "year":  {
+      description: "Enter track year:",
+      default: track.year.toString()
+    },
   };
   let form = new InputForm(nextState, fields);
-  res.send("Update track", form);
+  let respStr =`
+  | id: ${track.id} 
+  | name: ${track.name} 
+  | author: ${track.author} 
+  | album: ${track.album} 
+  | year: ${track.year}
+  | location: ${track.location}
+  | length: ${track.length}
+  Leave empty field, if you dont want to change current property.`;
+  res.send(respStr, form);
 })
 
-app.use("delete", function (req, res) {
-  let nextState = "proccesDelete";
-  let fields = {
-    "id": "Enter track id:"
-  };
-  let form = new InputForm(nextState, fields);
-  res.send("Delete track", form);
+app.use("deleteTrack", function (req, res) {
+  Track.delete(Number(req.data.trackId));
+  res.redirect("tracks");
 })
 app.use("proccesInsert", function (req, res) {
   let invalidData = false;
@@ -184,27 +230,13 @@ app.use("proccesUpdate", function (req, res) {
   }catch(err){invalidData = true;}
 
   if(invalidData){
-    res.redirect("update");
+    res.redirect("updateTrack", {
+      trackId : req.data.id
+    });
     return;
   }
   res.redirect("tracks");
 });
-
-app.use("proccesDelete", function (req, res) {
-  let invalidData = false;
-  if(req.data.id.isEmpty()) invalidData = true;
-
-  if (!invalidData) try {   
-    Track.delete(Number(req.data.id));
-  } catch(err){ invalidData = true; }
-
-  if(invalidData){
-    res.redirect("delete");
-    return;
-  }
-  res.redirect("tracks");
-});
-
 app.listen(3000);
 browser.open(3000);
 

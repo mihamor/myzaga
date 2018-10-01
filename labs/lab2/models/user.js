@@ -23,4 +23,9 @@ class User extends Storage{
     this.isDisabled = isDisabled; // boolean
    }
 };
+
+function valid_number(num) {
+  return typeof num === 'number'
+      && !isNaN(num);
+}
 module.exports = {User};
