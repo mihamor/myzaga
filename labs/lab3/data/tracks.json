@@ -1,0 +1,55 @@
+{
+    "nextId": 14,
+    "items": [
+        {
+            "id": 0,
+            "author": "Burzum",
+            "name": "Dunkelheit",
+            "album": "Filosofem",
+            "location": ".",
+            "length": 180,
+            "year": 1990,
+            "addedAt": "2018-09-29T14:06:42.972Z"
+        },
+        {
+            "id": 1,
+            "author": "Darkthrone",
+            "name": "Quintessence",
+            "album": "Panzerfaust",
+            "location": ".",
+            "length": 300,
+            "year": 1992,
+            "addedAt": "2018-10-01T15:27:12.939Z"
+        },
+        {
+            "id": 2,
+            "author": "Burzum",
+            "album": "From the depths of darkness",
+            "name": "Ea, Lord of Depths",
+            "location": ".",
+            "length": 300,
+            "year": 1992,
+            "addedAt": "2018-09-28T21:26:09.022Z"
+        },
+        {
+            "id": 5,
+            "author": "Dissection",
+            "album": "Somberlain",
+            "name": "Somberlain",
+            "location": "./data",
+            "length": 1800,
+            "year": 1992,
+            "addedAt": "2018-10-01T15:19:54.127Z"
+        },
+        {
+            "id": 13,
+            "author": "1",
+            "album": "1",
+            "name": "1",
+            "location": "1",
+            "length": 1,
+            "year": 1,
+            "addedAt": "2018-10-01T15:28:28.960Z"
+        }
+    ]
+}

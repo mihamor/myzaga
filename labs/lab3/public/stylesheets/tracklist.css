@@ -1,0 +1,17 @@
+
+div.track-list-container{
+  width: 80%;
+  margin-left: 10%;
+}
+
+div.track-list-container ul {
+	  list-style-type:none;	
+    background: #AFAFAF;
+    border-radius: 25px;
+    padding: 20px;
+}
+div.track-list-container ul li {
+  background:white;
+  border-radius: 25px;
+  margin: 5px;
+}
