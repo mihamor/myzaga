@@ -29,13 +29,13 @@ app.get("/", function(req, res){
     res.render('index');
 });
 app.get("/users", function(req, res){
-    res.render('users');
+    const users = User.getAll();
+    res.render('users', {users : users});
 });
 app.get("/users/:id(\\d+)", function(req, res){
-    const fileName = `user${req.params.id}`;
-    const pathName = path.join(__dirname, `views/${fileName}.html`);
-    console.log(pathName);
-    if(fs.existsSync(pathName)) res.render(fileName);
+    let id = Number(req.params.id);
+    let req_user = User.getById(id);
+    if(req_user) res.render("track", {user : req_user});
     else res.sendStatus(404);
 });
 app.get("/tracks", function(req, res){ 
@@ -43,10 +43,9 @@ app.get("/tracks", function(req, res){
     res.render('tracks', {tracks : tracks});
 });
 app.get("/tracks/:id(\\d+)", function(req, res){
-    const fileName = `track${req.params.id}`;
-    const pathName = path.join(__dirname, `views/${fileName}.html`);
-    console.log(pathName);
-    if(fs.existsSync(pathName)) res.render(fileName);
+    let id = Number(req.params.id);
+    let req_track = Track.getById(id);
+    if(req_track) res.render("track", {track : req_track});
     else res.sendStatus(404);
 });
 app.get("/about", function(req, res){
