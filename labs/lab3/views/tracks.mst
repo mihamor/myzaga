@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+{{> head}}
+
+<body>
+
+  <div class=wrapper>
+     {{> header}}
+
+    <ul class="menu-bar">
+      <li class="menu-opt"><a href="index.html">Home</a></li>
+      <li class="menu-opt"><a href="users.html">Users</a></li>
+      <li class="menu-opt"><a class=active href="tracks.html">Tracks</a></li>
+      <li class="menu-opt"><a href="about.html">About</a></li>
+    </ul>
+
+    <div id="page-content">
+      <div class="center vis-text">
+        <h1>Tracks</h1>
+      </div>
+      <div class="track-list-container user-link-container">
+        <ul>
+          {{#tracks}}
+            <li><a href="{{location}}"> {{author}} - {{name}}</a></li>
+          {{/tracks}}
+        </ul>
+      </div>
+    </div>
+
+  {{ >footer }}
+
+  </div>
+</body>
+
+</html>

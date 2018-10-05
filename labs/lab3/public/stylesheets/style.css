@@ -94,7 +94,10 @@ div.user-link-container a:hover {
     /*border: 1px solid black; /* Параметры рамки */
     /*padding: 5px; /* Поля вокруг текста */
 }
-
+#footer{
+    text-align: right;
+    color: #414141;
+}
 div.user-table{  
     background: #AFAFAF;
     border-radius: 25px;
