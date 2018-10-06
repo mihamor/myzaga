@@ -7,13 +7,14 @@ class Track extends Storage{
         && typeof x.author === 'string'
         && typeof x.name === 'string'
         && typeof x.location === 'string'
+        && typeof x.trackImage === 'string'
         && valid_number(x.length)
         && valid_number(x.year)
         && typeof x.addedAt === 'string'
         && typeof x.album === 'string';
   }
 
-  constructor(id, author, name, album, location, length, year, addedAt = new Date().toISOString()) {
+  constructor(id, author, name, album, location, length, year, trackImage, addedAt = new Date().toISOString()) {
     super();
     this.id = id; // number
     this.author = author; //string
@@ -22,6 +23,7 @@ class Track extends Storage{
     this.location = location;  // string
     this.length = length; //number
     this.year = year; //number
+    this.trackImage = trackImage;
     this.addedAt = addedAt; //date
   }
 };

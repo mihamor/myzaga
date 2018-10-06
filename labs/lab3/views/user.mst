@@ -10,23 +10,23 @@
          {{> header}}
 
         <ul class="menu-bar">
-            <li class="menu-opt"><a href="index.html">Home</a></li>
-            <li class="menu-opt"><a class=active href="users.html">Users</a></li>
-            <li class="menu-opt"><a href="tracks.html">Tracks</a></li>
-            <li class="menu-opt"><a href="about.html">About</a></li>
+            <li class="menu-opt"><a href="/">Home</a></li>
+            <li class="menu-opt"><a class=active href="/users">Users</a></li>
+            <li class="menu-opt"><a href="/tracks">Tracks</a></li>
+            <li class="menu-opt"><a href="/about">About</a></li>
         </ul>
 
         <div id="page-content">
             <div class="center vis-text">
-                <h1>Vityok`s profile</h1>
+                <h1>{{login}}`s profile</h1>
             </div>
             <div class=vis-text>
                 <div class="user-info-table">
-                    <img src="../images/users/user1.jpeg" alt="Avatar">
-                    <div class="user-data"><b>Login: </b>Vityok</div>
-                    <div class="user-data"><b>Full name: </b>Vitya Dolgonocik</div>
-                    <div class="user-data"><b>Registration data: </b>01.13.1928</div>
-                    <p><b>Bio: </b>ну ето блин я ваще нормальный пацан музягу слушаю! </p>
+                    <img src="{{avaUrl}}" alt="Avatar">
+                    <div class="user-data"><b>Login: </b>{{login}}</div>
+                    <div class="user-data"><b>Full name: </b>{{fullname}}</div>
+                    <div class="user-data"><b>Registration data: </b>{{registeredAt}}</div>
+                    <p><b>Bio: </b>{{bio}}! </p>
                 </div>
             </div>
         </div>

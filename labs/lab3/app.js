@@ -30,12 +30,12 @@ app.get("/", function(req, res){
 });
 app.get("/users", function(req, res){
     const users = User.getAll();
-    res.render('users', {users : users});
+    res.render('users',  {users : users});
 });
 app.get("/users/:id(\\d+)", function(req, res){
     let id = Number(req.params.id);
     let req_user = User.getById(id);
-    if(req_user) res.render("track", {user : req_user});
+    if(req_user) res.render("user",req_user);
     else res.sendStatus(404);
 });
 app.get("/tracks", function(req, res){ 
@@ -45,7 +45,7 @@ app.get("/tracks", function(req, res){
 app.get("/tracks/:id(\\d+)", function(req, res){
     let id = Number(req.params.id);
     let req_track = Track.getById(id);
-    if(req_track) res.render("track", {track : req_track});
+    if(req_track) res.render("track", req_track);
     else res.sendStatus(404);
 });
 app.get("/about", function(req, res){
@@ -64,6 +64,4 @@ app.get("/api/users", function(req, res){
     res.json(users);
 });
 
-
-
-app.listen(3014, function() { console.log('Server is ready\n' + publicPath); });
+app.listen(3000, function() { console.log('Server is ready\n' + publicPath); });

@@ -3,20 +3,22 @@
   "items": [
       {
           "id": 0,
-          "login": "someUser11",
+          "login": "djigolo",
           "role": 1,
-          "fullname": "I Am User",
+          "fullname": "Sanya Chert",
           "registeredAt": "2018-09-19T10:05:19Z",
-          "avaUrl": "http://progbase.herokuapp.com/images/progbase.jpg",
+          "avaUrl": "/images/users/user2.jpeg",
+          "bio" : "девочки звоните мне на номер +3806666666",
           "isDisabled": false
       },
       {
         "id": 1,
-        "login": "vityol",
+        "login": "Vityok",
         "role": 0,
-        "fullname": "Vityok",
+        "fullname": "Vityok Dolgonocik",
         "registeredAt": "2018-09-19T10:05:19Z",
-        "avaUrl": "http://progbase.herokuapp.com/images/progbase.jpg",
+        "avaUrl": "/images/users/user1.jpeg",
+        "bio": "ну я нормальный пацан ваще",
         "isDisabled": false
     }
   ]

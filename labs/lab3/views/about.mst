@@ -7,10 +7,10 @@
     {{> header}}
 
     <ul class="menu-bar">
-      <li class="menu-opt"><a href="index.html">Home</a></li>
-      <li class="menu-opt"><a href="users.html">Users</a></li>
-      <li class="menu-opt"><a href="tracks.html">Tracks</a></li>
-      <li class="menu-opt"><a class="active" href="about.html">About</a></li>
+      <li class="menu-opt"><a href="/">Home</a></li>
+      <li class="menu-opt"><a href="/users">Users</a></li>
+      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
+      <li class="menu-opt"><a class="active" href="/about">About</a></li>
     </ul>
 
     <div id="page-content">

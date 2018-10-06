@@ -9,21 +9,21 @@
      {{> header}}
 
     <ul class="menu-bar">
-      <li class="menu-opt"><a href="index.html">Home</a></li>
-      <li class="menu-opt"><a href="users.html">Users</a></li>
-      <li class="menu-opt"><a class=active href="tracks.html">Tracks</a></li>
-      <li class="menu-opt"><a href="about.html">About</a></li>
+      <li class="menu-opt"><a href="/">Home</a></li>
+      <li class="menu-opt"><a href="/users">Users</a></li>
+      <li class="menu-opt"><a class=active href="/tracks">Tracks</a></li>
+      <li class="menu-opt"><a href="/about">About</a></li>
     </ul>
 
     <div id="page-content">
       <div class="center vis-text">
       </div>
       <div class="vis-text track-info">
-        <img src="../images/tracks/drenaj.jpeg">
-        <div class="track-name">ДУШЕВНО</div>
-        <div class="track-desc">by ДРЕНАЖНАЯ ЯМА</div>
+        <img src="{{trackImage}}">
+        <div class="track-name">{{name}}</div>
+        <div class="track-desc">by {{author}}</div>
         <audio controls>
-          <source src="../media/data/1.mp3" type="audio/mpeg"> Your browser does not support the audio element.
+          <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
         </audio>
       </div>
     </div>

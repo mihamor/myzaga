@@ -5,6 +5,7 @@ class User extends Storage{
   static check_params(x) {
     return valid_number(x.id)
         && typeof x.login === 'string'
+        && typeof x.bio === 'string'
         && typeof x.fullname === 'string'
         && typeof x.avaUrl === 'string'
         && valid_number(x.role)
@@ -12,7 +13,7 @@ class User extends Storage{
         && typeof x.isDisabled === 'boolean';
   }
 
-  constructor(id, username, fullname, role, registeredAt, avaUrl, isDisabled=false) {
+  constructor(id, username, fullname, role, registeredAt, avaUrl, bio, isDisabled=false) {
     super();
     this.id = id; // number
     this.login = login;  // string
@@ -20,6 +21,7 @@ class User extends Storage{
     this.role = role; // number
     this.registeredAt = registeredAt; // string
     this.avaUrl = avaUrl; // string
+    this.bio = bio //string
     this.isDisabled = isDisabled; // boolean
    }
 };

@@ -9,23 +9,32 @@
      {{> header}}
 
     <ul class="menu-bar">
-      <li class="menu-opt"><a href="index.html">Home</a></li>
-      <li class="menu-opt"><a href="users.html">Users</a></li>
-      <li class="menu-opt"><a class=active href="tracks.html">Tracks</a></li>
-      <li class="menu-opt"><a href="about.html">About</a></li>
+      <li class="menu-opt"><a href="/">Home</a></li>
+      <li class="menu-opt"><a href="/users">Users</a></li>
+      <li class="menu-opt"><a class=active href="/tracks">Tracks</a></li>
+      <li class="menu-opt"><a href="/about">About</a></li>
     </ul>
 
     <div id="page-content">
       <div class="center vis-text">
         <h1>Tracks</h1>
       </div>
-      <div class="track-list-container user-link-container">
+      {{#tracks.length}}
+      <div class="track-list-container">
         <ul>
           {{#tracks}}
-            <li><a href="{{location}}"> {{author}} - {{name}}</a></li>
+            <li><a href="tracks/{{id}}"> {{author}} - {{name}}</a></li>
           {{/tracks}}
         </ul>
       </div>
+      {{/tracks.length}}
+
+
+      {{^tracks.length}}
+      <div class = "center vis-text">No tracks were found.</div>
+      {{/tracks.length}}
+
+
     </div>
 
   {{ >footer }}
