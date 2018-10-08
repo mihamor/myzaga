@@ -13,12 +13,6 @@ app.engine('mst', mustache(path.join(viewsDir, 'partials')));
 app.set("views", path.join(__dirname, 'views'));
 app.set('view engine', 'mst');
 
-
-
-
-
-
-
 User.setStoragePath("./data/users.json");
 Track.setStoragePath("./data/tracks.json")
 
