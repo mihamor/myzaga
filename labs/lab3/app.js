@@ -6,8 +6,6 @@ const {Track} = require('./models/track.js')
 const fs = require('fs');
 const app = express();
 
-
-
 const viewsDir = path.join(__dirname, 'views');
 app.engine('mst', mustache(path.join(viewsDir, 'partials')));
 app.set("views", path.join(__dirname, 'views'));
