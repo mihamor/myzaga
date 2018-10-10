@@ -28,7 +28,7 @@ app.get("/users/:id(\\d+)", function(req, res){
     let id = Number(req.params.id);
     let req_user = User.getById(id);
     if(req_user) res.render("user",req_user);
-    else res.sendStatus(404);
+    else req.next();
 });
 app.get("/tracks", function(req, res){ 
     const tracks = Track.getAll();
@@ -38,7 +38,7 @@ app.get("/tracks/:id(\\d+)", function(req, res){
     let id = Number(req.params.id);
     let req_track = Track.getById(id);
     if(req_track) res.render("track", req_track);
-    else res.sendStatus(404);
+    else req.next();
 });
 app.get("/about", function(req, res){
     res.render('about');
@@ -56,4 +56,10 @@ app.get("/api/users", function(req, res){
     res.json(users);
 });
 
-app.listen(3000, function() { console.log('Server is ready\n' + publicPath); });
+
+app.use( function(req, res){
+    res.status(404);
+    res.render('error');
+});
+
+app.listen(3001, function() { console.log('Server is ready\n' + publicPath); });
