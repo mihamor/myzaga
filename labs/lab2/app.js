@@ -81,10 +81,11 @@ app.use("showUser", function (req, res) {
 
   let user = null;
   let currId = Number(req.data.id);
-  if(!invalidData) {
+  if(!invalidData) try{
     user = User.getById(currId);
     if(!user) invalidData = true;
-  } 
+  }catch(err) {invalidData = true; }
+
 
   if (invalidData) {
     res.redirect("getUser");
@@ -104,10 +105,14 @@ app.use("showTrack", function (req, res) {
 
   let track = null;
   let currId = Number(req.data.id);
-  if(!invalidData) {
+  if(!invalidData) try{
     track = Track.getById(currId);
     if(!track) invalidData = true;
+  }catch(err){
+    invalidData = true;
   }
+
+
   if (invalidData) {
     res.redirect("getTrack");
     return;
