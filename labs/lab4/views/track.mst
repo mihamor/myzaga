@@ -25,6 +25,9 @@
         <audio controls>
           <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
         </audio>
+        <button>
+          Delete
+        </button>
       </div>
     </div>
 

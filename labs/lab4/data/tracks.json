@@ -1,5 +1,5 @@
 {
-    "nextId": 15,
+    "nextId": 20,
     "items": [
         {
             "id": 0,
@@ -9,7 +9,7 @@
             "location": ".",
             "length": 180,
             "year": 1990,
-            "trackImage": "../images/tracks/ynitaz.jpeg",
+            "trackImage": "/images/tracks/ynitaz.jpeg",
             "addedAt": "2018-09-29T14:06:42.972Z"
         },
         {
@@ -20,7 +20,7 @@
             "location": ".",
             "length": 300,
             "year": 1992,
-            "trackImage": "../images/tracks/metallica.jpeg",
+            "trackImage": "/images/tracks/metallica.jpeg",
             "addedAt": "2018-10-01T15:27:12.939Z"
         },
         {
@@ -31,7 +31,7 @@
             "location": ".",
             "length": 300,
             "year": 1992,
-            "trackImage": "../images/tracks/drenaj.jpeg",
+            "trackImage": "/images/tracks/drenaj.jpeg",
             "addedAt": "2018-09-28T21:26:09.022Z"
         },
         {
@@ -42,7 +42,7 @@
             "location": "./data",
             "length": 1800,
             "year": 1992,
-            "trackImage": "../images/tracks/drenaj.jpeg",
+            "trackImage": "/images/tracks/drenaj.jpeg",
             "addedAt": "2018-10-01T15:19:54.127Z"
         },
         {
@@ -53,8 +53,30 @@
             "location": "../media/1.mp3",
             "length": 1800,
             "year": 1992,
-            "trackImage": "../images/tracks/drenaj.jpeg",
+            "trackImage": "/images/tracks/drenaj.jpeg",
             "addedAt": "2018-10-01T15:19:54.127Z"
+        },
+        {
+            "id": 17,
+            "author": "Дренажная яма",
+            "album": "Непопулярные люди",
+            "name": "Телки",
+            "location": "/media/Телки_Дренажная яма.mp3",
+            "length": 1216299,
+            "year": 2018,
+            "trackImage": ".",
+            "addedAt": "2018-10-13T19:14:39.226Z"
+        },
+        {
+            "id": 19,
+            "author": "sadas",
+            "album": "12312",
+            "name": "asdd",
+            "location": "/media/asdd_sadas.mp3",
+            "length": 1216299,
+            "year": 12312,
+            "trackImage": ".",
+            "addedAt": "2018-10-13T19:24:20.948Z"
         }
     ]
 }

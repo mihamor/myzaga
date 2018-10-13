@@ -21,14 +21,19 @@
       </div>
 
       <div class="center">
-      <form action="/tracks/new" method="POST">
-        First name:<br>
-        <input type="text" name="firstname"><br>
-        Last name:<br>
-        <input type="text" name="lastname"><br>
-        <input type="radio" name="gender" value="male" checked> Male<br>
-        <input type="radio" name="gender" value="female"> Female<br>
-        <input type="radio" name="gender" value="other"> Other<br>
+      <form action="/tracks/new" method="POST" enctype="multipart/form-data">
+        Author:<br>
+        <input type="text" name="author"><br>
+        Name:<br>
+        <input type="text" name="name"><br>
+        Album:<br>
+        <input type="text" name="album"><br>
+        Year:<br>
+        <input type="number" name="year"><br>
+        Select track:<br>
+        <input type="file" name="track"><br>
+        Select track image:<br>
+        <input type="file" name="image"><br>
         <input type="submit" value="Submit">
       </form>
       </div>

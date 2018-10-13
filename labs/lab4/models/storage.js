@@ -30,8 +30,9 @@ class Storage {
                     return;
                 }
                 assign_object_value(x, old_ent);
-                save_to_storage(data, this.storage_path());
-                callback(null);
+                save_to_storage(data, this.storage_path(), (err) =>{
+                    callback(null);
+                });
             }
         });
     }
@@ -45,9 +46,10 @@ class Storage {
                 let newId = data.nextId;
                 data.nextId++;
                 x.id = newId;
-                data.items.push(x);;
-                save_to_storage(data, this.storage_path());
-                callback(null);
+                data.items.push(x);
+                save_to_storage(data, this.storage_path(), (err) =>{
+                    callback(null, newId);
+                });
             }
         });
     }
@@ -67,7 +69,6 @@ class Storage {
     }
 
     static delete(id, callback) {
-        
         this.getAll((error, data) => {
             if(!valid_number(id)) callback(new Error("Invalid argument"));
             else if(error) callback(error);
@@ -78,17 +79,22 @@ class Storage {
                     callback(new Error("No such user"))
                     return;
                 }
-                save_to_storage(data, this.storage_path());
-                callback(null);
+                save_to_storage(data, this.storage_path(), (err) =>{
+                    callback(null);
+                });
             }
         });
     }
 };
 
-function save_to_storage(content, storage_path) {
+function save_to_storage(content, storage_path, callback) {
     let content_json = JSON.stringify(content, null, 4);
     fs.writeFile(storage_path, content_json, (err) => {
-        console.log(`The file has been saved`);
+        if(err) callback(err);
+        else {            
+            console.log(`The file has been saved`);
+            callback(null);
+        }
     });
 }
 
