@@ -4,14 +4,14 @@ class Track extends Storage{
   
   static check_params(x) {
     return valid_number(x.id)
-        && typeof x.author === 'string'
-        && typeof x.name === 'string'
-        && typeof x.location === 'string'
-        && typeof x.trackImage === 'string'
+        && valid_string(x.author)
+        && valid_string(x.name)
+        && valid_string(x.location)
+        && valid_string(x.trackImage)
         && valid_number(x.length)
         && valid_number(x.year)
-        && typeof x.addedAt === 'string'
-        && typeof x.album === 'string';
+        && valid_string(x.addedAt)
+        && valid_string(x.album);
   }
 
   constructor(id, author, name, album, location, length, year, trackImage, addedAt = new Date().toISOString()) {
@@ -31,6 +31,10 @@ class Track extends Storage{
 function valid_number(num) {
   return typeof num === 'number'
       && !isNaN(num);
+}
+function valid_string(str){
+  return typeof str === 'string'
+  && str.length != 0;
 }
 module.exports = { Track };
 

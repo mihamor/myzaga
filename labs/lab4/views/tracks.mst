@@ -23,9 +23,18 @@
       <div class="track-list-container">
         <ul>
           {{#tracks}}
-            <li><a href="tracks/{{id}}"> {{author}} - {{name}}</a></li>
+            <li><a href="/tracks/{{id}}"> {{author}} - {{name}}</a></li>
           {{/tracks}}
         </ul>
+      </div>
+
+      <div class = "page_refs">
+        {{#prev_page}}
+        <a class = 'previous' href="/tracks/?page={{prev_page}}">&laquo; Previous page</a>
+        {{/prev_page}}
+        {{#next_page}}
+        <a class = 'next'  href="/tracks/?page={{next_page}}">&raquo; Next page</a>
+        {{/next_page}}
       </div>
       {{/tracks.length}}
 

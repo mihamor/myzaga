@@ -40,11 +40,27 @@ app.get("/users/:id(\\d+)", function(req, res){
         else res.render("user", user );
     });
 });
-app.get("/tracks", function(req, res){ 
+
+app.get("/tracks", function(req, res){
+
+    let page = Number(req.query.page);
+    if(isNaN(page) || page < 1){
+        res.redirect('/tracks/?page=1');
+        return;
+    }
+    const tracksPerPage = 2;
     Track.getAll((error, tracks) => {
         if (error) req.next();
-        else res.render('tracks',  {tracks : tracks.items});
-    });
+        else {
+            let p_tracks = formItemsPage(tracks.items, tracksPerPage, page);
+            let next_page = page * tracksPerPage < tracks.items.length ? page + 1 : 0;
+            let prev_page = page - 1;
+            console.log(`${next_page} ${prev_page}`);
+            res.render('tracks',  {tracks : p_tracks,
+                                   next_page: next_page,
+                                   prev_page : prev_page});
+        }
+    }); 
 });
 app.get("/tracks/new", function(req, res){ 
     res.render('tracks_new');
@@ -108,3 +124,12 @@ app.use( function(req, res){
 });
 
 app.listen(3010, function() { console.log('Server is ready\n' + publicPath); });
+
+
+function formItemsPage(arr, itemsPerPage, page){
+    let index_start = (page-1) * itemsPerPage;
+    let index_end = (page) * itemsPerPage;
+    index_end =  index_end < arr.length ? index_end : arr.length - 1;
+    
+    return arr.slice(index_start, index_end);
+}

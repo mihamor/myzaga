@@ -3,6 +3,20 @@
 
 {{> head}}
 
+<script>
+function validateForm() {
+  let form = document.forms["form"];
+  for(let key of form){
+    if(key.value == ""){
+      alert(`All inputs must be filled out`);
+      return false;
+    }
+  }
+  return true;
+}
+</script>
+
+
 <body>
 
   <div class=wrapper>
@@ -21,20 +35,58 @@
       </div>
 
       <div class="center">
-      <form action="/tracks/new" method="POST" enctype="multipart/form-data">
-        Author:<br>
-        <input type="text" name="author"><br>
-        Name:<br>
-        <input type="text" name="name"><br>
-        Album:<br>
-        <input type="text" name="album"><br>
-        Year:<br>
-        <input type="number" name="year"><br>
-        Select track:<br>
-        <input type="file" name="track"><br>
-        Select track image:<br>
-        <input type="file" name="image"><br>
-        <input type="submit" value="Submit">
+      <form name= "form" action="/tracks/new" onsubmit="return validateForm()" method="POST" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-25">
+            <label for="aname">Author:</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="aname" name="author" placeholder="Author name..">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="tname">Name:</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="tname" name="name" placeholder="Track name..">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="talbum">Album:</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="talbum" name="album" placeholder="Track album..">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="tyear">Year:</label>
+          </div>
+          <div class="col-75">
+            <input type="number" id="tyear" name="year" placeholder="Track year..">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="tfile">Select track:</label>
+          </div>
+          <div class="col-75">
+            <input type="file" id="tfile" name="track">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="timage">Select track image:</label>
+          </div>
+          <div class="col-75">
+            <input type="file" id="timage" name="image">
+          </div>
+        </div>
+        <div class="row">
+          <input type="submit" value="Submit">
+        </div>
       </form>
       </div>
 

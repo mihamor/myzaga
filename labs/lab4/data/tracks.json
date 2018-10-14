@@ -1,5 +1,5 @@
 {
-    "nextId": 20,
+    "nextId": 22,
     "items": [
         {
             "id": 0,
@@ -66,17 +66,6 @@
             "year": 2018,
             "trackImage": ".",
             "addedAt": "2018-10-13T19:14:39.226Z"
-        },
-        {
-            "id": 19,
-            "author": "sadas",
-            "album": "12312",
-            "name": "asdd",
-            "location": "/media/asdd_sadas.mp3",
-            "length": 1216299,
-            "year": 12312,
-            "trackImage": ".",
-            "addedAt": "2018-10-13T19:24:20.948Z"
         }
     ]
 }
