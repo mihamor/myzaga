@@ -41,24 +41,35 @@ app.get("/users/:id(\\d+)", function(req, res){
     });
 });
 
+function is_valid_seacrch(str){
+    return typeof str !== 'undefined';
+}
 app.get("/tracks", function(req, res){
 
     let page = Number(req.query.page);
-    if(isNaN(page) || page < 1){
-        res.redirect('/tracks/?page=1');
+    let search_str = req.query.search;
+    console.log(req.url);
+    const is_valid_str = is_valid_seacrch(search_str);
+    if(isNaN(page) 
+    || page < 1 ){
+        let query_search = !is_valid_str ? "" : `&search=${search_str}`;
+        res.redirect(`/tracks?page=1${query_search}`);
         return;
     }
-    const tracksPerPage = 2;
+    if(!is_valid_str) search_str = "";
+    const tracksPerPage = 4;
     Track.getAll((error, tracks) => {
         if (error) req.next();
         else {
-            let p_tracks = formItemsPage(tracks.items, tracksPerPage, page);
-            let next_page = page * tracksPerPage < tracks.items.length ? page + 1 : 0;
+            let arr_after_search = search_throgh_arr(tracks.items, search_str);
+            let p_tracks = formItemsPage(arr_after_search, tracksPerPage, page);
+            let next_page = page * tracksPerPage < arr_after_search.length ? page + 1 : 0;
             let prev_page = page - 1;
             console.log(`${next_page} ${prev_page}`);
             res.render('tracks',  {tracks : p_tracks,
                                    next_page: next_page,
-                                   prev_page : prev_page});
+                                   prev_page : prev_page,
+                                   search_str : search_str});
         }
     }); 
 });
@@ -99,6 +110,15 @@ app.get("/tracks/:id(\\d+)", function(req, res){
         else res.render("track", track );
     });
 });
+
+app.post("/tracks/:id(\\d+)", function(req, res){
+    let id = Number(req.params.id);
+    Track.delete(id, (err)=>{
+        if(err) res.sendStatus(400);
+        else res.redirect("/tracks");
+    });
+});
+
 app.get("/about", function(req, res){
     res.render('about');
 });
@@ -127,9 +147,31 @@ app.listen(3010, function() { console.log('Server is ready\n' + publicPath); });
 
 
 function formItemsPage(arr, itemsPerPage, page){
+
+
     let index_start = (page-1) * itemsPerPage;
     let index_end = (page) * itemsPerPage;
-    index_end =  index_end < arr.length ? index_end : arr.length - 1;
-    
+    index_end =  index_end < arr.length ? index_end : arr.length;
     return arr.slice(index_start, index_end);
+}
+
+function search_throgh_arr(arr, search_str){
+    let arr_after_search = [];
+    
+    if(search_str === "") arr_after_search = arr;
+    else {
+        for(let track of arr){
+            if(compare_to_track(track, search_str)) 
+                arr_after_search.push(track);
+        }
+    }
+    return arr_after_search;
+}
+
+function compare_to_track(track, search_str){
+
+    search_str = search_str.toLowerCase();
+
+    return track.author.toLowerCase() == search_str
+    || track.name.toLowerCase() == search_str;
 }

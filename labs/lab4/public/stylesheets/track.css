@@ -27,3 +27,21 @@
   width : 50%;
   min-width: 100px;
 }
+.action-button{
+  text-decoration: none;
+  border: none;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  margin: 10px;
+  background-color: #4C62AF;
+  color: white;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.action-button:hover{
+  background-color: #35467F;
+}
+.right{
+  margin-left: 72%;
+}

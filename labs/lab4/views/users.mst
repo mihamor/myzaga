@@ -21,9 +21,10 @@
         <h1>Users</h1>
     </div>
     {{#users.length}}
+    <!-- user-table -->
     <div class="vis-text user-table">
       <div class=user-link-container>
-        <table>
+        <table class ="table table-condensed">
           <tr>
             <th>Login</th>
             <th>Fullname</th>

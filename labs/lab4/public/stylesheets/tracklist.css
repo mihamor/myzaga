@@ -1,6 +1,7 @@
 
 div.track-list-container{
   width: 80%;
+  margin-bottom: 25px;
   margin-left: 10%;
 }
 
@@ -22,7 +23,7 @@ div.track-list-container a:link, a:visited {
   margin: 2px;
   color: white;
   padding: 14px 25px;
-  width: 92%;
+  width: 92.3%;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -35,13 +36,13 @@ div.track-list-container a:hover {
 }
 
 
-form{
+.new-track-form{
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
 }
 
-input[type=text], select, textarea {
+.new-track-form.input[type=text], select, textarea {
   width: 80%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -54,7 +55,10 @@ form.label {
   display: inline-block;
 }
 
-input[type=submit] {
+.new-track-form input[type=submit] {
+  border: none;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
   background-color: #4C62AF;
   color: white;
   padding: 12px 20px;
@@ -124,4 +128,17 @@ input[type=submit]:hover {
   text-align: right;
   background-color: #4C62AF;
   color: white;
+}
+
+#tsearch{
+  width: 65%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  margin-left: 100px;
+}
+.search-info{
+  margin-left: 100px;
+  color: #8E8E8E
 }

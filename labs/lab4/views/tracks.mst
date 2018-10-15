@@ -19,7 +19,17 @@
       <div class="center vis-text">
         <h1>Tracks</h1>
       </div>
+      <form action="/tracks" method="GET">
+        <input type="text" id="tsearch" name="search" placeholder="Search track..." >
+        <input class = "action-button" type="submit" value="Submit">
+      </form>
+      {{#search_str}}
+        <div class = "search-info">
+        Seacth results for: {{search_str}}
+        </div>
+      {{/search_str}}
       {{#tracks.length}}
+      <!--track-list-container -->
       <div class="track-list-container">
         <ul>
           {{#tracks}}
@@ -27,13 +37,14 @@
           {{/tracks}}
         </ul>
       </div>
+      <a class ="action-button right" href="/tracks/new">Add new track</a>
 
       <div class = "page_refs">
         {{#prev_page}}
-        <a class = 'previous' href="/tracks/?page={{prev_page}}">&laquo; Previous page</a>
+        <a class = 'previous' href="/tracks?page={{prev_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&laquo; Previous page</a>
         {{/prev_page}}
         {{#next_page}}
-        <a class = 'next'  href="/tracks/?page={{next_page}}">&raquo; Next page</a>
+        <a class = 'next'  href="/tracks?page={{next_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&raquo; Next page</a>
         {{/next_page}}
       </div>
       {{/tracks.length}}

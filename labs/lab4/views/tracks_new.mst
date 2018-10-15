@@ -35,13 +35,14 @@ function validateForm() {
       </div>
 
       <div class="center">
-      <form name= "form" action="/tracks/new" onsubmit="return validateForm()" method="POST" enctype="multipart/form-data">
+      <!-- onsubmit="return validateForm()" -->
+      <form class = 'new-track-form' name= "form" action="/tracks/new" method="POST" enctype="multipart/form-data">
         <div class="row">
           <div class="col-25">
             <label for="aname">Author:</label>
           </div>
           <div class="col-75">
-            <input type="text" id="aname" name="author" placeholder="Author name..">
+            <input type="text" id="aname" name="author" placeholder="Author name.." required>
           </div>
         </div>
         <div class="row">
@@ -49,7 +50,7 @@ function validateForm() {
             <label for="tname">Name:</label>
           </div>
           <div class="col-75">
-            <input type="text" id="tname" name="name" placeholder="Track name..">
+            <input type="text" id="tname" name="name" placeholder="Track name.." required>
           </div>
         </div>
         <div class="row">
@@ -57,7 +58,7 @@ function validateForm() {
             <label for="talbum">Album:</label>
           </div>
           <div class="col-75">
-            <input type="text" id="talbum" name="album" placeholder="Track album..">
+            <input type="text" id="talbum" name="album" placeholder="Track album.." required>
           </div>
         </div>
         <div class="row">
@@ -65,7 +66,7 @@ function validateForm() {
             <label for="tyear">Year:</label>
           </div>
           <div class="col-75">
-            <input type="number" id="tyear" name="year" placeholder="Track year..">
+            <input type="number" id="tyear" name="year" placeholder="Track year.." required>
           </div>
         </div>
         <div class="row">
@@ -73,7 +74,7 @@ function validateForm() {
             <label for="tfile">Select track:</label>
           </div>
           <div class="col-75">
-            <input type="file" id="tfile" name="track">
+            <input type="file" id="tfile" name="track" required>
           </div>
         </div>
         <div class="row">
@@ -81,7 +82,7 @@ function validateForm() {
             <label for="timage">Select track image:</label>
           </div>
           <div class="col-75">
-            <input type="file" id="timage" name="image">
+            <input type="file" id="timage" name="image" required>
           </div>
         </div>
         <div class="row">

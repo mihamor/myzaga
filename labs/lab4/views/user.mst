@@ -21,8 +21,8 @@
                 <h1>{{login}}`s profile</h1>
             </div>
             <div class=vis-text>
+                <img class ="user-img" src="{{avaUrl}}" alt="Avatar">
                 <div class="user-info-table">
-                    <img src="{{avaUrl}}" alt="Avatar">
                     <div class="user-data"><b>Login: </b>{{login}}</div>
                     <div class="user-data"><b>Full name: </b>{{fullname}}</div>
                     <div class="user-data"><b>Registration data: </b>{{registeredAt}}</div>

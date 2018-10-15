@@ -25,9 +25,11 @@
         <audio controls>
           <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
         </audio>
-        <button>
-          Delete
-        </button>
+        <form>
+          <button class =action-button formmethod="post">
+            Delete
+          </button>
+        </form>
       </div>
     </div>
 
