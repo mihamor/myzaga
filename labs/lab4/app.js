@@ -193,8 +193,8 @@ function compare_to_track(track, search_str){
 
     search_str = search_str.toLowerCase();
 
-    return track.author.toLowerCase() == search_str
-    || track.name.toLowerCase() == search_str;
+    return track.author.toLowerCase().includes(search_str)
+    || track.name.toLowerCase().includes(search_str);
 }
 
 function getFileExt(str){
