@@ -7,6 +7,7 @@ const fs = require('fs');
 const app = express();
 const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
+const randomstring = require("randomstring");
 
 const viewsDir = path.join(__dirname, 'views');
 app.engine('mst', mustache(path.join(viewsDir, 'partials')));
@@ -42,7 +43,7 @@ app.get("/users/:id(\\d+)", function(req, res){
 });
 
 function is_valid_seacrch(str){
-    return typeof str !== 'undefined';
+    return str;
 }
 app.get("/tracks", function(req, res){
 
@@ -52,11 +53,11 @@ app.get("/tracks", function(req, res){
     const is_valid_str = is_valid_seacrch(search_str);
     if(isNaN(page) 
     || page < 1 ){
+
         let query_search = !is_valid_str ? "" : `&search=${search_str}`;
         res.redirect(`/tracks?page=1${query_search}`);
         return;
     }
-    if(!is_valid_str) search_str = "";
     const tracksPerPage = 4;
     Track.getAll((error, tracks) => {
         if (error) req.next();
@@ -81,14 +82,22 @@ app.post("/tracks/new", function(req, res){
     let author = req.body.author;
     let name = req.body.name;
     let album = req.body.album;
-    let track_bin = req.files.track.data;
+    let track_bin = req.files.track;
     let length = req.files.track.size;
     let year = parseInt(req.body.year);
     let image_bin = req.files.image;
 
-    let location = `/media/${name}_${author}.mp3`;
+
+    console.log(req.files.track);
+
+    let rand_name = randomstring.generate();
+    let location = `/media/${rand_name}.${getFileExt(track_bin.name)}`;
+    let trackImage = `/images/tracks/${rand_name}.${getFileExt(image_bin.name)}`;
+    console.log(location);
+    console.log(trackImage);
     let track_path = path.join(__dirname, `/public${location}`);
-    let track = new Track(0, author, name, album, location, length, year, '.');
+    let image_path = path.join(__dirname, `/public${trackImage}`);
+    let track = new Track(0, author, name, album, location, length, year, trackImage);
     console.log(track);
 
     Track.insert(track, function(err, newId){
@@ -96,10 +105,22 @@ app.post("/tracks/new", function(req, res){
             res.sendStatus(400);
             console.log(err);
         }
-        else fs.writeFile(track_path, Buffer.from(new Uint8Array(track_bin)), (err) => {
-            console.log('redirection to new track...');
-            res.redirect(`/tracks/${newId}`);
-        })
+        else fs.writeFile(track_path, Buffer.from(new Uint8Array(track_bin.data)), (err) => {
+            if(err) {
+                console.log(err.message);
+                 res.sendStatus(400);
+            }else {
+                fs.writeFile(image_path, Buffer.from(new Uint8Array(image_bin.data)), (err) =>{
+                    if(err) {
+                        console.log(err.message);
+                         res.sendStatus(400);
+                    }else {
+                        console.log('redirection to new track...');
+                        res.redirect(`/tracks/${newId}`);
+                    }
+                });
+            }
+        });
         
     });
 })
@@ -158,7 +179,7 @@ function formItemsPage(arr, itemsPerPage, page){
 function search_throgh_arr(arr, search_str){
     let arr_after_search = [];
     
-    if(search_str === "") arr_after_search = arr;
+    if(!search_str) arr_after_search = arr;
     else {
         for(let track of arr){
             if(compare_to_track(track, search_str)) 
@@ -174,4 +195,8 @@ function compare_to_track(track, search_str){
 
     return track.author.toLowerCase() == search_str
     || track.name.toLowerCase() == search_str;
+}
+
+function getFileExt(str){
+    return str.split(".").pop();
 }

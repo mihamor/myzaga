@@ -74,7 +74,7 @@ function validateForm() {
             <label for="tfile">Select track:</label>
           </div>
           <div class="col-75">
-            <input type="file" id="tfile" name="track" required>
+            <input type="file" id="tfile" name="track" accept = "audio/*" required>
           </div>
         </div>
         <div class="row">
@@ -82,7 +82,7 @@ function validateForm() {
             <label for="timage">Select track image:</label>
           </div>
           <div class="col-75">
-            <input type="file" id="timage" name="image" required>
+            <input type="file" id="timage" name="image" accept="image/*" required>
           </div>
         </div>
         <div class="row">

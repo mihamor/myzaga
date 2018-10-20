@@ -42,7 +42,7 @@ div.track-list-container a:hover {
   padding: 20px;
 }
 
-.new-track-form.input[type=text], select, textarea {
+.new-track-form input[type=text], select, textarea {
   width: 80%;
   padding: 12px;
   border: 1px solid #ccc;
