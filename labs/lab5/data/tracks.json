@@ -1,0 +1,93 @@
+{
+    "nextId": 47,
+    "items": [
+        {
+            "id": 0,
+            "author": "Burzum",
+            "name": "Dunkelheit",
+            "album": "Filosofem",
+            "location": ".",
+            "length": 180,
+            "year": 1990,
+            "trackImage": "/images/tracks/dunkelheit.jpeg",
+            "addedAt": "2018-09-29T14:06:42.972Z"
+        },
+        {
+            "id": 1,
+            "author": "Darkthrone",
+            "name": "Quintessence",
+            "album": "Panzerfaust",
+            "location": ".",
+            "length": 300,
+            "year": 1992,
+            "trackImage": "/images/tracks/quin.jpg",
+            "addedAt": "2018-10-01T15:27:12.939Z"
+        },
+        {
+            "id": 2,
+            "author": "Burzum",
+            "album": "From the depths of darkness",
+            "name": "Ea, Lord of Depths",
+            "location": ".",
+            "length": 300,
+            "year": 1992,
+            "trackImage": "/images/tracks/fromthe.jpg",
+            "addedAt": "2018-09-28T21:26:09.022Z"
+        },
+        {
+            "id": 5,
+            "author": "Dissection",
+            "album": "Somberlain",
+            "name": "Somberlain",
+            "location": "./data",
+            "length": 1800,
+            "year": 1992,
+            "trackImage": "/images/tracks/somb.jpg",
+            "addedAt": "2018-10-01T15:19:54.127Z"
+        },
+        {
+            "id": 6,
+            "author": "Дренажная яма",
+            "album": "Яма",
+            "name": "Душевно",
+            "location": "../media/1.mp3",
+            "length": 1800,
+            "year": 1992,
+            "trackImage": "/images/tracks/drenaj.jpeg",
+            "addedAt": "2018-10-01T15:19:54.127Z"
+        },
+        {
+            "id": 17,
+            "author": "Дренажная яма",
+            "album": "Блин блинский",
+            "name": "Телки",
+            "location": "/media/Телки_Дренажная яма.mp3",
+            "length": 1216299,
+            "year": 2018,
+            "trackImage": "/images/tracks/drenaj.jpeg",
+            "addedAt": "2018-10-13T19:14:39.226Z"
+        },
+        {
+            "id": 36,
+            "author": "Валентин Стрыкало",
+            "album": "Часть чего-то большего",
+            "name": "Кладбище самолетов",
+            "location": "/media/CEkCQatIWEFpRIz8DdvA2RDdsNlcCT8P.mp3",
+            "length": 5753239,
+            "year": 2013,
+            "trackImage": "/images/tracks/CEkCQatIWEFpRIz8DdvA2RDdsNlcCT8P.jpg",
+            "addedAt": "2018-10-20T11:00:47.375Z"
+        },
+        {
+            "id": 46,
+            "author": "Валентин Стрыкало",
+            "album": "Часть чего-то большего",
+            "name": "Улица Сталеваров",
+            "location": "/media/3uSvuTnYidS9gZvw75mOX86lV3SB5uDA.mp3",
+            "length": 4145443,
+            "year": 2013,
+            "trackImage": "/images/tracks/3uSvuTnYidS9gZvw75mOX86lV3SB5uDA.jpg",
+            "addedAt": "2018-10-20T13:52:05.282Z"
+        }
+    ]
+}
