@@ -9,7 +9,7 @@
             "location": ".",
             "length": 180,
             "year": 1990,
-            "trackImage": "/images/tracks/dunkelheit.jpeg",
+            "trackImage": "/data/fs/dunkelheit.jpeg",
             "addedAt": "2018-09-29T14:06:42.972Z"
         },
         {
@@ -20,7 +20,7 @@
             "location": ".",
             "length": 300,
             "year": 1992,
-            "trackImage": "/images/tracks/quin.jpg",
+            "trackImage": "/data/fs/quin.jpg",
             "addedAt": "2018-10-01T15:27:12.939Z"
         },
         {
@@ -31,7 +31,7 @@
             "location": ".",
             "length": 300,
             "year": 1992,
-            "trackImage": "/images/tracks/fromthe.jpg",
+            "trackImage": "/data/fs/fromthe.jpg",
             "addedAt": "2018-09-28T21:26:09.022Z"
         },
         {
@@ -42,7 +42,7 @@
             "location": "./data",
             "length": 1800,
             "year": 1992,
-            "trackImage": "/images/tracks/somb.jpg",
+            "trackImage": "/data/fs/somb.jpg",
             "addedAt": "2018-10-01T15:19:54.127Z"
         },
         {
@@ -50,10 +50,10 @@
             "author": "Дренажная яма",
             "album": "Яма",
             "name": "Душевно",
-            "location": "../media/1.mp3",
+            "location": "/data/fs/1.mp3",
             "length": 1800,
             "year": 1992,
-            "trackImage": "/images/tracks/drenaj.jpeg",
+            "trackImage": "/data/fs/drenaj.jpeg",
             "addedAt": "2018-10-01T15:19:54.127Z"
         },
         {
@@ -61,10 +61,10 @@
             "author": "Дренажная яма",
             "album": "Блин блинский",
             "name": "Телки",
-            "location": "/media/Телки_Дренажная яма.mp3",
+            "location": "/data/fs/Телки_Дренажная яма.mp3",
             "length": 1216299,
             "year": 2018,
-            "trackImage": "/images/tracks/drenaj.jpeg",
+            "trackImage": "/data/fs/drenaj.jpeg",
             "addedAt": "2018-10-13T19:14:39.226Z"
         },
         {
@@ -72,10 +72,10 @@
             "author": "Валентин Стрыкало",
             "album": "Часть чего-то большего",
             "name": "Кладбище самолетов",
-            "location": "/media/CEkCQatIWEFpRIz8DdvA2RDdsNlcCT8P.mp3",
+            "location": "/data/fs/CEkCQatIWEFpRIz8DdvA2RDdsNlcCT8P.mp3",
             "length": 5753239,
             "year": 2013,
-            "trackImage": "/images/tracks/CEkCQatIWEFpRIz8DdvA2RDdsNlcCT8P.jpg",
+            "trackImage": "/data/fs/CEkCQatIWEFpRIz8DdvA2RDdsNlcCT8P.jpg",
             "addedAt": "2018-10-20T11:00:47.375Z"
         }
     ]

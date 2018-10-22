@@ -34,6 +34,18 @@ app.get("/users", function(req, res){
         else res.render('users',  {users : users.items});
     });
 });
+
+
+app.get('/data/fs/:filename', (req, res) => {
+    const fileName = req.params.filename;
+    console.log(`get file ${fileName}`);
+    fs.exists(fileName, (err) => {
+        if(err) console.log(err.message);
+        else res.sendFile(path.join(__dirname, `data/fs/${fileName}`));
+    });
+});
+
+
 app.get("/users/:id(\\d+)", function(req, res){
     let id = Number(req.params.id);
     User.getById(id, (error, user) => {
