@@ -103,12 +103,12 @@ app.post("/tracks/new", function(req, res){
     console.log(req.files.track);
 
     let rand_name = randomstring.generate();
-    let location = `/media/${rand_name}.${getFileExt(track_bin.name)}`;
-    let trackImage = `/images/tracks/${rand_name}.${getFileExt(image_bin.name)}`;
+    let location = `/data/fs/${rand_name}.${getFileExt(track_bin.name)}`;
+    let trackImage = `/data/fs/${rand_name}.${getFileExt(image_bin.name)}`;
     console.log(location);
     console.log(trackImage);
-    let track_path = path.join(__dirname, `/public${location}`);
-    let image_path = path.join(__dirname, `/public${trackImage}`);
+    let track_path = path.join(__dirname, `${location}`);
+    let image_path = path.join(__dirname, `${trackImage}`);
     let track = new Track(0, author, name, album, location, length, year, trackImage);
     console.log(track);
 

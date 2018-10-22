@@ -16,14 +16,13 @@
     </ul>
 
     <div id="page-content">
-      <div class="center vis-text">
-      </div>
       <div class="vis-text track-info">
         <img src="{{trackImage}}">
         <div class="track-name">{{name}}</div>
         <div class="track-desc">by {{author}}</div>
         <div class="track-desc">year: {{year}}</div>
         <div class="track-desc">album: {{album}}</div>
+        <div class="track-desc">playlist: <a  class=action-button href="/playlists/{{playlistRef}}">{{playlistRef}}</a></div>
         <audio controls>
           <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
         </audio>

@@ -63,6 +63,18 @@ function validateForm() {
         </div>
         <div class="row">
           <div class="col-25">
+            <label for="talbum">Select user:</label>
+          </div>
+          <div class="col-75">
+            <select name="userId" id="tusers">
+               {{#users}}
+                <option value={{_id}}>{{login}} {{_id}}</option>
+              {{/users}}
+              </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
             <label for="tyear">Year:</label>
           </div>
           <div class="col-75">

@@ -27,6 +27,7 @@
                     <div class="user-data"><b>Full name: </b>{{fullname}}</div>
                     <div class="user-data"><b>Registration data: </b>{{registeredAt}}</div>
                     <p><b>Bio: </b>{{bio}}! </p>
+                    <div><b>Downloaded tracks:</b><a class=action-button href="/playlists/{{downloaded_tracks}}">{{downloaded_tracks}}</a></div>
                 </div>
             </div>
         </div>

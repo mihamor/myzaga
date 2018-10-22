@@ -71,3 +71,8 @@ typings/
 
 # Serverless directories
 .serverless
+.mp3
+.png
+.jpeg
+.jpg
+.wav
