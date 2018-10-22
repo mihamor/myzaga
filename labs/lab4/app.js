@@ -43,7 +43,7 @@ app.get("/users/:id(\\d+)", function(req, res){
 });
 
 function is_valid_seacrch(str){
-    return str;
+    return str && str.length != 0;
 }
 app.get("/tracks", function(req, res){
 
