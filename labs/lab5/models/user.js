@@ -1,4 +1,5 @@
 const {Storage} = require('./storage.js');
+const {Playlist} = require('./playlist.js');
 const mongoose = require('mongoose');
 const autoIncrement = require('mongoose-auto-increment');
 
@@ -14,7 +15,8 @@ const UserSchema = new Schema({
   avaUrl: {type: String, required: true },
   bio: {type: String, default: "None" },
   isDisabled: {type: Boolean, default: false },
-  downloaded_tracks: {type: Schema.Types.ObjectId, ref: 'Playlist'}
+  uploaded_tracks: {type: Schema.Types.ObjectId, ref: 'Playlist'},
+  custom_playlists: [{type: Schema.Types.ObjectId, ref: 'Playlist'}]
 });
 
 const UserModel = mongoose.model('User', UserSchema);
@@ -28,6 +30,22 @@ class User extends Storage{
     return UserModel;
   }
 
+  static insert(ent){
+    if(this.check_params(ent)) 
+        return Promise.reject(new Error(""))
+    let PlaylistModel = Playlist.this_model();
+    let newUser = new UserModel(ent);
+    console.log(newUser._id);
+    let playlist = new Playlist(newUser._id, `Uploaded tracks for user ${newUser.login}`);
+    let newPlaylist = new PlaylistModel(playlist)
+    newUser.uploaded_tracks = newPlaylist._id;
+   
+    return newPlaylist
+    .save()
+    .then((x) => newUser.save())
+    .then(x => x._id);
+  }
+
   static check_params(x) {
     return valid_string(x.id)
         && typeof x.login === 'string'
@@ -39,7 +57,7 @@ class User extends Storage{
         && typeof x.isDisabled === 'boolean';
   }
 
-  constructor(id, login, fullname, role, avaUrl, bio, downloaded_tracks, isDisabled=false, registeredAt= new Date().toISOString()) {
+  constructor(id, login, fullname, role, avaUrl, bio, uploaded_tracks, isDisabled=false, registeredAt= new Date().toISOString()) {
     super();
     this.id = id; // number
     this.login = login;  // string
@@ -49,13 +67,17 @@ class User extends Storage{
     this.avaUrl = avaUrl; // string
     this.bio = bio //string
     this.isDisabled = isDisabled; // boolean
-    this.downloaded_tracks = downloaded_tracks;
+    this.uploaded_tracks = uploaded_tracks;
    }
 };
 
 function valid_number(num) {
   return typeof num === 'number'
       && !isNaN(num);
+}
+function valid_string(str){
+  return typeof str === 'string'
+  && str.length != 0;
 }
 
 

@@ -6,7 +6,8 @@ const Schema = mongoose.Schema;
 
 const TrackSchema = new Schema({
   //userRef:{type: Schema.Types.ObjectId, ref: "Playlist", required: true},
-  playlistRef: {type: Schema.Types.ObjectId, ref: "Playlist", required: true},
+  uploadedListRef: {type: Schema.Types.ObjectId, ref: "Playlist", required: true},
+  playlistRef: [{type: Schema.Types.ObjectId, ref: "Playlist"}],
   author: {type: String, required: true },
   album: {type: String, default: "None" },
   name: {type: String, required: true },
@@ -38,9 +39,9 @@ class Track extends Storage{
     return TrackModel;
   }
 
-  constructor(playlistRef, author, name, album, location, length, year, trackImage, addedAt = new Date().toISOString()) {
+  constructor(uploadedListRef, author, name, album, location, length, year, trackImage, addedAt = new Date().toISOString()) {
     super();
-    this.playlistRef = playlistRef; // number
+    this.uploadedListRef = uploadedListRef; // object
     this.author = author; //string
     this.album = album; //string
     this.name = name; // string

@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const PlaylistSchema = new Schema({
     desc: {type: String, default:"None"},
+    userRef: {type: Schema.Types.ObjectId, ref: "User", required: true},
     tracks: [{type: Schema.Types.ObjectId, ref: "Track"}]
 });
 
@@ -21,8 +22,9 @@ class Playlist extends Storage{
     return PlaylistModel;
   }
 
-  constructor(desc, tracks = []) {
+  constructor(userRef, desc, tracks = []) {
     super();
+    this.userRef = userRef;
     this.desc = desc;
     this.tracks = tracks;
 

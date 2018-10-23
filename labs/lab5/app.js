@@ -96,10 +96,27 @@ app.get("/api/users", function(req, res){
 app.get("/api/users/test_add", (req, res)=>{
 
     let UserModel = User.this_model();
-    let t = new User(0, "djigolo", "sanek", 0, "asd", "hello");
-    new UserModel(t).save()
+    let PlaylistModel = Playlist.this_model();
+    let u = new User(0, "Vityok", "Vityok Dolgonocik", 0, "/images/users/user1.jpeg", "шо вы малые");
+    User.insert(u)
+    .then(x => res.send(x));
+
+    /*.save()
         .then(x => x.toJSON())
-        .then(x => res.json(x));
+        .
+        .then(x => res.json(x))
+        ;*/
+      //  res.sendStatus(200);
+});
+
+app.get("/api/users/populated", (req, res)=>{
+    let UserModel = User.this_model();
+    UserModel.find()
+    .populate("uploaded_tracks")
+    .exec()
+    .then(x => x.map(i => i.toJSON()))
+    .then(x => res.json(x));
+
 });
 
 

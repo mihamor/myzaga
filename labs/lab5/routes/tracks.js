@@ -87,7 +87,7 @@ router.post("/new", function(req, res){
 
     User.getById(userId)
         .then(x => x[0])
-        .then(x => x.downloaded_tracks)
+        .then(x => x.uploaded_tracks)
         .then(x => {
             let track = new Track(x, author, name, album, location, length, year, trackImage);
             console.log(track);
@@ -169,11 +169,24 @@ router.get("/:id", function(req, res){
 });
 
 router.post("/:id", function(req, res){
-    let id = Number(req.params.id);
-
-    Track.delete(id)
+    let id = req.params.id;
+    console.log("TRACK DELETE:" + id);
+    Track.getById(id)
+        .then(x => x[0])
+        .then(x => x.uploadedListRef)
+        .then(x => Playlist.getById(x))
+        .then(x => x[0])
+        .then(x => {
+            let index = x.tracks.indexOf(id);
+            x.tracks.splice(index, 1);
+            return Playlist.update(x);
+        })
+        .then(() =>  Track.delete(id))
         .then(() => res.redirect("/tracks"))
-        .catch(err => res.sendStatus(400));
+        .catch(err => {
+            console.log(err.message);
+            res.sendStatus(400)
+        });
 });
 
 

@@ -97,16 +97,10 @@ class Storage {
     }
 
     static delete(id) {
-        if(!valid_string(id)) 
+        if(!valid_string(id) && typeof id !== "object") 
             Promise.reject(new Error("Invalid argument"));
-        return this.getAll()
-            .then(data => {
-                let entities = data.items;
-                let result = remove_element(id, entities);
-                if(!result)
-                    return Promise.reject(new Error("No such user"))
-                return save_to_storage(data, this.storage_path());
-            });
+        let curr_model = this.this_model();
+        return curr_model.findByIdAndRemove(id)
     }
 };
 

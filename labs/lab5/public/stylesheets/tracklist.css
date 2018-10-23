@@ -142,3 +142,11 @@ input[type=submit]:hover {
   margin-left: 100px;
   color: #8E8E8E
 }
+
+
+.playlist-info{
+  margin: 20px;
+}
+.playlist-info a{
+  padding: 5px;
+}
