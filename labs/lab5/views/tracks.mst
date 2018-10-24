@@ -39,6 +39,9 @@
       </div>
 
 
+      <div class =page_refs>
+      {{this_page}} out of {{page_count}} 
+      </div>
       <div class = "page_refs">
         {{#prev_page}}
         <a class = 'previous' href="/tracks?page={{prev_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&laquo; Previous page</a>
@@ -51,10 +54,8 @@
       {{^tracks.length}}
       <div class = "center vis-text">No tracks were found.</div>
       {{/tracks.length}}
-      <a class ="action-button right" href="/tracks/new">Add new track</a>
-
-
     </div>
+      <a class ="action-button right" href="/tracks/new">Add new track</a>
 
   {{ >footer }}
 

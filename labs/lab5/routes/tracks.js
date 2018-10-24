@@ -8,8 +8,6 @@ const path = require('path');
 const router = express.Router();
 Track.setStoragePath("./data/tracks.json");
 
-
-
 function is_valid_seacrch(str){
     return str;
 }
@@ -35,11 +33,14 @@ router.get("/", function(req, res){
             let p_tracks = formItemsPage(arr_after_search, tracksPerPage, page);
             let next_page = page * tracksPerPage < arr_after_search.length ? page + 1 : 0;
             let prev_page = page - 1;
+            let page_count = Math.trunc(tracks.length / tracksPerPage + 1)
             console.log(`render tracks pages: ${next_page} ${prev_page}`);
             res.render('tracks',  {tracks : p_tracks,
                                    next_page: next_page,
                                    prev_page : prev_page,
-                                   search_str : search_str});
+                                   search_str : search_str,
+                                   page_count: page_count,
+                                   this_page: prev_page+1});
         })
         .catch(err => {
             console.log(err.message); 
@@ -155,6 +156,15 @@ router.post("/new", function(req, res){
 router.get("/:id", function(req, res){
     let id = req.params.id;
     Track.getById(id)
+        .populate({
+            path: "uploadedListRef",
+            model: 'Playlist',
+            populate : {
+                path: "userRef",
+                model: 'User',
+            }
+        })
+        .exec()
         .then(tracks => tracks[0])
         .then(track => {
             console.log(track);

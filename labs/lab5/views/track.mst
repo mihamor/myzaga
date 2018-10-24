@@ -22,7 +22,12 @@
         <div class="track-desc">by {{author}}</div>
         <div class="track-desc">year: {{year}}</div>
         <div class="track-desc">album: {{album}}</div>
-        <div class="track-desc">playlist: <a  class=action-button href="/playlists/{{uploadedListRef}}">{{uploadedListRef}}</a></div>
+        <div class="track-desc">
+          Uploaded by: 
+          <a class=action-button href="/playlists/{{uploadedListRef._id}}">
+            {{uploadedListRef.userRef.login}}
+          </a>
+        </div>
         <audio controls>
           <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
         </audio>
