@@ -78,11 +78,14 @@ app.get("/tracks", function(req, res){
             let p_tracks = formItemsPage(arr_after_search, tracksPerPage, page);
             let next_page = page * tracksPerPage < arr_after_search.length ? page + 1 : 0;
             let prev_page = page - 1;
+            let page_count = Math.trunc(tracks.items.length / tracksPerPage + 1);
             console.log(`${next_page} ${prev_page}`);
             res.render('tracks',  {tracks : p_tracks,
                                    next_page: next_page,
                                    prev_page : prev_page,
-                                   search_str : search_str});
+                                   search_str : search_str,
+                                   this_page: prev_page+1,
+                                   page_count: page_count});
         }
     }); 
 });

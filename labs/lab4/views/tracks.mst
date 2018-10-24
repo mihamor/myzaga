@@ -20,7 +20,7 @@
         <h1>Tracks</h1>
       </div>
       <form action="/tracks" method="GET">
-        <input type="text" id="tsearch" name="search" placeholder="Search track..." >
+        <input type="search" id="tsearch" name="search" placeholder="Search track..." >
         <input class = "action-button" type="submit" value="Submit">
       </form>
       {{#search_str}}
@@ -43,6 +43,7 @@
         {{#prev_page}}
         <a class = 'previous' href="/tracks?page={{prev_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&laquo; Previous page</a>
         {{/prev_page}}
+        {{this_page}} out of {{page_count}}
         {{#next_page}}
         <a class = 'next'  href="/tracks?page={{next_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&raquo; Next page</a>
         {{/next_page}}
