@@ -70,7 +70,7 @@ app.get("/tracks", function(req, res){
         res.redirect(`/tracks?page=1${query_search}`);
         return;
     }
-    const tracksPerPage = 4;
+    const tracksPerPage = 1;
     Track.getAll((error, tracks) => {
         if (error) req.next();
         else {
@@ -78,7 +78,7 @@ app.get("/tracks", function(req, res){
             let p_tracks = formItemsPage(arr_after_search, tracksPerPage, page);
             let next_page = page * tracksPerPage < arr_after_search.length ? page + 1 : 0;
             let prev_page = page - 1;
-            let page_count = Math.ceil(tracks.items.length / tracksPerPage);
+            let page_count = Math.ceil(arr_after_search.length / tracksPerPage);
             console.log(`${next_page} ${prev_page}`);
             res.render('tracks',  {tracks : p_tracks,
                                    next_page: next_page,

@@ -92,6 +92,7 @@ input[type=submit]:hover {
 }
 
 .page_refs {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,23 +106,26 @@ input[type=submit]:hover {
   padding: 8px 16px;
 }
 
-.page_refs a {
+.page_refs button {
   margin: 10px;
   border-radius: 20px;
+  border: none;
   text-decoration: none;
   display: inline-block;
   padding: 8px 16px;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  cursor: pointer;
 }
 
-.page_refs a:hover {
-  background-color: #555;
-  color: black;
+.page_refs button:hover {
+  background-color: #35467F;
 }
 
 .previous {
   
-  background-color: #f1f1f1;
-  color: black;
+  background-color: #4C62AF;
+  color: white;
 }
 
 .next {
@@ -131,7 +135,7 @@ input[type=submit]:hover {
 }
 
 #tsearch{
-  width: 68%;
+  width: 65%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -141,4 +145,12 @@ input[type=submit]:hover {
 .search-info{
   margin-left: 100px;
   color: #8E8E8E
+}
+
+
+.playlist-info{
+  margin: 20px;
+}
+.playlist-info a{
+  padding: 5px;
 }

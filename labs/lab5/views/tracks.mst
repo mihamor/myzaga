@@ -42,20 +42,28 @@
       <div class =page_refs>
       {{this_page}} out of {{page_count}} 
       </div>
-      <div class = "page_refs">
+      <form class="page_refs">
+        {{#search_str}}
+        <input type="hidden" name="search" value="{{search_str}}">
+        {{/search_str}}
         {{#prev_page}}
-        <a class = 'previous' href="/tracks?page={{prev_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&laquo; Previous page</a>
+         <button type ="submit" class='previous' name="page" value="{{prev_page}}">&laquo; Previous page</button>
+        <!--<a class = 'previous' href="/tracks?page={{prev_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&laquo; Previous page</a>-->
         {{/prev_page}}
         {{#next_page}}
-        <a class = 'next'  href="/tracks?page={{next_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&raquo; Next page</a>
+        <button type ="submit" class='next' name="page" value="{{next_page}}">&raquo; Next page</button>
+        <!--<a class = 'next'  href="/tracks?page={{next_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&raquo; Next page</a>-->
         {{/next_page}}
+      </form>
       {{/tracks.length}}
 
       {{^tracks.length}}
       <div class = "center vis-text">No tracks were found.</div>
       {{/tracks.length}}
-    </div>
       <a class ="action-button right" href="/tracks/new">Add new track</a>
+
+
+    </div>
 
   {{ >footer }}
 
