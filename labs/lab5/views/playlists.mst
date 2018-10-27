@@ -36,7 +36,6 @@
       {{/playlists.length}}
       <a class ="action-button right" href="/playlists/new">Add new playlist</a>
 
-
     </div>
 
   {{ >footer }}

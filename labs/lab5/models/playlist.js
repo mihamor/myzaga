@@ -24,6 +24,46 @@ class Playlist extends Storage{
     return PlaylistModel;
   }
 
+  static getAllCreated(){
+    return this.this_model().find({isUserUploads: false});
+  }
+  static getAllByUserId(id){
+    return this.this_model().find({
+      userRef: id,
+      isUserUploads: false
+    });
+  }
+
+  static isRemoveble(id){
+    return this.getById(id)
+      .then(x => {
+        if(x.isUserUploads) 
+          return Promise.reject(new Error("Playlist is not removeble"));
+        return Promise.resolve();
+      });
+  }
+
+  static getAllByTrackId(id){
+    return this.this_model().find({
+      tracks: id,
+    });
+  }
+
+  static removeTrackFromAll(id){
+    this.getAllByTrackId(id)
+      .then(playlists => {
+        let p = Promise.resolve();
+        if(playlists.length !== 0)
+        for(let i = 0; i < playlists.length; i++){
+            let playlist = playlists[i];
+            playlist.tracks = removeItemFromArr(playlist.tracks, id);
+            console.log(playlist);
+            p = p.then(() => Playlist.update(playlist));
+        }
+        return p;
+    });
+  }
+
   constructor(userRef, isUserUploads, desc, tracks = []) {
     super();
     this.userRef = userRef;
@@ -42,6 +82,15 @@ function valid_string(str){
   return typeof str === 'string'
   && str.length != 0;
 }
+
+function removeItemFromArr(arr, item){
+  let index = arr.indexOf(item);
+  if(index > -1){
+      arr.splice(index, 1);
+  }
+  return arr;
+}
+
 module.exports = { Playlist };
 
 

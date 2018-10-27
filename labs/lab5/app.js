@@ -26,7 +26,8 @@ app.use(busboyBodyParser({limit: '15mb'}));
 
 const url = 'mongodb://localhost:27017/myzaga';
 const connectOptions = { 
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useCreateIndex: true
 }
 mongoose.connect(url, connectOptions)
     .catch((err) => console.log("ERROR: " + err.message))

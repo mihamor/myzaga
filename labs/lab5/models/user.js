@@ -46,6 +46,33 @@ class User extends Storage{
     .then(x => x._id);
   }
 
+  static insertPlaylistId(userId, plid){
+     this.getById(userId)
+        .then(x => x[0])
+        .then(user => {
+            user.custom_playlists.push(plid)
+            return User.update(user);
+        })
+  }
+
+  static removePlaylistId(plid){
+    return Playlist.getById(plid)
+      .populate({
+        path: "userRef",
+        model: "User"
+      })
+      .exec()
+      .then(x => x[0].userRef)
+      .then(user => {
+        console.log(user);
+        let newUser = new this(user._id, user.login, user.fullname, user.role, user.avaUrl, user.bio, user.uploaded_tracks, user.isDisabled, user.registeredAt);
+        newUser.custom_playlists = removeItemFromArr(user.custom_playlists, plid);
+        console.log(newUser);
+        return this.update(newUser)
+      });
+  }
+
+
   static check_params(x) {
     return typeof x.login === 'string'
         && typeof x.bio === 'string'
@@ -57,7 +84,7 @@ class User extends Storage{
 
   constructor(id, login, fullname, role, avaUrl, bio, uploaded_tracks, isDisabled=false, registeredAt= new Date().toISOString()) {
     super();
-    this.id = id; // number
+    this._id = id; // number
     this.login = login;  // string
     this.fullname = fullname;  // string
     this.role = role; // number
@@ -66,6 +93,7 @@ class User extends Storage{
     this.bio = bio //string
     this.isDisabled = isDisabled; // boolean
     this.uploaded_tracks = uploaded_tracks;
+    this.custom_playlists = [];
    }
 };
 
@@ -78,6 +106,13 @@ function valid_string(str){
   && str.length != 0;
 }
 
+function removeItemFromArr(arr, item){
+  let index = arr.indexOf(item);
+  if(index > -1){
+      arr.splice(index, 1);
+  }
+  return arr;
+}
 
 
 

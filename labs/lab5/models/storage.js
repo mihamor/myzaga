@@ -20,12 +20,12 @@ class Storage {
     static check_params(x){return true;}
     // static functions to access storage
     static getById(id) {
-        console.log(typeof id);
+        //console.log(typeof id);
         if(!valid_string(id) && typeof id !== "object")
             return Promise.reject(new Error(`Invalid in getById(${id}) arguments`));
 
 
-        console.log(id);
+        //console.log(id);
         return this.this_model().find({ _id : id});
 
         /*
@@ -41,13 +41,19 @@ class Storage {
     static isExist(id){
         let curr_model = this.this_model()
         return curr_model.find({_id: id})
-            .then(x => x.length !== 0);
+            .then(x => {
+                if(x.length !== 0) return Promise.resolve();
+                else return Promise.reject(
+                new Error(`${curr_model.baseModelName}: entity was not found`));
+            });
     }
     static update(ent) {
         if(!this.check_params(ent)) 
             return Promise.reject(new Error("Invalid argument"));
-        let curr_model = this.this_model()
+        let curr_model = this.this_model();
+        console.log(`${curr_model.modelName} UPDATE`);
         return curr_model.findOneAndUpdate({ _id: ent._id},ent, {upsert : true});
+           // .then(x => console.log(`RETURNED VALUE: ${x}`));
         /*
         if(!this.check_params(x)) 
             return Promise.reject(new Error("Invalid argument"));

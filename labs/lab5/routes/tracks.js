@@ -122,36 +122,6 @@ router.post("/new", function(req, res){
             console.log(err.message);
             req.next();
         });
-
-    //let track = new Track(author, name, album, location, length, year, trackImage);
-    //console.log(track);
-
-   /* Track.insert(track)
-        .then(newId => {
-            return Promise.all([
-                newId,
-                fs.writeFile(image_path, 
-                Buffer.from(new Uint8Array(image_bin.data))),
-                fs.writeFile(track_path, 
-                Buffer.from(new Uint8Array(track_bin.data)))
-            ]);
-        })
-        .then(([newId, p1, p2]) => {
-            console.log('redirection to new track...');
-            res.redirect(`/tracks/${newId}`);
-            return newId;
-        })
-        .then(newId => {return User.getById(userId)})
-        .populate("downloaded_tracks")
-        .exec()
-        .then(x => {
-            x.push(newId);
-            return Playlits.update(x);
-        })
-        .catch((err) => {
-            console.log(err.message);
-            req.next();
-        });*/
 });
 router.get("/:id", function(req, res){
     let id = req.params.id;
@@ -183,17 +153,8 @@ router.post("/:id", function(req, res){
     //TODO DELETE FROM PLAYLISTS
     let id = req.params.id;
     console.log("TRACK DELETE:" + id);
-    Track.getById(id)
-        .then(x => x[0])
-        .then(x => x.uploadedListRef)
-        .then(x => Playlist.getById(x))
-        .then(x => x[0])
-        .then(x => {
-            let index = x.tracks.indexOf(id);
-            x.tracks.splice(index, 1);
-            return Playlist.update(x);
-        })
-        .then(() =>  Track.delete(id))
+    Track.delete(id)
+        .then(() => Playlist.removeTrackFromAll(id))
         .then(() => res.redirect("/tracks"))
         .catch(err => {
             console.log(err.message);

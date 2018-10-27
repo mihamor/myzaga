@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const TrackSchema = new Schema({
   //userRef:{type: Schema.Types.ObjectId, ref: "Playlist", required: true},
   uploadedListRef: {type: Schema.Types.ObjectId, ref: "Playlist", required: true},
-  playlistRef: [{type: Schema.Types.ObjectId, ref: "Playlist"}],
+ // playlistRef: [{type: Schema.Types.ObjectId, ref: "Playlist"}],
   author: {type: String, required: true },
   album: {type: String, default: "None" },
   name: {type: String, required: true },

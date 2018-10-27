@@ -35,7 +35,13 @@
           This playlist is empty...
         {{/tracks.length}}
 
-      </div>
+
+        </div>
+      <form>
+        <button class ="action-button right" formmethod="post">
+          Delete
+        </button>
+      </form>
       </div>
     </div>
 
