@@ -9,9 +9,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
-
-
 
 const viewsDir = path.join(__dirname, 'views');
 app.engine('mst', mustache(path.join(viewsDir, 'partials')));
@@ -32,6 +29,7 @@ const connectOptions = {
     useNewUrlParser: true
 }
 mongoose.connect(url, connectOptions)
+    .catch((err) => console.log("ERROR: " + err.message))
     .then((x) => {
         console.log("Mongo database connected " + mongoose.connection);
         //autoIncrement.initialize(mongoose.connection);
@@ -41,7 +39,7 @@ mongoose.connect(url, connectOptions)
        // TrackModel = mongoose.model('Track', TrackSchema);
        // console.log(TrackModel);
 
-       app.listen(3020, function() { console.log('Server is ready\n' + publicPath); });
+       app.listen(3015, function() { console.log('Server is ready\n' + publicPath); });
     })
     .catch((err) => console.log("ERROR: " + err.message));
 
@@ -123,7 +121,7 @@ app.get("/api/users/populated", (req, res)=>{
 app.get("/api/playlists/test_add", (req, res)=>{
     
     let PlaylistModel = Playlist.this_model();
-    let t = new Playlist("Some desc");
+    let t = new Playlist("0", "Some desc", false);
     new PlaylistModel(t).save()
         .then(x => x.toJSON())
         .then(x => res.json(x));

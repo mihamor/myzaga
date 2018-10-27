@@ -179,6 +179,8 @@ router.get("/:id", function(req, res){
 });
 
 router.post("/:id", function(req, res){
+
+    //TODO DELETE FROM PLAYLISTS
     let id = req.params.id;
     console.log("TRACK DELETE:" + id);
     Track.getById(id)

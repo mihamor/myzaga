@@ -36,7 +36,7 @@ class User extends Storage{
     let PlaylistModel = Playlist.this_model();
     let newUser = new UserModel(ent);
     console.log(newUser._id);
-    let playlist = new Playlist(newUser._id, `Uploaded tracks for user ${newUser.login}`);
+    let playlist = new Playlist(newUser._id, true, `Uploaded tracks for user ${newUser.login}`);
     let newPlaylist = new PlaylistModel(playlist)
     newUser.uploaded_tracks = newPlaylist._id;
    
@@ -47,13 +47,11 @@ class User extends Storage{
   }
 
   static check_params(x) {
-    return valid_string(x.id)
-        && typeof x.login === 'string'
+    return typeof x.login === 'string'
         && typeof x.bio === 'string'
         && typeof x.fullname === 'string'
         && typeof x.avaUrl === 'string'
         && valid_number(x.role)
-        && typeof x.registeredAt === 'string'
         && typeof x.isDisabled === 'boolean';
   }
 

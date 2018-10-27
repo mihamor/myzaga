@@ -30,7 +30,6 @@ class Track extends Storage{
         && valid_string(x.trackImage)
         && valid_number(x.length)
         && valid_number(x.year)
-        && valid_string(x.addedAt)
         && valid_string(x.album)
        // && valid_string(x.playlistRef)
   }

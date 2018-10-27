@@ -12,6 +12,7 @@
   <ul class="menu-bar">
     <li class="menu-opt"><a href="/">Home</a></li>
     <li class="menu-opt"><a class="active" href="/users">Users</a></li>
+    <li class="menu-opt"><a href="/playlists">Playlists</a></li>
     <li class="menu-opt"><a href="/tracks">Tracks</a></li>
     <li class="menu-opt"><a href="/about">About</a></li>
   </ul>

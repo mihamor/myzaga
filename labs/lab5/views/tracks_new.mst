@@ -3,20 +3,6 @@
 
 {{> head}}
 
-<script>
-function validateForm() {
-  let form = document.forms["form"];
-  for(let key of form){
-    if(key.value == ""){
-      alert(`All inputs must be filled out`);
-      return false;
-    }
-  }
-  return true;
-}
-</script>
-
-
 <body>
 
   <div class=wrapper>
@@ -25,6 +11,7 @@ function validateForm() {
     <ul class="menu-bar">
       <li class="menu-opt"><a href="/">Home</a></li>
       <li class="menu-opt"><a href="/users">Users</a></li>
+      <li class="menu-opt"><a href="/playlists">Playlists</a></li>
       <li class="menu-opt"><a class=active href="/tracks">Tracks</a></li>
       <li class="menu-opt"><a href="/about">About</a></li>
     </ul>

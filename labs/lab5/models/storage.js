@@ -38,6 +38,11 @@ class Storage {
             });*/
     }
 
+    static isExist(id){
+        let curr_model = this.this_model()
+        return curr_model.find({_id: id})
+            .then(x => x.length !== 0);
+    }
     static update(ent) {
         if(!this.check_params(ent)) 
             return Promise.reject(new Error("Invalid argument"));

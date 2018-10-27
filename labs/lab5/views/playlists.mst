@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+{{> head}}
+
+<body>
+
+  <div class=wrapper>
+     {{> header}}
+
+    <ul class="menu-bar">
+      <li class="menu-opt"><a href="/">Home</a></li>
+      <li class="menu-opt"><a href="/users">Users</a></li>
+      <li class="menu-opt"><a class=active href="/playlists">Playlists</a></li>
+      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
+      <li class="menu-opt"><a href="/about">About</a></li>
+    </ul>
+
+    <div id="page-content">
+      <div class="center vis-text">
+        <h1>Playlists</h1>
+      </div>
+      {{#playlists.length}}
+      <div class="track-list-container">
+      <!--track-list-container -->
+        <ul>
+          {{#playlists}}
+            <li><a href="/playlists/{{id}}">{{desc}}</a></li>
+          {{/playlists}}
+        </ul>
+      </div>
+      {{/playlists.length}}
+
+      {{^playlists.length}}
+      <div class = "center vis-text">No playlists were found.</div>
+      {{/playlists.length}}
+      <a class ="action-button right" href="/playlists/new">Add new playlist</a>
+
+
+    </div>
+
+  {{ >footer }}
+
+  </div>
+</body>
+
+</html>
