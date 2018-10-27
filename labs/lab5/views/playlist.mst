@@ -26,7 +26,7 @@
         {{#tracks.length}}
         <ul>
           {{#tracks}}
-            <li><a href="/tracks/{{id}}"> {{author}} - {{name}}</a></li>
+            <li><a href="/tracks/{{_id}}"> {{author}} - {{name}}</a></li>
           {{/tracks}}
         </ul>
         {{/tracks.length}}
@@ -37,11 +37,14 @@
 
 
         </div>
+      {{^isUserUploads}}
       <form>
+        <a class ="action-button" href="/playlists/{{_id}}/update">Update</a>
         <button class ="action-button right" formmethod="post">
           Delete
         </button>
       </form>
+      {{/isUserUploads}}
       </div>
     </div>
 
