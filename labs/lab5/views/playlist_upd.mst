@@ -35,10 +35,10 @@
 
         <div class="row">
           <div class="col-25">
-            <label for="atracks">Select tracks:</label>
+            <label for="pre-selected-options">Select tracks:</label>
           </div>
           <div class="col-75">
-            <select name="tracks[]" id="atracks" multiple>
+            <select name="tracks[]" id="pre-selected-options" multiple="multiple">
             {{#selected}}
                 <option selected="selected" value="{{_id}}">{{author}} - {{name}}</option>
             {{/selected}}
@@ -46,6 +46,14 @@
                 <option value="{{_id}}">{{author}} - {{name}}</option>
             {{/not_selected}}
             </select>
+            <script src="/javascripts/jquery.min.js"></script>
+            <!-- Bootstrap JavaScript -->
+            <script src="/javascripts/bootstrap.min.js"></script>
+             <script src="/javascripts/jquery.multi-select.js"></script>
+            <script type="text/javascript">
+            // run pre selected options
+               $('#pre-selected-options').multiSelect();
+            </script>
           </div>
         </div>
         <br>

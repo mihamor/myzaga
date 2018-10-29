@@ -20,22 +20,9 @@ class Storage {
     static check_params(x){return true;}
     // static functions to access storage
     static getById(id) {
-        //console.log(typeof id);
         if(!valid_string(id) && typeof id !== "object")
             return Promise.reject(new Error(`Invalid in getById(${id}) arguments`));
-
-
-        //console.log(id);
-        return this.this_model().find({ _id : id});
-
-        /*
-        if(!valid_number(id)) 
-            return Promise.reject(new Error("Invalid arguments"));
-        return this.getAll()
-            .then((data) => {
-                let entities = data.items;
-                return search_for_id(id, entities);
-            });*/
+        return this.this_model().findOne({ _id : id});
     }
 
     static isExist(id){
@@ -53,19 +40,6 @@ class Storage {
         let curr_model = this.this_model();
         console.log(`${curr_model.modelName} UPDATE`);
         return curr_model.findOneAndUpdate({ _id: ent._id},ent, {upsert : true});
-           // .then(x => console.log(`RETURNED VALUE: ${x}`));
-        /*
-        if(!this.check_params(x)) 
-            return Promise.reject(new Error("Invalid argument"));
-        return this.getAll()
-            .then((data) => {
-                let entities = data.items;
-                let old_ent = search_for_id(x.id, entities);
-                if (!old_ent) 
-                    return Promise.reject(new Error("Entity is not exist"));
-                assign_object_value(x, old_ent);
-                return save_to_storage(data, this.storage_path());
-            });*/
     }
 
     static insert(ent) {
@@ -73,32 +47,12 @@ class Storage {
             return Promise.reject(new Error(`Invalid argument in insert(${ent})`));
         let curr_model = this.this_model();
         return new curr_model(ent).save()
-        .then(x => x._id);
-        /*
-        if(!this.check_params(x))
-            return Promise.reject(new Error("Invalid argument"));
-        return this.getAll()
-            .then((data) => {
-                let entities = data.items;
-                let newId = data.nextId;
-                data.nextId++;
-                x.id = newId;
-                data.items.push(x);
-                return Promise.all(
-                    [  
-                        newId,
-                        save_to_storage(data, this.storage_path()),
-                    ]);
-            })
-            .then(([newId, p2]) => newId);*/
+            .then(x => x._id);
     }
 
     // returns an array of all users in storage
     static getAll() {
         return this.this_model().find();
-
-      /*  return fs.readFile(this.storage_path())
-            .then(buffer => JSON.parse(buffer.toString()))*/
     }
     static setStoragePath(filename) {
         if (typeof filename === 'string'

@@ -55,7 +55,7 @@
           <div class="col-75">
             <select name="userId" id="tusers">
                {{#users}}
-                <option value={{_id}}>{{login}} {{_id}}</option>
+                <option value={{uploaded_tracks}}>{{login}} {{_id}}</option>
               {{/users}}
               </select>
           </div>

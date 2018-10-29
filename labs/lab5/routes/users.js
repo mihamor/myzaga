@@ -16,7 +16,6 @@ router.get("/:id", function(req, res){
     let id = req.params.id;
     console.log(id);
     User.getById(id)
-        .then(users => users[0])
         .then(user => {
             if(!user) 
                 return Promise.reject("No such user");

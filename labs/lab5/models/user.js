@@ -48,7 +48,6 @@ class User extends Storage{
 
   static insertPlaylistId(userId, plid){
      this.getById(userId)
-        .then(x => x[0])
         .then(user => {
             user.custom_playlists.push(plid)
             return User.update(user);
@@ -62,7 +61,7 @@ class User extends Storage{
         model: "User"
       })
       .exec()
-      .then(x => x[0].userRef)
+      .then(x => x.userRef)
       .then(user => {
         console.log(user);
         let newUser = new this(user._id, user.login, user.fullname, user.role, user.avaUrl, user.bio, user.uploaded_tracks, user.isDisabled, user.registeredAt);
@@ -101,6 +100,7 @@ function valid_number(num) {
   return typeof num === 'number'
       && !isNaN(num);
 }
+
 function valid_string(str){
   return typeof str === 'string'
   && str.length != 0;

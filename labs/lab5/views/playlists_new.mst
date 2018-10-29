@@ -56,11 +56,21 @@
                 <option value="{{_id}}">{{author}} - {{name}}</option>
             {{/tracks}}
             </select>
+             <script src="/javascripts/jquery.min.js"></script>
+            <!-- Bootstrap JavaScript -->
+            <script src="/javascripts/bootstrap.min.js"></script>
+             <script src="/javascripts/jquery.multi-select.js"></script>
+            <script type="text/javascript">
+            // run pre selected options
+               $('#atracks').multiSelect();
+            </script>
           </div>
         </div>
         <br>
         <div class="row">
-          <input type="submit" value="Submit">
+          <div class="col-25">
+            <input type="submit" value="Submit">
+          </div>
         </div>
       </form>
       </div>

@@ -78,7 +78,6 @@ router.get("/:id", function (req, res) {
         .populate("userRef")
         .populate("tracks")
         .exec()
-        .then(playlists => playlists[0])
         .then(playlist => {
             if (!playlist)
                 return Promise.reject("No such playlist");
@@ -120,8 +119,7 @@ router.get("/:id/update", function (req, res) {
                     path: "tracks",
                     model: "Track"
                 })
-                .exec()
-                .then( x => x[0]),
+                .exec(),
             Track.getAll()
         ]))
         .then(([playlist, tracks]) => {
@@ -165,7 +163,6 @@ router.post("/:id/update", function (req, res) {
 
     console.log(tracks);
     Playlist.getById(id)
-        .then(x => x[0])
         .then(x => {
             if(!x) return Promise.reject(new Error("Not found"));
             x.desc = desc;

@@ -62,8 +62,8 @@ router.get("/new", function(req, res){
 router.post("/new", function(req, res){
     console.log("post request");
     let author = req.body.author;
-    let userId = req.body.userId;
-    console.log(userId);
+    let userPlaylistId = req.body.userId;
+    console.log(userPlaylistId);
     let name = req.body.name;
     let album = req.body.album;
     if(!req.files) {
@@ -86,42 +86,39 @@ router.post("/new", function(req, res){
     let image_path = path.join(__dirname, `../${trackImage}`);
 
 
-    User.getById(userId)
-        .then(x => x[0])
-        .then(x => x.uploaded_tracks)
-        .then(x => {
-            let track = new Track(x, author, name, album, location, length, year, trackImage);
-            console.log(track);
-            return Promise.all([Track.insert(track), x]);
-        })
-        .then(([newId, plref]) => {
-            return Playlist.getById(plref)
-                .then(x => x[0])
-                .then(x => {
-                    x.tracks.push(newId);
-                    console.log(x);
-                    return Playlist.update(x);
-                })
-                .then(() => newId)
-        })
-        .then(newId => {
-            return Promise.all([
-                newId,
-                fs.writeFile(image_path, 
-                Buffer.from(new Uint8Array(image_bin.data))),
-                fs.writeFile(track_path, 
-                Buffer.from(new Uint8Array(track_bin.data)))
-            ]);
-        })
-        .then(([newId, p1, p2]) => {
-            console.log('redirection to new track...');
-            res.redirect(`/tracks/${newId}`);
-            return newId;
-        })
-        .catch((err) => {
-            console.log(err.message);
-            req.next();
-        });
+    let track = new Track(userPlaylistId, author, name, album, location, length, year, trackImage);
+    console.log(track);
+
+
+    Promise.all([
+        Track.insert(track),
+        Playlist.getById(userPlaylistId)
+    ])
+    .then(([newId, playlist]) => {
+        playlist.tracks.push(newId);
+        console.log(playlist);
+        return Playlist.update(playlist)
+        .then(() => newId)
+    })
+    .then(newId => {
+        return Promise.all([
+            newId,
+            fs.writeFile(image_path, 
+            Buffer.from(new Uint8Array(image_bin.data))),
+            fs.writeFile(track_path, 
+            Buffer.from(new Uint8Array(track_bin.data)))
+        ]);
+    })
+    .then(([newId, p1, p2]) => {
+        console.log('redirection to new track...');
+        res.redirect(`/tracks/${newId}`);
+        return newId;
+    })
+    .catch((err) => {
+        console.log(err.message);
+        req.next();
+    });
+
 });
 router.get("/:id", function(req, res){
     let id = req.params.id;
@@ -135,7 +132,6 @@ router.get("/:id", function(req, res){
             }
         })
         .exec()
-        .then(tracks => tracks[0])
         .then(track => {
             console.log(track);
             if(!track) 

@@ -36,7 +36,6 @@ class Playlist extends Storage{
 
   static isRemoveble(id){
     return this.getById(id)
-      .then(x => x[0])
       .then(x => {
         if(x.isUserUploads) 
           return Promise.reject(new Error("Playlist is not removeble"));
