@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MyZaGa</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-primary text-white">
+      <div class="container text-center">
+        <h1>{{name}}</h1>
+        <p class=lead>by {{author}}</p>
+      </div>
+    </header>
+
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto bg-light">
+            <img class="rounded-circle float-left" style="height:200px; margin-top:50px; width:200px;" src="{{trackImage}}">
+
+            <div class="list-group track-list bg-light rounded">
+                    <div class="list-group-item list-group-item-info">{{name}}</div>
+                    <div class="list-group-item">by {{author}}</div>
+                    <div class="list-group-item">year: {{year}}</div>
+                    <div class="list-group-item">album: {{album}}</div>
+                    <div class="list-group-item">
+                    Uploaded by: 
+                    <a class=action-button href="/playlists/{{uploadedListRef._id}}">
+                        {{uploadedListRef.userRef.login}}
+                    </a>
+                    </div>
+                    <audio controls>
+                        <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
+                    </audio>
+            </div>
+        <form>
+          <button class ="btn btn-primary float-right" formmethod="post">
+            Delete
+          </button>
+        </form>
+      </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {{>footer}}
+
+  </body>
+
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+
+{{> head}}
+
+<body>
+
+  <div class=wrapper>
+     {{> header}}
+
+    <ul class="menu-bar">
+      <li class="menu-opt"><a href="/">Home</a></li>
+      <li class="menu-opt"><a href="/users">Users</a></li>
+      <li class="menu-opt"><a href="/playlists">Playlists</a></li>
+      <li class="menu-opt"><a class=active href="/tracks">Tracks</a></li>
+      <li class="menu-opt"><a href="/about">About</a></li>
+    </ul>
+
+    <div id="page-content">
+      <div class="center vis-text">
+        <h1>Tracks</h1>
+      </div>
+
+      <div class="center">
+      <!-- onsubmit="return validateForm()" -->
+      <form class = 'new-track-form' name= "form" action="/tracks/new" method="POST" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-25">
+            <label for="aname">Author:</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="aname" name="author" placeholder="Author name.." required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="tname">Name:</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="tname" name="name" placeholder="Track name.." required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="talbum">Album:</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="talbum" name="album" placeholder="Track album.." required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="talbum">Select user:</label>
+          </div>
+          <div class="col-75">
+            <select name="userId" id="tusers">
+               {{#users}}
+                <option value={{uploaded_tracks}}>{{login}} {{_id}}</option>
+              {{/users}}
+              </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="tyear">Year:</label>
+          </div>
+          <div class="col-75">
+            <input type="number" id="tyear" name="year" placeholder="Track year.." required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="tfile">Select track:</label>
+          </div>
+          <div class="col-75">
+            <input type="file" id="tfile" name="track" accept = "audio/*" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="timage">Select track image:</label>
+          </div>
+          <div class="col-75">
+            <input type="file" id="timage" name="image" accept="image/*" required>
+          </div>
+        </div>
+        <div class="row">
+          <input type="submit" value="Submit">
+        </div>
+      </form>
+      </div>
+
+
+    </div>
+
+  {{ >footer }}
+
+  </div>
+</body>
+
+</html>

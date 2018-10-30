@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+{{> head}}
+
+<body>
+
+  <div class=wrapper>
+     {{> header}}
+
+    <ul class="menu-bar">
+      <li class="menu-opt"><a href="/">Home</a></li>
+      <li class="menu-opt"><a href="/users">Users</a></li>
+      <li class="menu-opt"><a class =active href="/playlists">Playlists</a></li>
+      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
+      <li class="menu-opt"><a href="/about">About</a></li>
+    </ul>
+
+    <div id="page-content">
+      <div class="center vis-text">
+        <h1>Playlists</h1>
+      </div>
+
+      <div class="center">
+      <!-- onsubmit="return validateForm()" -->
+      <form class = 'new-track-form' name= "form" action="/playlists/{{playlist._id}}/update" method="POST">
+        <div class="row">
+          <div class="col-25">
+            <label for="adesc">Short description:</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="adesc" name="desc" value="{{playlist.desc}}" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-25">
+            <label for="pre-selected-options">Select tracks:</label>
+          </div>
+          <div class="col-75">
+            <select name="tracks[]" id="pre-selected-options" multiple="multiple">
+            {{#selected}}
+                <option selected="selected" value="{{_id}}">{{author}} - {{name}}</option>
+            {{/selected}}
+            {{#not_selected}}
+                <option value="{{_id}}">{{author}} - {{name}}</option>
+            {{/not_selected}}
+            </select>
+            <script src="/javascripts/jquery.min.js"></script>
+            <!-- Bootstrap JavaScript -->
+            <script src="/javascripts/bootstrap.min.js"></script>
+             <script src="/javascripts/jquery.multi-select.js"></script>
+            <script type="text/javascript">
+            // run pre selected options
+               $('#pre-selected-options').multiSelect();
+            </script>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <input type="submit" value="Submit">
+        </div>
+      </form>
+      </div>
+
+
+    </div>
+
+  {{ >footer }}
+
+  </div>
+</body>
+
+</html>
