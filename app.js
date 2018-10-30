@@ -31,7 +31,6 @@ const connectOptions = {
     useCreateIndex: true
 }
 mongoose.connect(url, connectOptions)
-    .catch((err) => console.log("ERROR: " + err.message))
     .then((x) => {
         console.log("Mongo database connected " + mongoose.connection);
         //autoIncrement.initialize(mongoose.connection);
@@ -97,17 +96,14 @@ app.get("/api/users/test_add", (req, res)=>{
 
     let UserModel = User.this_model();
     let PlaylistModel = Playlist.this_model();
-    let u = new User(0, "Vityok", "Vityok Dolgonocik", 0, "/images/users/user1.jpeg", "шо вы малые");
+    let u = new User(0, "djigolo", "Sanek Chert", 0, "/images/users/user2.jpeg", "шо вы малые блин!");
     User.insert(u)
     .then(x => res.send(x))
-    .catch(err => console.log(err.message));
+    .catch(err => {
+        console.log(err);
+        req.next();
+    });
 
-    /*.save()
-        .then(x => x.toJSON())
-        .
-        .then(x => res.json(x))
-        ;*/
-      //  res.sendStatus(200);
 });
 
 app.get("/api/users/populated", (req, res)=>{

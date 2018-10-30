@@ -31,8 +31,8 @@ class User extends Storage{
   }
 
   static insert(ent){
-    if(this.check_params(ent)) 
-        return Promise.reject(new Error(""))
+    if(!this.check_params(ent)) 
+        return Promise.reject(new Error("Invalid params User insert"))
     let PlaylistModel = Playlist.this_model();
     let newUser = new UserModel(ent);
     console.log(newUser._id);
@@ -83,7 +83,7 @@ class User extends Storage{
 
   constructor(id, login, fullname, role, avaUrl, bio, uploaded_tracks = [], isDisabled=false, registeredAt= new Date().toISOString()) {
     super();
-    this._id = id; // number
+    this.id = id; // number
     this.login = login;  // string
     this.fullname = fullname;  // string
     this.role = role; // number
