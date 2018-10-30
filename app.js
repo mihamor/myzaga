@@ -41,7 +41,7 @@ mongoose.connect(url, connectOptions)
        // TrackModel = mongoose.model('Track', TrackSchema);
        // console.log(TrackModel);
 
-       app.listen(80, function() { console.log('Server is ready\n' + publicPath); });
+       app.listen(config.port, function() { console.log('Server is ready\n' + publicPath); });
     })
     .catch((err) => console.log("ERROR: " + err.message));
 
