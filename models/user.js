@@ -81,7 +81,7 @@ class User extends Storage{
         && typeof x.isDisabled === 'boolean';
   }
 
-  constructor(id, login, fullname, role, avaUrl, bio, uploaded_tracks, isDisabled=false, registeredAt= new Date().toISOString()) {
+  constructor(id, login, fullname, role, avaUrl, bio, uploaded_tracks = [], isDisabled=false, registeredAt= new Date().toISOString()) {
     super();
     this._id = id; // number
     this.login = login;  // string
