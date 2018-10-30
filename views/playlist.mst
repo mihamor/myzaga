@@ -1,56 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
-{{> head}}
+  <head>
 
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <div class=wrapper>
-     {{> header}}
+    <title>MyZaGa</title>
 
-    <ul class="menu-bar">
-      <li class="menu-opt"><a href="/">Home</a></li>
-      <li class="menu-opt"><a href="/users">Users</a></li>
-      <li class="menu-opt"><a class =active href="/playlists">Playlists</a></li>
-      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
-      <li class="menu-opt"><a href="/about">About</a></li>
-    </ul>
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
-    <div id="page-content">
-      <div class="center vis-text">
-       <div class="playlist-info"><b>Playlist</b></div>
-        <div class="playlist-info">description: {{desc}}</div>
-        <div class="playlist-info">uploaded by: <a class=action-button href="/users/{{userRef._id}}">{{userRef.login}}</a></div>
-        <div class="track-list-container">
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
 
-        {{#tracks.length}}
-        <ul>
-          {{#tracks}}
-            <li><a href="/tracks/{{_id}}"> {{author}} - {{name}}</a></li>
-          {{/tracks}}
-        </ul>
-        {{/tracks.length}}
+  </head>
 
-        {{^tracks.length}}
-          This playlist is empty...
-        {{/tracks.length}}
+  <body id="page-top">
 
+    {{>nav-bar}}
 
-        </div>
-      {{^isUserUploads}}
-      <form>
-        <a class ="action-button" href="/playlists/{{_id}}/update">Update</a>
-        <button class ="action-button right" formmethod="post">
-          Delete
-        </button>
-      </form>
-      {{/isUserUploads}}
+    <header class="bg-primary text-white">
+      <div class="container text-center">
+        <h1>Playlist</h1>
+        <p class="lead">description: {{desc}}</p>
+        <p class="lead">uploaded by: <a class="btn btn-light" href="/users/{{userRef._id}}">{{userRef.login}}</a></p>
       </div>
-    </div>
+    </header>
 
-  {{ >footer }}
+    <section class="track-list-container bg-light">
+      <div class="container text-center">
+        <div class="col-lg-8 mx-auto">
 
-  </div>
-</body>
+            {{#tracks.length}}
+                <div class="list-group track-list rounded">
+                <!--track-list-container -->
+                    {{#tracks}}
+                    <a  class ="list-group-item list-group-item-action track-ref" href="/tracks/{{_id}}"><span class="text-primary">{{author}}</span> - {{name}}</a>
+                    {{/tracks}}
+                </div>
+            {{/tracks.length}}
+
+            {{^tracks.length}}
+            <div class = "center vis-text">This playlist is empty.</div>
+            {{/tracks.length}}
+             {{^isUserUploads}}
+                <form>
+                    <a class ="btn btn-primary float-left" href="/playlists/{{_id}}/update">Update</a>
+                    <button class ="btn btn-primary float-right" formmethod="post">
+                            Delete
+                    </button>
+                </form>
+      {{/isUserUploads}}
+        </div>
+        </div>
+      </div>
+    </section>
+
+    {{>footer}}
+
+  </body>
 
 </html>
