@@ -99,7 +99,8 @@ app.get("/api/users/test_add", (req, res)=>{
     let PlaylistModel = Playlist.this_model();
     let u = new User(0, "Vityok", "Vityok Dolgonocik", 0, "/images/users/user1.jpeg", "шо вы малые");
     User.insert(u)
-    .then(x => res.send(x));
+    .then(x => res.send(x))
+    .catch(err => console.log(err.message));
 
     /*.save()
         .then(x => x.toJSON())
