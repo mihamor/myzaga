@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+
+{{> head}}
+
+<body>
+
+
+  <div class=wrapper>
+    {{> header}}
+
+
+    <ul class="menu-bar">
+      <li class="menu-opt"><a class="active" href="/">Home</a></li>
+      <li class="menu-opt"><a href="/users">Users</a></li>
+      <li class="menu-opt"><a href="/playlists">Playlists</a></li>
+      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
+      <li class="menu-opt"><a href="/about">About</a></li>
+    </ul>
+
+    <div id="page-content">
+      <div class="center vis-text">
+        <h1>Welcome to MyZaGa!</h1>
+      </div>
+      <div class=vis-text>
+        <p><b>MyZaGa</b> is the world’s leading social sound platform where anyone can listen to or create sounds and share
+          them everywhere.</p>
+        <p><b>Be a creator.</b> Easily record and upload sounds to MyZaGa and share them privately or publicly to friends, blogs,
+          sites and all your social networks. Comprehensive stats make evaluating your performance a piece of cake. Engage
+          directly with your fans with comments and promote your work.</p>
+
+        <p><b>Be a listener.</b> Find new music to love. Follow creators on MyZaGa that you are interested in and watch your
+          Stream grow with new audio everyday. Save your favorite tracks and playlists in your Likes and get surprised when
+          our Related tracks recommendations help you discover even more.
+        </p>
+      </div>
+    </div>
+
+    {{ >footer }}
+
+  </div>
+
+
+
+
+</body>
+
+</html>

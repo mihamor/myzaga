@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{> head}}
+
+<body>
+
+
+    <div class=wrapper>
+         {{> header}}
+
+        <ul class="menu-bar">
+            <li class="menu-opt"><a href="/">Home</a></li>
+            <li class="menu-opt"><a class=active href="/users">Users</a></li>
+            <li class="menu-opt"><a href="/playlists">Playlists</a></li>
+            <li class="menu-opt"><a href="/tracks">Tracks</a></li>
+            <li class="menu-opt"><a href="/about">About</a></li>
+        </ul>
+
+        <div id="page-content">
+            <div class="center vis-text">
+                <h1>{{login}}`s profile</h1>
+            </div>
+            <div class=vis-text>
+                <img class ="user-img" src="{{avaUrl}}" alt="Avatar">
+                <div class="user-info-table">
+                    <div class="user-data"><b>Login: </b>{{login}}</div>
+                    <div class="user-data"><b>Full name: </b>{{fullname}}</div>
+                    <div class="user-data"><b>Registration data: </b>{{registeredAt}}</div>
+                    <p><b>Bio: </b>{{bio}}! </p>
+                    <div><b>Uploaded tracks:</b><a class=action-button href="/playlists/{{uploaded_tracks}}">{{uploaded_tracks}}</a></div>
+                </div>
+            </div>
+        </div>
+    
+
+        {{ >footer }}
+    </div>
+
+</body>
+
+</html>
