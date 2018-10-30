@@ -9,6 +9,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
 const mongoose = require('mongoose');
+const config = require("./config");
 
 const viewsDir = path.join(__dirname, 'views');
 app.engine('mst', mustache(path.join(viewsDir, 'partials')));
@@ -24,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }));
 app.use(busboyBodyParser({limit: '15mb'}));
 
-const url = 'mongodb://localhost:27017/myzaga';
+const url = config.url;
 const connectOptions = { 
     useNewUrlParser: true,
     useCreateIndex: true
