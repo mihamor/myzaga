@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }));
 app.use(busboyBodyParser({limit: '15mb'}));
 
-const url = config.url;
+const url = config.mongo_url;
 const connectOptions = { 
     useNewUrlParser: true,
     useCreateIndex: true
