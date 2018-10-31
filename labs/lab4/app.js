@@ -70,7 +70,7 @@ app.get("/tracks", function(req, res){
         res.redirect(`/tracks?page=1${query_search}`);
         return;
     }
-    const tracksPerPage = 1;
+    const tracksPerPage = 3;
     Track.getAll((error, tracks) => {
         if (error) req.next();
         else {

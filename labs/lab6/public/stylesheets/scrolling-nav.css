@@ -30,6 +30,15 @@ section {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+.track-img{
+  border: 3px solid #787FCA;
+  height:200px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  width:200px
+}
+
 #tsearch{
   width: 85%;
   padding: 10px;
@@ -37,8 +46,22 @@ section {
   border-radius: 4px;
 }
 
+
+.bg-blue{
+  background-color: #363688
+}
+
+.bg-gray{
+  background-color: #D0D0D0;
+}
+
 .track-list{
   padding: 50px;
   margin: 10px;
   background-color: #CDCDFB
+}
+audio{
+  margin-top: 30px; 
+  width : 80%;
+  min-width: 100px;
 }

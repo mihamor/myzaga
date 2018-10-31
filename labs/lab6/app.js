@@ -9,6 +9,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
 const mongoose = require('mongoose');
+const config = require("./config");
 
 const viewsDir = path.join(__dirname, 'views');
 app.engine('mst', mustache(path.join(viewsDir, 'partials')));
@@ -24,13 +25,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }));
 app.use(busboyBodyParser({limit: '15mb'}));
 
-const url = 'mongodb://localhost:27017/myzaga';
+const url = config.mongo_url;
 const connectOptions = { 
     useNewUrlParser: true,
     useCreateIndex: true
 }
 mongoose.connect(url, connectOptions)
-    .catch((err) => console.log("ERROR: " + err.message))
     .then((x) => {
         console.log("Mongo database connected " + mongoose.connection);
         //autoIncrement.initialize(mongoose.connection);
@@ -40,7 +40,7 @@ mongoose.connect(url, connectOptions)
        // TrackModel = mongoose.model('Track', TrackSchema);
        // console.log(TrackModel);
 
-       app.listen(3010, function() { console.log('Server is ready\n' + publicPath); });
+       app.listen(config.port, function() { console.log('Server is ready\n' + publicPath); });
     })
     .catch((err) => console.log("ERROR: " + err.message));
 
@@ -96,16 +96,14 @@ app.get("/api/users/test_add", (req, res)=>{
 
     let UserModel = User.this_model();
     let PlaylistModel = Playlist.this_model();
-    let u = new User(0, "Vityok", "Vityok Dolgonocik", 0, "/images/users/user1.jpeg", "шо вы малые");
+    let u = new User(0, "djigolo", "Sanek Chert", 0, "/images/users/user2.jpeg", "шо вы малые блин!");
     User.insert(u)
-    .then(x => res.send(x));
+    .then(x => res.send(x))
+    .catch(err => {
+        console.log(err);
+        req.next();
+    });
 
-    /*.save()
-        .then(x => x.toJSON())
-        .
-        .then(x => res.json(x))
-        ;*/
-      //  res.sendStatus(200);
 });
 
 app.get("/api/users/populated", (req, res)=>{

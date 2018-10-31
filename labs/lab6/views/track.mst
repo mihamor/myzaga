@@ -1,48 +1,69 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
-{{> head}}
+  <head>
 
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <div class=wrapper>
-     {{> header}}
+    <title>MyZaGa</title>
 
-    <ul class="menu-bar">
-      <li class="menu-opt"><a href="/">Home</a></li>
-      <li class="menu-opt"><a href="/users">Users</a></li>
-      <li class="menu-opt"><a href="/playlists">Playlists</a></li>
-      <li class="menu-opt"><a class=active href="/tracks">Tracks</a></li>
-      <li class="menu-opt"><a href="/about">About</a></li>
-    </ul>
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
-    <div id="page-content">
-      <div class="vis-text track-info">
-        <img src="{{trackImage}}">
-        <div class="track-name">{{name}}</div>
-        <div class="track-desc">by {{author}}</div>
-        <div class="track-desc">year: {{year}}</div>
-        <div class="track-desc">album: {{album}}</div>
-        <div class="track-desc">
-          Uploaded by: 
-          <a class=action-button href="/playlists/{{uploadedListRef._id}}">
-            {{uploadedListRef.userRef.login}}
-          </a>
-        </div>
-        <audio controls>
-          <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
-        </audio>
-        <form>
-          <button class ="action-button right" formmethod="post">
-            Delete
-          </button>
-        </form>
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-blue text-white">
+      <div class="container text-center">
+      <img class="rounded-circle float-center track-img" src="{{trackImage}}">
+        <h1>{{name}}</h1>
+        <p class=lead>by {{author}}</p>
       </div>
-    </div>
+    </header>
 
-  {{ >footer }}
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 mx-auto bg-light">
 
-  </div>
-</body>
+            <div class="list-group track-list bg-light rounded">
+                    <div class="list-group-item list-group-item-info">{{name}}</div>
+                    <div class="list-group-item">by {{author}}</div>
+                    <div class="list-group-item">year: {{year}}</div>
+                    <div class="list-group-item">album: {{album}}</div>
+                    <div class="list-group-item">
+                    Uploaded by: 
+                    <a class=action-button href="/playlists/{{uploadedListRef._id}}">
+                        {{uploadedListRef.userRef.login}}
+                    </a>
+                    </div>
+                    <audio controls>
+                        <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
+                        
+                    </audio>
+                    <form style="display:inline-block;">
+                      <button class ="btn btn-primary float-right" formmethod="post">
+                        Delete
+                      </button>
+                    </form>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {{>footer}}
+
+  </body>
 
 </html>
