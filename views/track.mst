@@ -22,8 +22,9 @@
 
     {{>nav-bar}}
 
-    <header class="bg-primary text-white">
+    <header class="bg-blue text-white">
       <div class="container text-center">
+      <img class="rounded-circle float-center track-img" src="{{trackImage}}">
         <h1>{{name}}</h1>
         <p class=lead>by {{author}}</p>
       </div>
@@ -32,8 +33,7 @@
     <section>
       <div class="container">
         <div class="row">
-          <div class="col-lg-8 mx-auto bg-light">
-            <img class="rounded-circle float-left" style="height:200px; margin-top:50px; width:200px;" src="{{trackImage}}">
+          <div class="col-lg-12 mx-auto bg-light">
 
             <div class="list-group track-list bg-light rounded">
                     <div class="list-group-item list-group-item-info">{{name}}</div>
@@ -48,14 +48,15 @@
                     </div>
                     <audio controls>
                         <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
+                        
                     </audio>
+                    <form style="display:inline-block;">
+                      <button class ="btn btn-primary float-right" formmethod="post">
+                        Delete
+                      </button>
+                    </form>
             </div>
-        <form>
-          <button class ="btn btn-primary float-right" formmethod="post">
-            Delete
-          </button>
-        </form>
-      </div>
+            </div>
           </div>
         </div>
       </div>

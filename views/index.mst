@@ -22,7 +22,7 @@
 
     {{>nav-bar}}
 
-    <header class="bg-primary text-white">
+    <header class="bg-blue text-white">
       <div class="container text-center">
         <h1>Welcome to MyZaGa!</h1>
         <p class="w-50 lead d-inline-block">A world’s leading social sound platform where anyone can listen to or create sounds and share
@@ -30,7 +30,7 @@
       </div>
     </header>
 
-    <section id="services" class="bg-light">
+    <section id="services" class="bg-gray">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto">
