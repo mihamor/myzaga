@@ -100,15 +100,13 @@ router.post("/new", function(req, res){
         return Playlist.update(playlist)
         .then(() => newId)
     })
-    .then(newId => {
-        return Promise.all([
+    .then(newId => Promise.all([
             newId,
             fs.writeFile(image_path, 
             Buffer.from(new Uint8Array(image_bin.data))),
             fs.writeFile(track_path, 
             Buffer.from(new Uint8Array(track_bin.data)))
-        ]);
-    })
+    ]))
     .then(([newId, p1, p2]) => {
         console.log('redirection to new track...');
         res.redirect(`/tracks/${newId}`);
@@ -147,7 +145,13 @@ router.get("/:id", function(req, res){
 router.post("/:id", function(req, res){
     let id = req.params.id;
     console.log("TRACK DELETE:" + id);
-    Track.delete(id)
+
+    Track.getById(id)
+        .then(track => Promise.all([
+            fs.unlink(path.join(__dirname, `../${track.trackImage}`)),
+            fs.unlink(path.join(__dirname, `../${track.location}`))
+        ]))
+        .then(() => Track.delete(id))
         .then(() => Playlist.removeTrackFromAll(id))
         .then(() => res.redirect("/tracks"))
         .catch(err => {
