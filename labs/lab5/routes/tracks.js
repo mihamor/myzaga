@@ -24,7 +24,7 @@ router.get("/", function(req, res){
         res.redirect(`/tracks?page=1${query_search}`);
         return;
     }
-    const tracksPerPage = 1;
+    const tracksPerPage = 3;
 
     Track.getAll()
         .then(tracks =>{
@@ -145,8 +145,6 @@ router.get("/:id", function(req, res){
 });
 
 router.post("/:id", function(req, res){
-
-    //TODO DELETE FROM PLAYLISTS
     let id = req.params.id;
     console.log("TRACK DELETE:" + id);
     Track.delete(id)

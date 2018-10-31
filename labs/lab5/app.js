@@ -5,6 +5,7 @@ const mustache = require('mustache-express');
 const {User} = require('./models/user.js');
 const {Track} = require('./models/track.js');
 const {Playlist} = require('./models/playlist.js');
+const {Utils} = require('./models/utils.js')
 const app = express();
 const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
@@ -94,11 +95,13 @@ app.get("/api/users", function(req, res){
 
 app.get("/api/users/test_add", (req, res)=>{
 
-    let UserModel = User.this_model();
-    let PlaylistModel = Playlist.this_model();
-    let u = new User(0, "Vityok", "Vityok Dolgonocik", 0, "/images/users/user1.jpeg", "шо вы малые");
-    User.insert(u)
-    .then(x => res.send(x));
+    let u = new User("Miha", "Miha eto je", 0, "/images/users/user1.jpeg", "да да я");
+    Utils.insertUserWithPlaylist(u)
+    .then(x => res.send(x))
+    .catch(err => {
+        console.log(err);
+        res.status(400).send(err.message);
+    });
 
     /*.save()
         .then(x => x.toJSON())

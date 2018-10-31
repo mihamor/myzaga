@@ -1,5 +1,6 @@
 const express = require("express");
 const { Track } = require("../models/track.js");
+const { Utils } = require("../models/utils.js");
 const { Playlist } = require("../models/playlist.js");
 const { User } = require("../models/user.js");
 
@@ -98,7 +99,7 @@ router.post("/:id", function (req, res) {
 
 
     Playlist.isRemoveble(id)
-        .then(() => User.removePlaylistId(id))
+        .then(() => Utils.removePlaylistIdFromUser(id))
         .then(() => Playlist.delete(id))
         .then(() => res.redirect("/playlists"))
         .catch(err => {
