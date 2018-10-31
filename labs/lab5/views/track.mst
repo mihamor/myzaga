@@ -32,12 +32,13 @@
         <audio controls>
           <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
         </audio>
-        <form>
+      </div>
+      <form>
+          <a class="action-button" href="/tracks/{{id}}/update">Update</a>
           <button class ="action-button right" formmethod="post">
             Delete
           </button>
         </form>
-      </div>
     </div>
 
   {{ >footer }}

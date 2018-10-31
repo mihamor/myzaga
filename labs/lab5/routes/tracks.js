@@ -118,8 +118,50 @@ router.post("/new", function(req, res){
     });
 
 });
+
+
+router.get("/:id/update", function(req, res){
+    let id = req.params.id;
+    console.log("GET track/id/update");
+    Track.getById(id)
+        .then(track => {
+            console.log(track);
+            if(!track) 
+                return Promise.reject(new Error("No such track"));
+            else res.render("track_upd", track)
+        })
+        .catch(err => {
+            console.log(err.message);
+            req.next();
+        });
+});
+
+router.post("/:id/update", function(req, res){
+    let id = req.params.id;
+    let author = req.body.author;
+    let name = req.body.name;
+    let year = req.body.year;
+    console.log("POST track/id/update");
+    Track.getById(id)
+        .then(track => {
+            console.log(track);
+            if(!track) 
+                return Promise.reject(new Error("No such track"));
+            track.author = author;
+            track.name = name;
+            track.year = year;
+            return Track.update(track);
+        })
+        .then(() => res.redirect(`/tracks/${id}`))
+        .catch(err => {
+            console.log(err.message);
+            req.next();
+        });
+});
+
 router.get("/:id", function(req, res){
     let id = req.params.id;
+    console.log("track/id");
     Track.getById(id)
         .populate({
             path: "uploadedListRef",
