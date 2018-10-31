@@ -1,6 +1,7 @@
 const {Storage} = require('./storage.js');
 const {Playlist} = require('./playlist.js');
 const {User} = require('./user.js');
+const mongoose = require("mongoose");
 
 
 
@@ -21,6 +22,17 @@ class Utils {
         .save()
         .then((x) => newUser.save())
         .then(x => x._id);
+    }
+
+    static getAllPlaylistFromUser(user){
+        if(!User.check_params(user)) 
+            return Promise.reject(new Error("Invalid arguments"));
+        let PlaylistModel = Playlist.this_model();
+
+        let arr = user.custom_playlists.map(ele => new mongoose.Types.ObjectId(ele._id));
+        return PlaylistModel.find({
+            _id: { $in: arr}
+        });
     }
 
     static removePlaylistIdFromUser(plid){

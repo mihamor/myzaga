@@ -28,7 +28,8 @@
                     <div class="user-data"><b>Full name: </b>{{fullname}}</div>
                     <div class="user-data"><b>Registration data: </b>{{registeredAt}}</div>
                     <p><b>Bio: </b>{{bio}}! </p>
-                    <div><b>Uploaded tracks:</b><a class=action-button href="/playlists/{{uploaded_tracks}}">{{uploaded_tracks}}</a></div>
+                    <div class="playlist-refs"><a class=action-button href="/playlists/{{uploaded_tracks}}">Uploaded tracks</a>
+                    <a class=action-button href="/playlists?user={{_id}}">{{login}}`s playlists</a></div>
                 </div>
             </div>
         </div>

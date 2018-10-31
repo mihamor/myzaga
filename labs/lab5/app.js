@@ -34,13 +34,6 @@ mongoose.connect(url, connectOptions)
     .catch((err) => console.log("ERROR: " + err.message))
     .then((x) => {
         console.log("Mongo database connected " + mongoose.connection);
-        //autoIncrement.initialize(mongoose.connection);
-        //UserSchema.plugin(autoIncrement.plugin, 'User');
-       //UserModel = mongoose.model('User', UserSchema);
-        //TrackSchema.plugin(autoIncrement.plugin, 'Track');
-       // TrackModel = mongoose.model('Track', TrackSchema);
-       // console.log(TrackModel);
-
        app.listen(3015, function() { console.log('Server is ready\n' + publicPath); });
     })
     .catch((err) => console.log("ERROR: " + err.message));
@@ -102,13 +95,6 @@ app.get("/api/users/test_add", (req, res)=>{
         console.log(err);
         res.status(400).send(err.message);
     });
-
-    /*.save()
-        .then(x => x.toJSON())
-        .
-        .then(x => res.json(x))
-        ;*/
-      //  res.sendStatus(200);
 });
 
 app.get("/api/users/populated", (req, res)=>{

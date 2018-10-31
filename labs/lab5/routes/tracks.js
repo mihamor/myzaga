@@ -66,7 +66,7 @@ router.post("/new", function(req, res){
     console.log(userPlaylistId);
     let name = req.body.name;
     let album = req.body.album;
-    if(!req.files) {
+    if(!check_body_files(req.files)) {
         res.sendStatus(400);
         return;
     }
@@ -89,11 +89,11 @@ router.post("/new", function(req, res){
     let track = new Track(userPlaylistId, author, name, album, location, length, year, trackImage);
     console.log(track);
 
-
-    Promise.all([
+    Playlist.isExist(userPlaylistId)
+    .then(() => Promise.all([
         Track.insert(track),
         Playlist.getById(userPlaylistId)
-    ])
+    ]))
     .then(([newId, playlist]) => {
         playlist.tracks.push(newId);
         console.log(playlist);
@@ -184,6 +184,14 @@ function compare_to_track(track, search_str){
 
 function getFileExt(str){
     return str.split(".").pop();
+}
+
+
+function check_body_files(files){
+
+    return files && files.track && files.image;
+
+
 }
 
 module.exports = router;

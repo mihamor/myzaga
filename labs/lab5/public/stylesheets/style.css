@@ -42,6 +42,9 @@ div.user-link-container a:link, a:visited {
     display: inline-block;
 }
 
+.playlist-refs{
+    margin-left: 10%;
+}
 
 div.user-link-container a:hover {
     background-color: #555;

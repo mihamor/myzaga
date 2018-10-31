@@ -64,7 +64,8 @@ class User extends Storage{
       .then(x => x.userRef)
       .then(user => {
         console.log(user);
-        let newUser = new this(user._id, user.login, user.fullname, user.role, user.avaUrl, user.bio, user.uploaded_tracks, user.isDisabled, user.registeredAt);
+        let newUser = new this(user.login, user.fullname, user.role, user.avaUrl, user.bio, user.uploaded_tracks, user.isDisabled, user.registeredAt);
+        newUser._id = user._id;
         newUser.custom_playlists = removeItemFromArr(user.custom_playlists, plid);
         console.log(newUser);
         return this.update(newUser)
@@ -81,9 +82,8 @@ class User extends Storage{
         && typeof x.isDisabled === 'boolean';
   }
 
-  constructor(id, login, fullname, role, avaUrl, bio, uploaded_tracks = [], isDisabled=false, registeredAt= new Date().toISOString()) {
-    super();
-    this.id = id; // number
+  constructor(login, fullname, role, avaUrl, bio, uploaded_tracks = [], isDisabled=false, registeredAt= new Date().toISOString()) {
+    super(); // number
     this.login = login;  // string
     this.fullname = fullname;  // string
     this.role = role; // number

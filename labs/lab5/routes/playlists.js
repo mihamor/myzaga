@@ -15,7 +15,8 @@ router.get("/", function (req, res) {
     let playlists = null;
     let userId = req.query.user;
     if (!userId) playlists = Playlist.getAllCreated();
-    else playlists = Playlist.getAllByUserId(userId);
+    else playlists = User.getById(userId)
+        .then(user => Utils.getAllPlaylistFromUser(user))
 
 
     playlists

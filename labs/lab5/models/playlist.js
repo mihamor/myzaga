@@ -27,12 +27,6 @@ class Playlist extends Storage{
   static getAllCreated(){
     return this.this_model().find({isUserUploads: false});
   }
-  static getAllByUserId(id){
-    return this.this_model().find({
-      userRef: id,
-      isUserUploads: false
-    });
-  }
 
   static isRemoveble(id){
     return this.getById(id)
