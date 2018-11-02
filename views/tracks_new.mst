@@ -57,7 +57,7 @@
                {{#users}}
                 <option value={{uploaded_tracks}}>{{login}} {{_id}}</option>
               {{/users}}
-              </select>
+            </select>
           </div>
         </div>
         <div class="row">

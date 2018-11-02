@@ -4,6 +4,7 @@ const fs = require('fs-promise');
 const mustache = require('mustache-express');
 const {User} = require('./models/user.js');
 const {Track} = require('./models/track.js');
+const {Comment} = require('./models/comment.js');
 const {Playlist} = require('./models/playlist.js');
 const app = express();
 const bodyParser = require('body-parser');
@@ -84,6 +85,11 @@ app.use("/tracks", trackRouter);
 
 const playlistRouter = require("./routes/playlists.js");
 app.use("/playlists", playlistRouter);
+
+
+const commentRouter = require("./routes/comments.js");
+app.use("/comments", commentRouter);
+
 
 app.get("/about", function(req, res){
     res.render('about');

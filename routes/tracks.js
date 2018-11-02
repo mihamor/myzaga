@@ -169,23 +169,34 @@ router.post("/:id/update", function(req, res){
 router.get("/:id", function(req, res){
     let id = req.params.id;
     console.log("track/id");
-    Track.getById(id)
-        .populate({
-            path: "uploadedListRef",
-            model: 'Playlist',
-            populate : {
-                path: "userRef",
-                model: 'User',
-            }
-        })
-        .exec()
-        .then(track => {
+    Promise.all([
+        User.getAll(),
+        Track.getById(id)
+            .populate({
+                path: "uploadedListRef",
+                model: 'Playlist',
+                populate : {
+                    path: "userRef",
+                    model: 'User',
+                }
+            })
+            .populate({
+                path: "comments",
+                model: 'Comment',
+                populate : {
+                    path: "user",
+                    model: 'User',
+                }
+            })
+            .exec()
+        ])
+        .then(([users,track]) => {
             console.log(track);
             if(!track) 
                 return Promise.reject(new Error("No such track"));
-            else res.render("track", track)
+            else res.render("track", {track: track, users: users})
         })
-        .catch(err => {
+    .   catch(err => {
             console.log(err.message);
             req.next();
         });

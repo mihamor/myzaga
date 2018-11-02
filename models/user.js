@@ -1,6 +1,6 @@
 const {Storage} = require('./storage.js');
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
+
 
 
 const Schema = mongoose.Schema;

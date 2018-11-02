@@ -1,6 +1,8 @@
 const {Storage} = require('./storage.js');
 const {Playlist} = require('./playlist.js');
 const {User} = require('./user.js');
+const {Comment} = require('./comment.js');
+const {Track} = require('./track.js');
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
 const util = require("util");
@@ -23,6 +25,21 @@ class Utils {
         .save()
         .then((x) => newUser.save())
         .then(x => x._id);
+    }
+
+    static isTrackHasComment(trackId, commentId){
+        if(!trackId || !commentId)
+             return Promise.reject("Invalid args in isTrackHasComment")
+        return Track.getById(trackId)
+            .then(track => {
+               commentId = commentId.toString();
+               let coms = track.comments.map(x => x.toString());
+               if(!coms.includes(commentId)) 
+                return Promise.reject("Track doest not contain comments")
+
+               return track;
+            });
+
     }
 
     static getAllPlaylistFromUser(user){
