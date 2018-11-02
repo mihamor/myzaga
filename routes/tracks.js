@@ -194,7 +194,12 @@ router.get("/:id", function(req, res){
             console.log(track);
             if(!track) 
                 return Promise.reject(new Error("No such track"));
-            else res.render("track", {track: track, users: users})
+            else{
+                track.comments = track.comments.sort( (a , b) => {
+                    return b.addedAt - a.addedAt;
+                });
+                res.render("track", {track: track, users: users})
+            }
         })
     .   catch(err => {
             console.log(err.message);

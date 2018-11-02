@@ -91,6 +91,7 @@
             {{#track.comments}}
               <div style="margin-top: 20px; padding: 10px;" class="col-lg-12 mx-auto float-left  bg-gray rounded">
                 <a href=/users/{{user._id}}>{{user.login}}</a>
+                <span> added at: {{addedAt}}</span>
                 <hr>
                 <div class="rounded-1 com">
                   {{content}}
