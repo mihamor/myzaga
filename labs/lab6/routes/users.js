@@ -21,7 +21,10 @@ router.get("/:id", function(req, res){
                 return Promise.reject("No such user");
             res.render("user", user)
         })
-        .catch(err => req.next(err));
+        .catch(err => {
+            console.log(err.message);
+            req.next()
+        });
 });
 
 module.exports = router;

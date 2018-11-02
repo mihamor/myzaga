@@ -1,7 +1,6 @@
 const {Storage} = require('./storage.js');
-const {Playlist} = require('./playlist.js');
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
+
 
 
 const Schema = mongoose.Schema;
@@ -31,18 +30,11 @@ class User extends Storage{
   }
 
   static insert(ent){
-    if(!this.check_params(ent)) 
-        return Promise.reject(new Error("Invalid params User insert"))
-    let PlaylistModel = Playlist.this_model();
+    if(this.check_params(ent)) 
+        return Promise.reject(new Error("Invalid argument"))
     let newUser = new UserModel(ent);
     console.log(newUser._id);
-    let playlist = new Playlist(newUser._id, true, `Uploaded tracks for user ${newUser.login}`);
-    let newPlaylist = new PlaylistModel(playlist)
-    newUser.uploaded_tracks = newPlaylist._id;
-   
-    return newPlaylist
-    .save()
-    .then((x) => newUser.save())
+    return newUser.save()
     .then(x => x._id);
   }
 
@@ -52,24 +44,6 @@ class User extends Storage{
             user.custom_playlists.push(plid)
             return User.update(user);
         })
-  }
-
-  static removePlaylistId(plid){
-    return Playlist.getById(plid)
-      .populate({
-        path: "userRef",
-        model: "User"
-      })
-      .exec()
-      .then(x => x.userRef)
-      .then(user => {
-        console.log(user);
-        let newUser = new this(user.login, user.fullname, user.role, user.avaUrl, user.bio, user.uploaded_tracks, user.isDisabled, user.registeredAt);
-        newUser._id = user._id;
-        newUser.custom_playlists = removeItemFromArr(user.custom_playlists, plid);
-        console.log(newUser);
-        return this.update(newUser)
-      });
   }
 
 
@@ -82,8 +56,8 @@ class User extends Storage{
         && typeof x.isDisabled === 'boolean';
   }
 
-  constructor(login, fullname, role, avaUrl, bio, uploaded_tracks = [], isDisabled=false, registeredAt= new Date().toISOString()) {
-    super(); // number
+  constructor(login, fullname, role, avaUrl, bio, uploaded_tracks, isDisabled=false, registeredAt= new Date().toISOString()) {
+    super();
     this.login = login;  // string
     this.fullname = fullname;  // string
     this.role = role; // number
@@ -105,15 +79,6 @@ function valid_string(str){
   return typeof str === 'string'
   && str.length != 0;
 }
-
-function removeItemFromArr(arr, item){
-  let index = arr.indexOf(item);
-  if(index > -1){
-      arr.splice(index, 1);
-  }
-  return arr;
-}
-
 
 
 module.exports = {User};

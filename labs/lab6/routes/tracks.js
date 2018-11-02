@@ -1,12 +1,14 @@
 const express = require("express");
 const {Track} = require("../models/track.js");
 const {User} = require("../models/user.js");
+const {Utils} =  require("../models/utils.js"); 
 const {Playlist} = require("../models/playlist.js"); 
 const randomstring = require("randomstring");
 const fs = require('fs-promise');
 const path = require('path');
 const router = express.Router();
 Track.setStoragePath("./data/tracks.json");
+
 
 function is_valid_seacrch(str){
     return str;
@@ -24,7 +26,7 @@ router.get("/", function(req, res){
         res.redirect(`/tracks?page=1${query_search}`);
         return;
     }
-    const tracksPerPage = 2;
+    const tracksPerPage = 3;
 
     Track.getAll()
         .then(tracks =>{
@@ -59,6 +61,8 @@ router.get("/new", function(req, res){
             req.next();
         })
 });
+
+
 router.post("/new", function(req, res){
     console.log("post request");
     let author = req.body.author;
@@ -66,7 +70,7 @@ router.post("/new", function(req, res){
     console.log(userPlaylistId);
     let name = req.body.name;
     let album = req.body.album;
-    if(!req.files) {
+    if(!check_body_files(req.files)) {
         res.sendStatus(400);
         return;
     }
@@ -77,23 +81,22 @@ router.post("/new", function(req, res){
 
     console.log(req.files.track);
 
-    let rand_name = randomstring.generate();
-    let location = `/data/fs/${rand_name}.${getFileExt(track_bin.name)}`;
-    let trackImage = `/data/fs/${rand_name}.${getFileExt(image_bin.name)}`;
-    console.log(location);
-    console.log(trackImage);
-    let track_path = path.join(__dirname, `../${location}`);
-    let image_path = path.join(__dirname, `../${trackImage}`);
-
-
-    let track = new Track(userPlaylistId, author, name, album, location, length, year, trackImage);
-    console.log(track);
-
-
-    Promise.all([
+    Playlist.isExist(userPlaylistId)
+    .then(() => Promise.all([
+        Utils.uploadBufferAsync(track_bin.data),
+        Utils.uploadBufferAsync(image_bin.data)
+    ]))
+    .then(([location, trackImage]) => {
+        let track = new Track(userPlaylistId, author, name, album, location.url, length, year, trackImage.url);
+        track.location_id = location.public_id;
+        track.trackImage_id = trackImage.public_id;
+        console.log(track);
+        return track;
+    })
+    .then(track => Promise.all([
         Track.insert(track),
         Playlist.getById(userPlaylistId)
-    ])
+    ]))
     .then(([newId, playlist]) => {
         playlist.tracks.push(newId);
         console.log(playlist);
@@ -101,15 +104,6 @@ router.post("/new", function(req, res){
         .then(() => newId)
     })
     .then(newId => {
-        return Promise.all([
-            newId,
-            fs.writeFile(image_path, 
-            Buffer.from(new Uint8Array(image_bin.data))),
-            fs.writeFile(track_path, 
-            Buffer.from(new Uint8Array(track_bin.data)))
-        ]);
-    })
-    .then(([newId, p1, p2]) => {
         console.log('redirection to new track...');
         res.redirect(`/tracks/${newId}`);
         return newId;
@@ -119,24 +113,27 @@ router.post("/new", function(req, res){
         req.next();
     });
 
+
+    /*    .then(newId => Promise.all([
+            newId,
+            fs.writeFile(image_path, 
+            Buffer.from(new Uint8Array(image_bin.data))),
+            fs.writeFile(track_path, 
+            Buffer.from(new Uint8Array(track_bin.data)))
+    ]))*/
+
 });
-router.get("/:id", function(req, res){
+
+
+router.get("/:id/update", function(req, res){
     let id = req.params.id;
+    console.log("GET track/id/update");
     Track.getById(id)
-        .populate({
-            path: "uploadedListRef",
-            model: 'Playlist',
-            populate : {
-                path: "userRef",
-                model: 'User',
-            }
-        })
-        .exec()
         .then(track => {
             console.log(track);
             if(!track) 
                 return Promise.reject(new Error("No such track"));
-            else res.render("track", track)
+            else res.render("track_upd", track)
         })
         .catch(err => {
             console.log(err.message);
@@ -144,17 +141,89 @@ router.get("/:id", function(req, res){
         });
 });
 
-router.post("/:id", function(req, res){
+router.post("/:id/update", function(req, res){
+    let id = req.params.id;
+    let author = req.body.author;
+    let album = req.body.album;
+    let name = req.body.name;
+    let year = req.body.year;
+    console.log("POST track/id/update");
+    Track.getById(id)
+        .then(track => {
+            console.log(track);
+            if(!track) 
+                return Promise.reject(new Error("No such track"));
+            track.author = author;
+            track.name = name;
+            track.year = year;
+            track.album = album;
+            return Track.update(track);
+        })
+        .then(() => res.redirect(`/tracks/${id}`))
+        .catch(err => {
+            console.log(err.message);
+            req.next();
+        });
+});
 
-    //TODO DELETE FROM PLAYLISTS
+router.get("/:id", function(req, res){
+    let id = req.params.id;
+    console.log("track/id");
+    Promise.all([
+        User.getAll(),
+        Track.getById(id)
+            .populate({
+                path: "uploadedListRef",
+                model: 'Playlist',
+                populate : {
+                    path: "userRef",
+                    model: 'User',
+                }
+            })
+            .populate({
+                path: "comments",
+                model: 'Comment',
+                populate : {
+                    path: "user",
+                    model: 'User',
+                }
+            })
+            .exec()
+        ])
+        .then(([users,track]) => {
+            console.log(track);
+            if(!track) 
+                return Promise.reject(new Error("No such track"));
+            else{
+                track.comments = track.comments.sort( (a , b) => {
+                    return b.addedAt - a.addedAt;
+                });
+                res.render("track", {track: track, users: users})
+            }
+        })
+    .   catch(err => {
+            console.log(err.message);
+            req.next();
+        });
+});
+
+//const deleteFileAsync = util.promisify(cloudinary.uploader.destroy);
+
+router.post("/:id", function(req, res){
     let id = req.params.id;
     console.log("TRACK DELETE:" + id);
-    Track.delete(id)
+
+    Track.getById(id)
+        .then(track => Promise.all([
+            Utils.deleteFileAsync(track.trackImage_id),
+            Utils.deleteFileAsync(track.location_id)
+        ]))
+        .then(() => Track.delete(id))
         .then(() => Playlist.removeTrackFromAll(id))
         .then(() => res.redirect("/tracks"))
         .catch(err => {
             console.log(err.message);
-            res.sendStatus(400)
+            res.sendStatus(400);
         });
 });
 
@@ -186,6 +255,14 @@ function compare_to_track(track, search_str){
 
 function getFileExt(str){
     return str.split(".").pop();
+}
+
+
+function check_body_files(files){
+
+    return files && files.track && files.image;
+
+
 }
 
 module.exports = router;

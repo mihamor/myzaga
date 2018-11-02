@@ -1,6 +1,5 @@
 const {Storage}  = require('./storage.js');
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
 
 const Schema = mongoose.Schema;
 
@@ -12,9 +11,12 @@ const TrackSchema = new Schema({
   album: {type: String, default: "None" },
   name: {type: String, required: true },
   location: {type: String, required: true },
+  location_id:{type: String, default: ""},
   length: {type: Number, default: 1 },
   year: {type: Number, default: 1 },
   trackImage: {type: String, required: true },
+  trackImage_id: {type: String, default: ""},
+  comments: [{type: Schema.Types.ObjectId, ref: "Comment"}],
   addedAt: {type: Date, default: Date.now }
 });
 
@@ -45,10 +47,24 @@ class Track extends Storage{
     this.album = album; //string
     this.name = name; // string
     this.location = location;  // string
+    this.location_id = "";
     this.length = length; //number
     this.year = year; //number
     this.trackImage = trackImage; //string
+    this.trackImage_id = "";
     this.addedAt = addedAt; //date
+    this.comments = [];
+  }
+
+  static insertComment(id, commentId){
+    return this.getById(id)
+      .then(track => {
+        if(!track)
+          return Promise.reject("No such track in insertComment()");
+        track.comments.push(commentId);
+        return Track.update(track);
+      });
+
   }
 };
 
