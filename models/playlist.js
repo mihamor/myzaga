@@ -27,12 +27,6 @@ class Playlist extends Storage{
   static getAllCreated(){
     return this.this_model().find({isUserUploads: false});
   }
-  static getAllByUserId(id){
-    return this.this_model().find({
-      userRef: id,
-      isUserUploads: false
-    });
-  }
 
   static isRemoveble(id){
     return this.getById(id)
@@ -52,15 +46,15 @@ class Playlist extends Storage{
   static removeTrackFromAll(id){
     this.getAllByTrackId(id)
       .then(playlists => {
-        let p = Promise.resolve();
+        let promise_arr = [];
         if(playlists.length !== 0)
         for(let i = 0; i < playlists.length; i++){
             let playlist = playlists[i];
             playlist.tracks = removeItemFromArr(playlist.tracks, id);
             console.log(playlist);
-            p = p.then(() => Playlist.update(playlist));
+            promise_arr.push(Playlist.update(playlist));
         }
-        return p;
+        return Promise.all(promise_arr);
     });
   }
 

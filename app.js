@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
 const mongoose = require('mongoose');
 const config = require("./config");
+const cloudinary = require("cloudinary");
 
 const viewsDir = path.join(__dirname, 'views');
 app.engine('mst', mustache(path.join(viewsDir, 'partials')));
@@ -29,17 +30,35 @@ const url = config.mongo_url;
 const connectOptions = { 
     useNewUrlParser: true,
     useCreateIndex: true
+};
+cloudinary.config({
+    cloud_name: config.cloudinary.cloud_name,
+    api_key: config.cloudinary.api_key,
+    api_secret: config.cloudinary.api_secret
+});
+
+// in request handler with file
+function handleFileUpload(req, res) {
+    const fileObject = req.files.someFile;
+    const fileBuffer = fileObject.data.data;
+    cloudinary.v2.uploader.upload_stream({ resource_type: 'raw' },
+        function (error, result) { 
+            console.log(result, error) 
+            // do stuff...
+            // create web response
+            res.send(result);
+        })
+        .end(fileBuffer);
+    // ...
 }
+
+
+
+
+
 mongoose.connect(url, connectOptions)
     .then((x) => {
         console.log("Mongo database connected " + mongoose.connection);
-        //autoIncrement.initialize(mongoose.connection);
-        //UserSchema.plugin(autoIncrement.plugin, 'User');
-       //UserModel = mongoose.model('User', UserSchema);
-        //TrackSchema.plugin(autoIncrement.plugin, 'Track');
-       // TrackModel = mongoose.model('Track', TrackSchema);
-       // console.log(TrackModel);
-
        app.listen(config.port, function() { console.log('Server is ready\n' + publicPath); });
     })
     .catch((err) => console.log("ERROR: " + err.message));

@@ -12,9 +12,11 @@ const TrackSchema = new Schema({
   album: {type: String, default: "None" },
   name: {type: String, required: true },
   location: {type: String, required: true },
+  location_id:{type: String, default: ""},
   length: {type: Number, default: 1 },
   year: {type: Number, default: 1 },
   trackImage: {type: String, required: true },
+  trackImage_id: {type: String, default: ""},
   addedAt: {type: Date, default: Date.now }
 });
 
@@ -45,9 +47,11 @@ class Track extends Storage{
     this.album = album; //string
     this.name = name; // string
     this.location = location;  // string
+    this.location_id = "";
     this.length = length; //number
     this.year = year; //number
     this.trackImage = trackImage; //string
+    this.trackImage_id = "";
     this.addedAt = addedAt; //date
   }
 };

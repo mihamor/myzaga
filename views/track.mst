@@ -50,12 +50,14 @@
                         <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
                         
                     </audio>
-                    <form style="display:inline-block;">
-                      <button class ="btn btn-primary float-right" formmethod="post">
-                        Delete
-                      </button>
-                    </form>
             </div>
+            <hr>
+            <a  style="display:inline-block;" class ="btn btn-primary" href="/tracks/{{_id}}/update">Update</a>
+            <form class =float-right style="display:inline-block;">
+              <button class ="btn btn-primary" formmethod="post">
+                Delete
+              </button>
+            </form>
             </div>
           </div>
         </div>
