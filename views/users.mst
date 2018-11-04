@@ -48,6 +48,7 @@
     {{/users.length}}
 
 
+    <a style="margin-top: 20px; float: right;"class="action-button" href="/users/new">Create new user</a>
   </div>
   {{ >footer }}
 </body>
