@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 
 
 const UserSchema = new Schema({
-  login: {type: String, required: true },
+  login: {type: String, required: true, unique: true },
   fullname: {type: String, default: "None" },
   role: {type: Number, required: true },
   registeredAt: {type: Date, default: Date.now },
