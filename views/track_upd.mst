@@ -1,73 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
-{{> head}}
+  <head>
 
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <div class=wrapper>
-     {{> header}}
+    <title>MyZaGa</title>
 
-    <ul class="menu-bar">
-      <li class="menu-opt"><a href="/">Home</a></li>
-      <li class="menu-opt"><a href="/users">Users</a></li>
-      <li class="menu-opt"><a href="/playlists">Playlists</a></li>
-      <li class="menu-opt"><a class=active href="/tracks">Tracks</a></li>
-      <li class="menu-opt"><a href="/about">About</a></li>
-    </ul>
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
-    <div id="page-content">
-      <div class="center vis-text">
-        <h1>Tracks</h1>
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-blue text-white">
+      <div class="container text-center">
+        <h1>Update track</h1>
       </div>
+    </header>
 
-      <div class="center">
-      <!-- onsubmit="return validateForm()" -->
-      <form class = 'new-track-form' name= "form" action="/tracks/{{_id}}/update" method="POST">
-        <div class="row">
-          <div class="col-25">
-            <label for="aname">Author:</label>
-          </div>
-          <div class="col-75">
-            <input type="text" id="aname" name="author" value="{{author}}" required>
-          </div>
+    <section class="bg-gray">
+      <div class="container">
+      <form action="/tracks/{{_id}}/update" method="POST">
+        <div class="form-group">
+            <label for="author">Author:</label>
+            <input type="text" class="form-control" id="author" value="{{author}}" name="author">
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="tname">Name:</label>
-          </div>
-          <div class="col-75">
-            <input type="text" id="tname" name="name" value="{{name}}" required>
-          </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" value="{{name}}" name="name">
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="talbum">Album:</label>
-          </div>
-          <div class="col-75">
-            <input type="text" id="talbum" name="album" value="{{album}}" required>
-          </div>
+        <div class="form-group">
+            <label for="author">Album:</label>
+            <input type="text" class="form-control" id="album" value="{{album}}" name="album">
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="tyear">Year:</label>
-          </div>
-          <div class="col-75">
-            <input type="number" id="tyear" name="year" value="{{year}}" required>
-          </div>
-            <div class="row">
-                <input type="submit" value="Submit">
-            </div>
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <input type="number" class="form-control" id="year" value="{{year}}" name="year">
         </div>
-      </form>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
       </div>
+    </section>
 
 
-    </div>
+    {{>footer}}
 
-  {{ >footer }}
-
-  </div>
-</body>
+  </body>
 
 </html>

@@ -1,101 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
-{{> head}}
+  <head>
 
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <div class=wrapper>
-     {{> header}}
+    <title>MyZaGa</title>
 
-    <ul class="menu-bar">
-      <li class="menu-opt"><a href="/">Home</a></li>
-      <li class="menu-opt"><a href="/users">Users</a></li>
-      <li class="menu-opt"><a href="/playlists">Playlists</a></li>
-      <li class="menu-opt"><a class=active href="/tracks">Tracks</a></li>
-      <li class="menu-opt"><a href="/about">About</a></li>
-    </ul>
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
-    <div id="page-content">
-      <div class="center vis-text">
-        <h1>Tracks</h1>
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-blue text-white">
+      <div class="container text-center">
+        <h1>Create new track</h1>
       </div>
+    </header>
 
-      <div class="center">
-      <!-- onsubmit="return validateForm()" -->
-      <form class = 'new-track-form' name= "form" action="/tracks/new" method="POST" enctype="multipart/form-data">
-        <div class="row">
-          <div class="col-25">
-            <label for="aname">Author:</label>
-          </div>
-          <div class="col-75">
-            <input type="text" id="aname" name="author" placeholder="Author name.." required>
-          </div>
+    <section class="bg-gray">
+      <div class="container">
+      <form action="/tracks/new" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="author">Author:</label>
+            <input type="text" class="form-control" id="author" placeholder="Enter author..." name="author">
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="tname">Name:</label>
-          </div>
-          <div class="col-75">
-            <input type="text" id="tname" name="name" placeholder="Track name.." required>
-          </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter name..." name="name">
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="talbum">Album:</label>
-          </div>
-          <div class="col-75">
-            <input type="text" id="talbum" name="album" placeholder="Track album.." required>
-          </div>
+        <div class="form-group">
+            <label for="author">Album:</label>
+            <input type="text" class="form-control" id="album" placeholder="Enter album..." name="album">
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="talbum">Select user:</label>
-          </div>
-          <div class="col-75">
-            <select name="userId" id="tusers">
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <input type="number" class="form-control" id="year" placeholder="Enter year..." name="year">
+        </div>
+        <div class="form-group">
+            <label for="users">Select user:</label>
+            <select name="userId" id="users">
                {{#users}}
                 <option value={{uploaded_tracks}}>{{login}} {{_id}}</option>
               {{/users}}
             </select>
-          </div>
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="tyear">Year:</label>
-          </div>
-          <div class="col-75">
-            <input type="number" id="tyear" name="year" placeholder="Track year.." required>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="tfile">Select track:</label>
-          </div>
-          <div class="col-75">
-            <input type="file" id="tfile" name="track" accept = "audio/*" required>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-25">
+        <div class="form-group">
             <label for="timage">Select track image:</label>
-          </div>
-          <div class="col-75">
             <input type="file" id="timage" name="image" accept="image/*" required>
-          </div>
         </div>
-        <div class="row">
-          <input type="submit" value="Submit">
+        <div class="form-group">
+            <label for="tfile">Select track:</label>
+            <input type="file" id="tfile" name="track" accept = "audio/*" required>
         </div>
-      </form>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
       </div>
+    </section>
 
 
-    </div>
+    {{>footer}}
 
-  {{ >footer }}
-
-  </div>
-</body>
+  </body>
 
 </html>
