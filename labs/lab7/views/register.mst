@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Join the MyZaGa</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+
+    <script>
+        function onSubmit(){
+            let pass = document.getElementById("pass").value;
+            let pass_conf = document.getElementById("passconf").value;
+            let valid = pass === pass_conf; 
+            if(!valid)alert("Passwords doesn't match");
+            return valid;
+        }
+    </script>
+
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-blue text-white auth-bg">
+      <div class="container text-center">
+        <h1 class="col-lg-8 mx-auto">Join MyZaGa to hear the latest from people you follow </h1>
+      </div>
+    </header>
+
+    <section class="bg-gray">
+      <div class="container">
+      <div class="col-lg-6 bg-light mx-auto border rounded" style="padding: 50px;">
+      <h2 class="text-center"><b>Create your public MyZaGa account</b></h2>
+      <form action="/auth/register" onsubmit="return onSubmit();" method="POST">
+        <div class="form-group">
+            <label for="login">Login:</label>
+            <input type="login" pattern="^\w+$" title="Use only alphanumeric and underscore"  class="form-control" id="login" placeholder="Enter login..." name="login" required>
+        </div>
+        <div class="form-group">
+            <label for="pass">Choose a password:</label>
+            <input type="password" pattern="^\w+$" title="Use only alphanumeric and underscore"  class="form-control" id="pass" placeholder="Enter password..." name="pass" required >
+        </div>
+        <div class="form-group">
+            <label for="passconf">Confirm your password:</label>
+            <input type="password" pattern="^\w+$" title="Use only alphanumeric and underscore"  class="form-control" id="passconf" placeholder="Confirm your password..." name="passconf">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary" style="width: 100%">Continue</button>
+        <div>
+        </form>
+      </div>
+      </div>
+    </section>
+
+
+    {{>footer}}
+
+  </body>
+
+</html>

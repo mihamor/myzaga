@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+{{> head}}
+
+<body>
+
+  <div class=wrapper>
+     {{> header}}
+
+    <ul class="menu-bar">
+      <li class="menu-opt"><a href="/">Home</a></li>
+      <li class="menu-opt"><a href="/users">Users</a></li>
+      <li class="menu-opt"><a class =active href="/playlists">Playlists</a></li>
+      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
+      <li class="menu-opt"><a href="/about">About</a></li>
+    </ul>
+
+    <div id="page-content">
+      <div class="center vis-text">
+        <h1>Playlists</h1>
+      </div>
+
+      <div class="center">
+      <!-- onsubmit="return validateForm()" -->
+      <form class = 'new-track-form' name= "form" action="/playlists/new" method="POST">
+        <div class="row">
+          <div class="col-25">
+            <label for="adesc">Short description:</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="adesc" name="desc" placeholder="Short description..." required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-25">
+            <label for="auser">Select user:</label>
+          </div>
+          <div class="col-75">
+            <select name="user" id="auser" required>
+            {{#users}}
+                <option value="{{_id}}">{{login}}</option>
+            {{/users}}
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-25">
+            <label for="atracks">Select tracks:</label>
+          </div>
+          <div class="col-75">
+            <select name="tracks[]" id="atracks" multiple>
+            {{#tracks}}
+                <option value="{{_id}}">{{author}} - {{name}}</option>
+            {{/tracks}}
+            </select>
+             <script src="/javascripts/jquery.min.js"></script>
+            <!-- Bootstrap JavaScript -->
+            <script src="/javascripts/bootstrap.min.js"></script>
+             <script src="/javascripts/jquery.multi-select.js"></script>
+            <script type="text/javascript">
+            // run pre selected options
+               $('#atracks').multiSelect();
+            </script>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-25">
+            <input type="submit" value="Submit">
+          </div>
+        </div>
+      </form>
+      </div>
+
+
+    </div>
+
+  {{ >footer }}
+
+  </div>
+</body>
+
+</html>
