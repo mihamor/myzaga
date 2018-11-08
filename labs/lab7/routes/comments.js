@@ -6,15 +6,21 @@ const {Utils} = require('../models/utils.js');
 
 
 const router = express.Router();
-router.post("/:id/new", function(req, res){
+router.post("/:id/new", (req, res, next) => {
+    if(!req.user){
+        res.sendStatus(401);
+    }else next();
+},
+(req, res) => {
     console.log("POST NEW COMMENT");
     let trackId = req.params.id;
-    let userId = req.body.userId;
+    let userId = req.user._id;
     let content = req.body.commentText;
 
     if(!validate_form_input(req.body)){
         console.log("Invalid comment input");
         req.next();
+        return;
     }
 
 
@@ -40,8 +46,15 @@ router.post("/:id", function(req, res){
         req.next();
     }
 
-    Utils.isTrackHasComment(trackId, commentId)
-        .then(track => {
+
+    Comment.getById(commentId)
+        .then(comment => {
+            if(!is_comment_owner(req.user, comment)){
+                return Promise.reject(new Error("Forbidden"));
+            }
+            else return Utils.isTrackHasComment(trackId, commentId);
+        })
+    .   then(track => {
             track.comments = removeItemFromArr(track.comments, commentId);
             return Track.update(track);
 
@@ -64,11 +77,15 @@ function removeItemFromArr(arr, item){
 }
 
 function validate_form_input(body){
-    let userId = body.userId;
     let content = body.commentText;
-    return userId 
-        && content
+    return content
         && content.length != 0;
+}
+
+
+function is_comment_owner(user, comment){
+    return comment.user.toString() == user._id.toString()
+        || comment.user._id.toString() == user._id.toString();
 }
 
 module.exports = router;

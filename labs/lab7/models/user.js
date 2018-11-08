@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   login: {type: String, required: true, unique: true },
+  passhash: {type: String, required: true},
   fullname: {type: String, default: "None" },
   role: {type: Number, required: true },
   registeredAt: {type: Date, default: Date.now },
@@ -28,6 +29,16 @@ class User extends Storage{
   static this_model(){
     return UserModel;
   }
+
+  static isValidLogin(login){
+    let curr_model = this.this_model()
+    return curr_model.find({login: login})
+        .then(x => {
+            if(x.length == 0) return Promise.resolve();
+            else return Promise.reject(
+            new Error(`${curr_model.baseModelName}: entity was found`));
+        });
+}
 
   static insert(ent){
     if(this.check_params(ent)) 
@@ -56,8 +67,22 @@ class User extends Storage{
         && typeof x.isDisabled === 'boolean';
   }
 
-  constructor(login, fullname, role, avaUrl, bio, uploaded_tracks, isDisabled=false, registeredAt= new Date().toISOString()) {
+  static getByLogin(login){
+    if(!valid_string(login))
+      return Promise.reject(new Error(`Invalid in getByLogin(${login}) arguments`));
+  return this.this_model().findOne({ login : login});
+  }
+
+
+  static getByLoginAndHashPass(login, hashedPass){
+    if(!valid_string(login) || !valid_string(hashedPass))
+      return Promise.reject(new Error(`Invalid in getByLoginAndHashPass(${login}, ${hashedPass}) arguments`));
+  return this.this_model().findOne({ login : login, passhash: hashedPass});
+  }
+
+  constructor(login,passhash, fullname, role, avaUrl, bio, uploaded_tracks, isDisabled=false, registeredAt= new Date().toISOString()) {
     super();
+    this.passhash = passhash;
     this.login = login;  // string
     this.fullname = fullname;  // string
     this.role = role; // number

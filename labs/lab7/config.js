@@ -7,7 +7,9 @@ let config = {
         cloud_name: "doulmg780",
         api_key: "698981441516159",
         api_secret: "C5Ls75nQCs14NQNdQ8ycqQmcpQY"
-    }
+    },
+    salt : "mYzAg@@@S@/\T=)",
+    secret : "=)))"
 }
 
 module.exports = config;

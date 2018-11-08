@@ -6,9 +6,16 @@ const {Track} = require('./track.js');
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
 const util = require("util");
+const config = require("../config")
 
+const sha512 = require("sha512");
 
 class Utils {
+
+    static hash(str){
+        let saltedStr = str + config.salt;
+        return sha512(str).toString("hex");
+    }
 
     static insertUserWithPlaylist(user){
         if(!User.check_params(user)) 

@@ -51,6 +51,7 @@
                         
                     </audio>
             </div>
+            {{#isOwner}}
             <hr>
             <a  style="display:inline-block;" class ="btn btn-primary" href="/tracks/{{track._id}}/update">Update</a>
             <form class =float-right style="display:inline-block;">
@@ -58,6 +59,7 @@
                 Delete
               </button>
             </form>
+            {{/isOwner}}
             </div>
           </div>
         </div>
@@ -72,14 +74,6 @@
               <div class="form-group">
                 <label for="comment-cont">Comment:</label>
                 <textarea type="text" class="form-control" id="comment-cont" placeholder="Leave a comment..." name="commentText"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="tusers">Select user:</label>
-                <select name="userId" id="tusers">
-                  {{#users}}
-                    <option value={{_id}}>{{login}}</option>
-                  {{/users}}
-                </select>
               </div>
               <button type="submit" class="btn btn-primary float-right" formmethod="post">Submit</button>
             </form>
@@ -96,10 +90,12 @@
                 <div class="rounded-1 com">
                   {{content}}
                 </div>
+                {{#owner}}
                 <form action="/comments/{{_id}}">
                   <input type="hidden" value="{{track._id}}" name="trackId">
                   <button type="submit" class="btn btn-primary float-right" formmethod="post">Delete</button>
                 </form>
+                {{/owner}}
               </div> 
             {{/track.comments}}
           </div>

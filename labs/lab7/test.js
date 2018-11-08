@@ -1,13 +1,14 @@
 const {Track} = require('./models/track.js');
 Track.setStoragePath("./data/tracks.json");
 
-
-let track = new Track (14, "Metallica", "Enter Sandman", "1", ".", 1, 1, '../images/tracks/drenaj.jpeg');
+const {Utils} = require("./models/utils");
+//let track = new Track (14, "Metallica", "Enter Sandman", "1", ".", 1, 1, '../images/tracks/drenaj.jpeg');
 /*Track.delete(14, (error) =>{
     if(error) console.log(error.toString());
     else console.log("deleted");
 });*/
 
+console.log(Utils.hash("djigolopass"));
 //Track.getAll()
 //    .then(x => console.log(x));
 
@@ -23,6 +24,6 @@ let track = new Track (14, "Metallica", "Enter Sandman", "1", ".", 1, 1, '../ima
         return Track.update(track);
     })
     .then(() => console.log("updated"));*/
-Track.delete(41)
+/*Track.delete(41)
     .then(() => console.log("deleted"))
-    .catch(err => console.log(err.message));
+    .catch(err => console.log(err.message));*/

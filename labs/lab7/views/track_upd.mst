@@ -30,22 +30,22 @@
 
     <section class="bg-gray">
       <div class="container">
-      <form action="/tracks/{{_id}}/update" method="POST">
+      <form action="/tracks/{{track._id}}/update" method="POST">
         <div class="form-group">
             <label for="author">Author:</label>
-            <input type="text" class="form-control" id="author" value="{{author}}" name="author">
+            <input type="text" class="form-control" id="author" value="{{track.author}}" name="author">
         </div>
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" value="{{name}}" name="name">
+            <input type="text" class="form-control" id="name" value="{{track.name}}" name="name">
         </div>
         <div class="form-group">
             <label for="author">Album:</label>
-            <input type="text" class="form-control" id="album" value="{{album}}" name="album">
+            <input type="text" class="form-control" id="album" value="{{track.album}}" name="album">
         </div>
         <div class="form-group">
             <label for="year">Year:</label>
-            <input type="number" class="form-control" id="year" value="{{year}}" name="year">
+            <input type="number" class="form-control" id="year" value="{{track.year}}" name="year">
         </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>

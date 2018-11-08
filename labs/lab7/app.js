@@ -2,16 +2,18 @@ const express = require('express');
 const path = require('path');
 const fs = require("fs-promise");
 const mustache = require('mustache-express');
-const {User} = require('./models/user.js');
-const {Track} = require('./models/track.js');
-const {Comment} = require('./models/comment.js');
-const {Playlist} = require('./models/playlist.js');
+const {User} = require('./models/user');
+const {Track} = require('./models/track');
+const {Utils} = require('./models/utils');
+const {Comment} = require('./models/comment');
+const {Playlist} = require('./models/playlist');
 const app = express();
 const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
 const mongoose = require('mongoose');
 const config = require("./config");
 const cloudinary = require("cloudinary");
+
 
 // new imports
 const passport = require('passport');
@@ -20,17 +22,18 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
 
+app.use(session({
+    secret: config.secret,
+    resave: false,
+    saveUninitialized: true
+}))
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-// визначає, яку інформацію зберігати у Cookie сесії
 passport.serializeUser(function(user, done) {
-    // наприклад, зберегти у Cookie сесії id користувача
     done(null, user._id);
 });
-
-// отримує інформацію (id) із Cookie сесії і шукає користувача, що їй відповідає
 passport.deserializeUser(async function(id, done) {
 
     try{
@@ -39,33 +42,20 @@ passport.deserializeUser(async function(id, done) {
     } catch(err) {
         done(err, null);
     }
-	// отримати користувача по id і викликати done(null, user);
-	// при помилці викликати done(err, null)
 });
 
-// налаштування стратегії для визначення користувача, що виконує логін
-// на основі його username та password
 passport.use(new LocalStrategy(async (username, password, done) => {
-
-
     try{
-        let user = await User.getByLogin(username)
-        if(Utils.hash(password) === user.passhash)
-            done(null, user);
-        else throw new Error("Invalid password");
+        console.log(username, password);
+
+        let hashedPass = Utils.hash(password);
+        let user = await User.getByLoginAndHashPass(username, hashedPass);
+        if(user) done(null, user);
+        else done(null, false);
     } catch(err) {
+        console.log(err.message);
         done(err, null);
     }
-
-    /*User.getByLogin(username)
-        .then(user => {
-            if(Utils.hash(password) === user.passhash)
-                 done(null, user);
-            else Promise.reject("Invalid password");
-        })
-        .catch(err => done(err, null));*/
-	// отримати користувача по його username і password і викликати done(null, user);
-	// при помилці викликати done(err, null)
 }));
 
 
@@ -96,25 +86,6 @@ cloudinary.config({
     api_secret: config.cloudinary.api_secret
 });
 
-// in request handler with file
-function handleFileUpload(req, res) {
-    const fileObject = req.files.someFile;
-    const fileBuffer = fileObject.data.data;
-    cloudinary.v2.uploader.upload_stream({ resource_type: 'raw' },
-        function (error, result) { 
-            console.log(result, error) 
-            // do stuff...
-            // create web response
-            res.send(result);
-        })
-        .end(fileBuffer);
-    // ...
-}
-
-
-
-
-
 mongoose.connect(url, connectOptions)
     .then((x) => {
         console.log("Mongo database connected " + mongoose.connection);
@@ -123,7 +94,7 @@ mongoose.connect(url, connectOptions)
     .catch((err) => console.log("ERROR: " + err.message));
 
 app.get("/", function(req, res){
-    res.render('index');
+    res.render('index',{ user: req.user});
 });
 
 app.get('/data/fs/:filename', (req, res) => {
@@ -153,7 +124,7 @@ app.use("/comments", commentRouter);
 
 
 app.get("/about", function(req, res){
-    res.render('about');
+    res.render('about', { user: req.user});
 });
 
 
@@ -182,7 +153,7 @@ app.get("/api/users/test_add", (req, res)=>{
 
     let UserModel = User.this_model();
     let PlaylistModel = Playlist.this_model();
-    let u = new User(0, "djigolo", "Sanek Chert", 0, "/images/users/user2.jpeg", "шо вы малые блин!");
+    let u = new User(0, "123123123123", "djigolo", "Sanek Chert", 0, "/images/users/user2.jpeg", "шо вы малые блин!");
     User.insert(u)
     .then(x => res.send(x))
     .catch(err => {

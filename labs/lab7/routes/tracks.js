@@ -11,7 +11,13 @@ const router = express.Router();
 function is_valid_seacrch(str){
     return str;
 }
-router.get("/", function(req, res){
+router.get("/", 
+(req, res, next)=>{
+    if(!req.user){
+        res.redirect("/auth/login");
+    }else next();
+},
+(req, res)=>{
 
     let page = Number(req.query.page);
     let search_str = req.query.search;
@@ -40,32 +46,36 @@ router.get("/", function(req, res){
                                    prev_page : prev_page,
                                    search_str : search_str,
                                    page_count: page_count,
-                                   this_page: prev_page+1});
+                                   this_page: prev_page+1,
+                                   user: req.user});
         })
         .catch(err => {
             console.log(err.message); 
             req.next()
         });
 });
-router.get("/new", function(req, res){ 
-    User.getAll()
-        .then(users => {
-            console.log(users);
-            if(!users) req.next();
-            else res.render('tracks_new', {users : users});
-        })
-        .catch(err => {
-            console.log(err.message)
-            req.next();
-        })
+router.get("/new",(req, res, next)=>{
+    if(!req.user){
+        res.redirect("/auth/login");
+    }else next();
+},
+(req, res) => { 
+    res.render('tracks_new',{user: req.user});
 });
 
 
-router.post("/new", function(req, res){
+router.post("/new", (req, res, next)=>{
+    if(!req.user){
+        res.sendStatus(401);
+    }else next();
+},
+(req, res) => {
     console.log("post request");
     let author = req.body.author;
-    let userPlaylistId = req.body.userId;
-    console.log(userPlaylistId);
+
+    let user = req.user;
+    let userPlaylistId = user.uploaded_tracks;
+    //console.log(userPlaylistId);
     let name = req.body.name;
     let album = req.body.album;
     if(!check_body_files(req.files)) {
@@ -111,27 +121,26 @@ router.post("/new", function(req, res){
         req.next();
     });
 
-
-    /*    .then(newId => Promise.all([
-            newId,
-            fs.writeFile(image_path, 
-            Buffer.from(new Uint8Array(image_bin.data))),
-            fs.writeFile(track_path, 
-            Buffer.from(new Uint8Array(track_bin.data)))
-    ]))*/
-
 });
 
 
-router.get("/:id/update", function(req, res){
+router.get("/:id/update", (req, res, next)=>{
+    if(!req.user){
+        res.redirect("/auth/login");
+    }else next();
+},
+(req, res) => {
     let id = req.params.id;
     console.log("GET track/id/update");
     Track.getById(id)
         .then(track => {
             console.log(track);
+            console.log(req.user);
             if(!track) 
                 return Promise.reject(new Error("No such track"));
-            else res.render("track_upd", track)
+            else if(!is_track_owner(req.user, track))
+                res.sendStatus(403);
+            else res.render("track_upd", {track: track, user: req.user})
         })
         .catch(err => {
             console.log(err.message);
@@ -139,7 +148,13 @@ router.get("/:id/update", function(req, res){
         });
 });
 
-router.post("/:id/update", function(req, res){
+router.post("/:id/update",
+(req, res, next)=>{
+    if(!req.user){
+        res.sendStatus(401);
+    }else next();
+},
+(req, res) => {
     let id = req.params.id;
     let author = req.body.author;
     let album = req.body.album;
@@ -164,7 +179,12 @@ router.post("/:id/update", function(req, res){
         });
 });
 
-router.get("/:id", function(req, res){
+router.get("/:id", (req, res, next)=>{
+    if(!req.user){
+        res.redirect("/auth/login");
+    }else next();
+},
+(req, res)=>{
     let id = req.params.id;
     console.log("track/id");
     Promise.all([
@@ -193,10 +213,16 @@ router.get("/:id", function(req, res){
             if(!track) 
                 return Promise.reject(new Error("No such track"));
             else{
+
+                const isOwner = is_track_owner(req.user, track);
+                for(let comm of track.comments){
+                    if(comm.user._id.toString() == req.user._id.toString())
+                        comm.owner = true;
+                }
                 track.comments = track.comments.sort( (a , b) => {
                     return b.addedAt - a.addedAt;
                 });
-                res.render("track", {track: track, users: users})
+                res.render("track", {track: track, users: users, user:req.user, isOwner: isOwner})
             }
         })
     .   catch(err => {
@@ -207,11 +233,21 @@ router.get("/:id", function(req, res){
 
 //const deleteFileAsync = util.promisify(cloudinary.uploader.destroy);
 
-router.post("/:id", function(req, res){
+router.post("/:id", (req, res, next)=>{
+    if(!req.user){
+        res.sendStatus(401);
+    }else next();
+},
+(req, res) => {
     let id = req.params.id;
     console.log("TRACK DELETE:" + id);
 
     Track.getById(id)
+        .then(track => {
+            if(!is_track_owner(req.user, track))
+                return Promise.reject(new Error("Forbidden"));
+            return track;
+        })
         .then(track => Promise.all([
             Utils.deleteFileAsync(track.trackImage_id),
             Utils.deleteFileAsync(track.location_id)
@@ -261,6 +297,11 @@ function check_body_files(files){
     return files && files.track && files.image;
 
 
+}
+
+function is_track_owner(user, track){
+    return track.uploadedListRef.toString() == user.uploaded_tracks.toString()
+        || track.uploadedListRef._id.toString() == user.uploaded_tracks.toString();
 }
 
 module.exports = router;
