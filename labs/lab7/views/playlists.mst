@@ -1,46 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
-{{> head}}
+  <head>
 
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <div class=wrapper>
-     {{> header}}
+    <title>MyZaGa</title>
 
-    <ul class="menu-bar">
-      <li class="menu-opt"><a href="/">Home</a></li>
-      <li class="menu-opt"><a href="/users">Users</a></li>
-      <li class="menu-opt"><a class=active href="/playlists">Playlists</a></li>
-      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
-      <li class="menu-opt"><a href="/about">About</a></li>
-    </ul>
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
-    <div id="page-content">
-      <div class="center vis-text">
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-blue text-white">
+      <div class="container text-center">
         <h1>Playlists</h1>
       </div>
-      {{#playlists.length}}
-      <div class="track-list-container">
-      <!--track-list-container -->
-        <ul>
-          {{#playlists}}
-            <li><a href="/playlists/{{id}}">{{desc}}</a></li>
-          {{/playlists}}
-        </ul>
+    </header>
+
+    <section class="track-list-container bg-gray">
+      <div class="container text-center">
+        <div class="col-lg-12 mx-auto bg-light border rounded">
+
+        {{#playlists.length}}
+         <div>
+            <ul class="list-group">
+        {{#playlists}}
+                <a class="list-group-item d-flex justify-content-between align-items-center list-group-item-action list-group-item-secondary"  style="margin: 20px 0;" href="/playlists/{{_id}}">
+                <!--<li class="list-group-item d-flex justify-content-between align-items-center" style="margin: 20px;">-->
+                   {{desc}}
+
+                    <span class="badge badge-primary badge-pill">{{tracks.length}}</span>
+                <!--</li>-->
+                </a>
+         {{/playlists}}
+            </ul>
+        </div>
+
+        {{/playlists.length}}
+
+        {{^playlists.length}}
+        <div class = "center vis-text">No playlists were found.</div>
+        {{/playlists.length}}
+
+
+        <a class ="btn btn-primary float-right" style="margin-top:20px;" href="/playlists/new">Add new playlists</a>
+        </div>    
       </div>
-      {{/playlists.length}}
+    </section>
 
-      {{^playlists.length}}
-      <div class = "center vis-text">No playlists were found.</div>
-      {{/playlists.length}}
-      <a class ="action-button right" href="/playlists/new">Add new playlist</a>
+    {{>footer}}
 
-    </div>
-
-  {{ >footer }}
-
-  </div>
-</body>
+  </body>
 
 </html>

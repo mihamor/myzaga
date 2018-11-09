@@ -1,10 +1,14 @@
 const express = require("express");
 const {User} = require("../models/user.js");
 const {Utils} = require("../models/utils.js");
+const auth_cbs = require("./auth_cb");
 
 const router = express.Router();
 
-router.get("/", function(req, res){
+router.get("/",
+auth_cbs.checkAuthRedirect,
+auth_cbs.checkAdmin,
+(req, res) => {
     User.getAll()
         .then(x => res.render('users',{users : x}))
         .catch(err => {
@@ -13,7 +17,7 @@ router.get("/", function(req, res){
         });
 });
 
-
+/*
 router.get("/new", function(req, res){
     res.render('users_new');
 });
@@ -43,8 +47,10 @@ router.post("/new", function(req, res){
         req.next();
     })
 });
-
-router.get("/:id", function(req, res){
+*/
+router.get("/:id", 
+auth_cbs.checkAuthRedirect,
+(req, res)=>{
     let id = req.params.id;
     console.log(id);
     User.getById(id)
@@ -60,7 +66,9 @@ router.get("/:id", function(req, res){
 });
 
 
-router.get("/:id/update", function(req, res){
+router.get("/:id/update", 
+auth_cbs.checkAuthRedirect,
+(req, res) => {
     let id = req.params.id;
 
     User.getById(id)
@@ -99,9 +107,6 @@ router.post("/:id/update", function(req, res){
         req.next();
     })
 });
-
-
-
 
 
 module.exports = router;

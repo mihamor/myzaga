@@ -3,13 +3,15 @@ const { Track } = require("../models/track.js");
 const { Utils } = require("../models/utils.js");
 const { Playlist } = require("../models/playlist.js");
 const { User } = require("../models/user.js");
-
+const auth_cbs = require("./auth_cb");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 const router = express.Router();
 
 
-router.get("/", function (req, res) {
+router.get("/", 
+auth_cbs.checkAuthRedirect,
+(req, res) => {
 
     let playlists = null;
     let userId = req.query.user;
@@ -19,7 +21,7 @@ router.get("/", function (req, res) {
 
 
     playlists
-        .then(x => res.render('playlists', { playlists: x }))
+        .then(x => res.render('playlists', { playlists: x, user: req.user }))
         .catch(err => {
             console.log(`ERROR in GET ${req.baseUrl}: ${err.message}`);
             req.next();
@@ -28,26 +30,29 @@ router.get("/", function (req, res) {
 
 
 
-router.get("/new", function (req, res) {
+router.get("/new",
+auth_cbs.checkAuthRedirect,
+(req, res) => {
     Track.getAll()
-        .then((x) => Promise.all([x, User.getAll()]))
-        .then(([tracks, users]) => {
+        .then(tracks => {
             //console.log(tracks);
             if (!tracks) req.next();
-            else res.render('playlists_new', { tracks: tracks, users: users });
+            else res.render('playlists_new', { tracks: tracks, user: req.user });
         })
         .catch(err => {
             console.log(`ERROR in GET ${req.baseUrl}: ${err.message}`);
             req.next();
         })
 });
-router.post("/new", function (req, res) {
+router.post("/new",
+auth_cbs.checkAuth,
+(req, res) => {
     console.log("post request");
     let desc = req.body.desc;
     let tracks = req.body.tracks;
-    let userId = req.body.user;
+    let userId = req.user._id;
 
-    if (!userId || !desc) {
+    if (!desc) {
         res.sendStatus(400);
         return;
     }
@@ -59,8 +64,7 @@ router.post("/new", function (req, res) {
     console.log(userId);
 
     let newPlayList = new Playlist(userId, false, desc, tracks);
-    User.isExist(userId)
-        .then(() => Playlist.insert(newPlayList))
+        Playlist.insert(newPlayList)
         .then(newId => {
             console.log(tracks);
             return Promise.all([newId, User.insertPlaylistId(userId, newId)])
@@ -72,7 +76,9 @@ router.post("/new", function (req, res) {
         });
 });
 
-router.get("/:id", function (req, res) {
+router.get("/:id", 
+auth_cbs.checkAuthRedirect,
+(req, res) => {
     let id = req.params.id;
     console.log(id);
     Playlist.getById(id)
@@ -83,8 +89,10 @@ router.get("/:id", function (req, res) {
             if (!playlist)
                 return Promise.reject("No such playlist");
 
+            let isOwner = is_playlist_owner(req.user, playlist);
+
             console.log("Playlist: " + playlist);
-            res.render("playlist", playlist)
+            res.render("playlist", { playlist: playlist, user: req.user, isOwner: isOwner});
         })
         .catch(err => {
             console.log(`ERROR in GET ${req.baseUrl}: ${err.message}`);
@@ -92,14 +100,28 @@ router.get("/:id", function (req, res) {
         });
 });
 
-router.post("/:id", function (req, res) {
+router.post("/:id",
+auth_cbs.checkAuth,
+(req, res, next) => {
+    let id = req.params.id;
+    Playlist.isRemoveble(id)
+        .then(playlist => {
+            if(!is_playlist_owner(req.user, playlist))
+                return Promise.reject("User is not an owner of playlist");
+            else return next();
+        })
+        .catch(err => {
+            console.log(`ERROR : ${err.message}`);
+            res.sendStatus(403);
+        });
+},
+(req, res) =>{
 
     let id = req.params.id;
     console.log("PLAYLIST DELETE:" + id);
 
 
-    Playlist.isRemoveble(id)
-        .then(() => Utils.removePlaylistIdFromUser(id))
+    Utils.removePlaylistIdFromUser(id)
         .then(() => Playlist.delete(id))
         .then(() => res.redirect("/playlists"))
         .catch(err => {
@@ -109,45 +131,74 @@ router.post("/:id", function (req, res) {
 });
 
 
-router.get("/:id/update", function (req, res) {
+router.get("/:id/update",
+auth_cbs.checkAuthRedirect,
+(req, res, next) => {
+    let id = req.params.id;
+    Playlist.isRemoveble(id)
+        .then(playlist => {
+            if(!is_playlist_owner(req.user, playlist))
+                return Promise.reject("User is not an owner of playlist");
+            else return next();
+        })
+        .catch(err => {
+            console.log(`ERROR : ${err.message}`);
+            res.sendStatus(403);
+        });
+},
+(req, res) => {
     let id = req.params.id;
     console.log("PLAYLIST UPDATE:" + id);
 
-    Playlist.isRemoveble(id)
-        .then(() => Promise.all([
-            Playlist.getById(id)
-                .populate({
-                    path: "tracks",
-                    model: "Track"
-                })
-                .exec(),
-            Track.getAll()
-        ]))
-        .then(([playlist, tracks]) => {
+   Promise.all([
+        Playlist.getById(id)
+            .populate({
+                path: "tracks",
+                model: "Track"
+            })
+            .exec(),
+        Track.getAll()
+    ])
+    .then(([playlist, tracks]) => {
+        if (!tracks || !playlist)
+            return Promise.reject("Failed to lookup for data");
 
-            if (!tracks || !playlist)
-                 return Promise.reject("Failed to lookup for data");
-        
-            let selected = playlist.tracks;
-            let not_selected = formUnSelectedArr(tracks, playlist.tracks);
-            console.log(selected);
-            console.log("NOT SELECTED " + not_selected);
+        let selected = playlist.tracks;
+        let not_selected = formUnSelectedArr(tracks, playlist.tracks);
+        console.log(selected);
+        console.log("NOT SELECTED " + not_selected);
 
-            res.render('playlist_upd', {
-                tracks: tracks,
-                selected: selected,
-                not_selected: not_selected,
-                playlist : playlist
-            });
-        })
-        .catch(err => {
-            console.log(`ERROR in GET ${req.baseUrl}: ${err.message}`);
-            req.next();
-        })
+        res.render('playlist_upd', {
+            tracks: tracks,
+            selected: selected,
+            not_selected: not_selected,
+            playlist : playlist,
+            user : req.user
+        });
+    })
+    .catch(err => {
+        console.log(`ERROR in GET ${req.baseUrl}: ${err.message}`);
+        req.next();
+    })
 });
 
 
-router.post("/:id/update", function (req, res) {
+router.post("/:id/update",
+auth_cbs.checkAuth,
+(req, res, next) => {
+    let id = req.params.id;
+    Playlist.isRemoveble(id)
+        .then(playlist => {
+            if(!is_playlist_owner(req.user, playlist))
+                return Promise.reject("User is not an owner of playlist");
+            else return next();
+        })
+        .catch(err => {
+            console.log(`ERROR : ${err.message}`);
+            res.sendStatus(403);
+        });
+},
+(req, res)=> {
     console.log("post request");
     let desc = req.body.desc;
     let tracks = req.body.tracks;
@@ -221,5 +272,11 @@ function normalizeTrackList(tracks){
     }
     return arr;
 }
+function is_playlist_owner(user, playlist){
+    return playlist.userRef.toString() == user._id.toString()
+        || playlist.userRef._id.toString() == user._id.toString()
+        || user.role;
+}
+
 
 module.exports = router;

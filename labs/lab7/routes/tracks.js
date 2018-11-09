@@ -1,8 +1,10 @@
 const express = require("express");
-const {Track} = require("../models/track.js");
-const {User} = require("../models/user.js");
-const {Utils} =  require("../models/utils.js"); 
-const {Playlist} = require("../models/playlist.js"); 
+const {Track} = require("../models/track");
+const {Comment} = require("../models/comment");
+
+const {User} = require("../models/user");
+const {Utils} =  require("../models/utils"); 
+const {Playlist} = require("../models/playlist"); 
 const randomstring = require("randomstring");
 const fs = require('fs-promise');
 const path = require('path');
@@ -216,7 +218,8 @@ router.get("/:id", (req, res, next)=>{
 
                 const isOwner = is_track_owner(req.user, track);
                 for(let comm of track.comments){
-                    if(comm.user._id.toString() == req.user._id.toString())
+                    if(comm.user._id.toString() == req.user._id.toString() 
+                    || req.user.role)
                         comm.owner = true;
                 }
                 track.comments = track.comments.sort( (a , b) => {
@@ -248,7 +251,17 @@ router.post("/:id", (req, res, next)=>{
                 return Promise.reject(new Error("Forbidden"));
             return track;
         })
-        .then(track => Promise.all([
+        .then(track => {
+            let promise_arr = [];
+            for(comm of track.comments){
+                promise_arr.push(Comment.delete(comm));
+            }
+            return Promise.all([
+                track,
+                Promise.all(promise_arr)
+            ]);
+        })
+        .then(([track, p]) => Promise.all([
             Utils.deleteFileAsync(track.trackImage_id),
             Utils.deleteFileAsync(track.location_id)
         ]))
@@ -301,7 +314,8 @@ function check_body_files(files){
 
 function is_track_owner(user, track){
     return track.uploadedListRef.toString() == user.uploaded_tracks.toString()
-        || track.uploadedListRef._id.toString() == user.uploaded_tracks.toString();
+        || track.uploadedListRef._id.toString() == user.uploaded_tracks.toString() 
+        || user.role;
 }
 
 module.exports = router;

@@ -33,7 +33,7 @@ class Playlist extends Storage{
       .then(x => {
         if(x.isUserUploads) 
           return Promise.reject(new Error("Playlist is not removeble"));
-        return Promise.resolve();
+        return x;
       });
   }
 

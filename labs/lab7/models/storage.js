@@ -36,7 +36,7 @@ class Storage {
     }
     static update(ent) {
         if(!this.check_params(ent)) 
-            return Promise.reject(new Error("Invalid argument"));
+            return Promise.reject(new Error("Invalid argument in update "+ this.this_model().modelName + ent.toString()));
         let curr_model = this.this_model();
         console.log(`${curr_model.modelName} UPDATE`);
         return curr_model.findOneAndUpdate({ _id: ent._id},ent, {upsert : true});

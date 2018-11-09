@@ -33,18 +33,6 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-25">
-            <label for="auser">Select user:</label>
-          </div>
-          <div class="col-75">
-            <select name="user" id="auser" required>
-            {{#users}}
-                <option value="{{_id}}">{{login}}</option>
-            {{/users}}
-            </select>
-          </div>
-        </div>
 
         <div class="row">
           <div class="col-25">

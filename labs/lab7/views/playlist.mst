@@ -25,8 +25,8 @@
     <header class="bg-blue text-white">
       <div class="container text-center">
         <h1>Playlist</h1>
-        <p class="lead">description: {{desc}}</p>
-        <p class="lead">uploaded by: <a class="btn btn-light" href="/users/{{userRef._id}}">{{userRef.login}}</a></p>
+        <p class="lead">description: {{playlist.desc}}</p>
+        <p class="lead">uploaded by: <a class="btn btn-light" href="/users/{{userRef._id}}">{{playlist.userRef.login}}</a></p>
       </div>
     </header>
 
@@ -34,26 +34,28 @@
       <div class="container text-center">
         <div class="col-lg-12 mx-auto">
 
-            {{#tracks.length}}
+            {{#playlist.tracks.length}}
                 <div class="list-group track-list rounded" style="width:100%;">
                 <!--track-list-container -->
-                    {{#tracks}}
+                    {{#playlist.tracks}}
                     <a  class ="list-group-item list-group-item-action track-ref" href="/tracks/{{_id}}"><span class="text-primary">{{author}}</span> - {{name}}</a>
-                    {{/tracks}}
+                    {{/playlist.tracks}}
                 </div>
-            {{/tracks.length}}
+            {{/playlist.tracks.length}}
 
-            {{^tracks.length}}
+            {{^playlist.tracks.length}}
             <div class = "center vis-text">This playlist is empty.</div>
-            {{/tracks.length}}
-             {{^isUserUploads}}
+            {{/playlist.tracks.length}}
+             {{^playlist.isUserUploads}}
+             {{#isOwner}}
                 <form>
-                    <a class ="btn btn-primary float-left" href="/playlists/{{_id}}/update">Update</a>
+                    <a class ="btn btn-primary float-left" href="/playlists/{{playlist._id}}/update">Update</a>
                     <button class ="btn btn-primary float-right" formmethod="post">
                             Delete
                     </button>
                 </form>
-      {{/isUserUploads}}
+              {{/isOwner}}
+              {{/playlist.isUserUploads}}
         </div>
         </div>
       </div>

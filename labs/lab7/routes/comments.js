@@ -85,7 +85,8 @@ function validate_form_input(body){
 
 function is_comment_owner(user, comment){
     return comment.user.toString() == user._id.toString()
-        || comment.user._id.toString() == user._id.toString();
+        || comment.user._id.toString() == user._id.toString()
+        || user.role;
 }
 
 module.exports = router;
