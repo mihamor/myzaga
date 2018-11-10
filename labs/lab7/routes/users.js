@@ -10,7 +10,7 @@ auth_cbs.checkAuthRedirect,
 auth_cbs.checkAdmin,
 (req, res) => {
     User.getAll()
-        .then(x => res.render('users',{users : x}))
+        .then(x => res.render('users',{users : x, user: req.user}))
         .catch(err => {
             console.log(err.message);
             req.next();

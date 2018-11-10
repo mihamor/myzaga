@@ -100,6 +100,9 @@ audio{
     background-size: cover;
     background-position: center center;
   }
-span.user-status.online{
-  background: green;
+span.user-status.admin{
+  background: #ED090C;
+}
+span.user-status.user{
+  background: #1D43A1;
 }

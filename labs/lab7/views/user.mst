@@ -26,6 +26,8 @@
       <div class="container text-center">
       <img class="rounded-circle inline-block user-img" src="{{currUser.avaUrl}}"></img>
         <b class="bg-dark rounded" style="font-size: 32px; padding: 8px;">{{currUser.login}}</b>
+          {{#currUser.role}}<span style="margin-left: 5px; padding:2px;" class="user-status admin text-white rounded-circle">admin</span>{{/currUser.role}}
+            {{^currUser.role}}<span style="margin-left: 5px; padding:2px;" class="user-status user text-white rounded-circle">user</span>{{/currUser.role}}
       </div>
     </header>
 

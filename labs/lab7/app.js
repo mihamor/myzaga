@@ -115,6 +115,8 @@ app.use("/tracks", trackRouter);
 const playlistRouter = require("./routes/playlists");
 app.use("/playlists", playlistRouter);
 
+const adminRouter = require("./routes/admin_menu");
+app.use("/admin_menu", adminRouter);
 
 const authRouter = require("./routes/auth");
 app.use("/auth", authRouter);

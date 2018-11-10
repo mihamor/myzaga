@@ -28,6 +28,9 @@
             <li class="dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/users/{{_id}}"><span class="caret">{{user.login}} </span></a>
               <ul class="dropdown-menu">
               <li><a class="btn" href="/users/{{_id}}">Profile</a></li>
+              {{#user.role}}
+              <li><a class="btn" href="/admin_menu">Admin menu</a></li>
+              {{/user.role}}
               <li><a class="btn"href="/auth/logout">Logout</a></li>
               </ul>
             </li>

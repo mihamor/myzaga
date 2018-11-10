@@ -41,7 +41,9 @@
           </tr>
           {{#users}}
           <tr>
-            <td><a href="/users/{{id}}"><img class="rounded-circle" style="position: relative; margin:5px; height:30px; width:30px;" src="{{avaUrl}}"> {{login}}</a><span style="margin-left: 5px; padding:2px;" class="user-status online text-white rounded-circle">online</span></td>
+            <td><a href="/users/{{id}}"><img class="rounded-circle" style="position: relative; margin:5px; height:30px; width:30px;" src="{{avaUrl}}"> {{login}}</a>
+            {{#role}}<span style="margin-left: 5px; padding:2px;" class="user-status admin text-white rounded-circle">admin</span>{{/role}}
+            {{^role}}<span style="margin-left: 5px; padding:2px;" class="user-status user text-white rounded-circle">user</span>{{/role}}</td>
             <td>{{fullname}}</td>
             <td>{{registeredAt}}</td>
           </tr>
@@ -52,7 +54,6 @@
         {{^users.length}}
            No users were found.
         {{/users.length}}
-        <a class ="btn btn-primary float-right" href="/users/new">Add new user</a>
         </div>
         </div>
       </div>
