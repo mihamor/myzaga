@@ -16,38 +16,6 @@ auth_cbs.checkAdmin,
             req.next();
         });
 });
-
-/*
-router.get("/new", function(req, res){
-    res.render('users_new');
-});
-
-router.post("/new", function(req, res){
-    let login = req.body.login;
-    let name = req.body.name;
-    let ava_bin = req.files.image;
-    let bio = req.body.bio;
-
-    if(!login || !name 
-    || !ava_bin || !bio ){
-        res.sendStatus(400);
-        return;
-    }
-
-
-    Utils.uploadBufferAsync(ava_bin.data)
-    .then(result => {
-        let user = new User(login, name, 0, result.url, bio);
-        return user;
-    })
-    .then(user => Utils.insertUserWithPlaylist(user))
-    .then(newId => res.redirect(`/users/${newId}`))
-    .catch(err => {
-        console.log(err.message);
-        req.next();
-    })
-});
-*/
 router.get("/:id", 
 auth_cbs.checkAuthRedirect,
 (req, res)=>{
@@ -57,7 +25,8 @@ auth_cbs.checkAuthRedirect,
         .then(user => {
             if(!user) 
                 return Promise.reject("No such user");
-            res.render("user", user)
+            let isOwner = is_user_owner(req.user, user);
+            res.render("user", {currUser: user, user: req.user, isOwner: isOwner})
         })
         .catch(err => {
             console.log(err.message);
@@ -72,7 +41,12 @@ auth_cbs.checkAuthRedirect,
     let id = req.params.id;
 
     User.getById(id)
-        .then(user => res.render('users_update', user))
+        .then(user => {
+            if(!is_user_owner(req.user, user))
+                return Promise.reject(new Error("Forbidden"));
+            return user;
+        })
+        .then(user => res.render('users_update', {currUser: user, user: req.user}))
         .catch(err => {
             console.log(err.message);
             req.next();
@@ -80,10 +54,13 @@ auth_cbs.checkAuthRedirect,
 });
 
 
-router.post("/:id/update", function(req, res){
+router.post("/:id/update",
+auth_cbs.checkAuth,
+(req, res) =>{
     let name = req.body.name;
     let bio = req.body.bio;
     let id = req.params.id;
+    let ava_bin = req.files.ava;
 
     if(!name || !bio ){
         res.sendStatus(400);
@@ -93,9 +70,20 @@ router.post("/:id/update", function(req, res){
 
     User.getById(id)
     .then(user => {
-        if(!user)
-            return Promise.reject("No such user");
-
+        if(!user) return Promise.reject("No such user");
+        return user;
+    })
+    .then(user => {
+        if(ava_bin)
+            return Utils.deleteFileAsync(
+                user.avaUrl.substring(user.avaUrl.lastIndexOf('/')+1))
+                .then(() => Utils.uploadBufferAsync(ava_bin.data))
+                .then(result => {user.avaUrl = result.url; return user;})
+        else return user;
+    })
+    .then(user => {
+        if(!is_user_owner(req.user, user))
+            return Promise.reject(new Error("Forbidden"));
         user.bio = bio;
         user.fullname = name;
         return user;
@@ -103,10 +91,13 @@ router.post("/:id/update", function(req, res){
     .then(user => User.update(user))
     .then(() => res.redirect(`/users/${id}`))
     .catch(err => {
-        console.log(err.message);
-        req.next();
+        console.log(err);
+        res.sendStatus(400);
     })
 });
+function is_user_owner(user, profile){
+    return profile._id.toString() == user._id.toString();
+}
 
 
 module.exports = router;

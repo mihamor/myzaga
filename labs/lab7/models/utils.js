@@ -105,7 +105,7 @@ function deleteFile(id, callback){
         result = info.result;
         console.log(err, result);
         if(err) callback(err)
-        else if(result != "ok") callback(new Error("No file to delete"))
+       // else if(result != "ok") callback(new Error("No file to delete"))
         else callback (null, result);
     }, { resource_type: 'raw' });
 }

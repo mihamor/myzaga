@@ -1,44 +1,54 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
-{{> head}}
+  <head>
 
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <div class=wrapper>
-     {{> header}}
+    <title>MyZaGa</title>
 
-    <ul class="menu-bar">
-      <li class="menu-opt"><a href="/">Home</a></li>
-      <li class="menu-opt"><a href="/users">Users</a></li>
-      <li class="menu-opt"><a class =active href="/playlists">Playlists</a></li>
-      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
-      <li class="menu-opt"><a href="/about">About</a></li>
-    </ul>
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
-    <div id="page-content">
-      <div class="center vis-text">
-        <h1>Playlists</h1>
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/multi-select.css">
+    <script src="/javascripts/jquery.min.js"></script>
+            <!-- Bootstrap JavaScript -->
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/jquery.multi-select.js"></script>
+    <script type="text/javascript">
+        // run pre selected options
+        $('#tracks').multiSelect();
+    </script>
+
+
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-blue text-white">
+      <div class="container text-center">
+        <h1>Create new playlist</h1>
       </div>
+    </header>
 
-      <div class="center">
-      <!-- onsubmit="return validateForm()" -->
-      <form class = 'new-track-form' name= "form" action="/playlists/{{playlist._id}}/update" method="POST">
-        <div class="row">
-          <div class="col-25">
-            <label for="adesc">Short description:</label>
-          </div>
-          <div class="col-75">
-            <input type="text" id="adesc" name="desc" value="{{playlist.desc}}" required>
-          </div>
+    <section class="bg-gray">
+      <div class="container">
+      <div class="col-lg-12 mx-auto bg-light border rounded" style="padding: 20px;">
+      <form action="/playlists/{{playlist._id}}/update" method="POST">
+        <div class="form-group">
+            <label for="desc">Short description:</label>
+            <input type="text" class="form-control" id="desc" value="{{playlist.desc}}" name="desc" required>
         </div>
-
-        <div class="row">
-          <div class="col-25">
-            <label for="pre-selected-options">Select tracks:</label>
-          </div>
-          <div class="col-75">
-            <select name="tracks[]" id="pre-selected-options" multiple="multiple">
+        <div class="form-group">
+            <label for="tracks">Tracks:</label>
+          <select name="tracks[]" id="tracks" multiple="multiple">
             {{#selected}}
                 <option selected="selected" value="{{_id}}">{{author}} - {{name}}</option>
             {{/selected}}
@@ -46,29 +56,25 @@
                 <option value="{{_id}}">{{author}} - {{name}}</option>
             {{/not_selected}}
             </select>
-            <script src="/javascripts/jquery.min.js"></script>
-            <!-- Bootstrap JavaScript -->
-            <script src="/javascripts/bootstrap.min.js"></script>
-             <script src="/javascripts/jquery.multi-select.js"></script>
-            <script type="text/javascript">
-            // run pre selected options
-               $('#pre-selected-options').multiSelect();
-            </script>
-          </div>
         </div>
-        <br>
-        <div class="row">
-          <input type="submit" value="Submit">
-        </div>
-      </form>
+            <button type="submit" class="btn btn-primary center">Submit</button>
+        </form>
       </div>
+      </div>
+    </section>
 
 
-    </div>
+    {{>footer}}
 
-  {{ >footer }}
+    <script src="/javascripts/jquery.min.js"></script>
+            <!-- Bootstrap JavaScript -->
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/jquery.multi-select.js"></script>
+    <script type="text/javascript">
+        // run pre selected options
+        $('#tracks').multiSelect();
+    </script>
 
-  </div>
-</body>
+  </body>
 
 </html>

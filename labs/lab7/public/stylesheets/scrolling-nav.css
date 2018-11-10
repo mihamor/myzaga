@@ -47,6 +47,15 @@ section.user-list{
   width:200px
 }
 
+.user-img{
+  border: 3px solid #787FCA;
+  height:200px;
+  margin-top: 0px;
+  margin-right: 50px;
+  margin-bottom: 10px;
+  width:200px
+}
+
 #tsearch{
   width: 85%;
   padding: 10px;
@@ -82,6 +91,15 @@ audio{
   background-size: cover;
   background-position: center center;
 }
+
+
+.header-bg{
+  
+    background-image: url('/images/user_header.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
 span.user-status.online{
   background: green;
 }

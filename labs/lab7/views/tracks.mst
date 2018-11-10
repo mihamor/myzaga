@@ -22,11 +22,11 @@
 
     {{>nav-bar}}
 
-    <header class="bg-blue text-white">
+  <!--  <header class="bg-blue text-white">
       <div class="container text-center">
         <h1>Tracks</h1>
       </div>
-    </header>
+    </header>-->
 
     <section class="track-list-container bg-gray">
       <div class="container text-center">
@@ -44,8 +44,10 @@
          </div>
          </div>
 
-        <hr>
+        
         {{#tracks.length}}
+        <div class="bg-gray" style="height:600px; overflow-y: scroll; overflow-x: hidden; margin: 20px 0px;">
+        <hr>
         {{#tracks}}
         <div class="row">
               <div class="col-md-4">
@@ -66,7 +68,7 @@
         </div>
         <hr>
          {{/tracks}}
-
+        </div>
 
          
          <div class="row">
@@ -74,7 +76,7 @@
             <div class =page_refs>
                 {{this_page}} out of {{page_count}} 
             </div>
-            <form class="page_refs">
+            <form style="margin-bottom:20px;"class="page_refs">
                 {{#search_str}}
                 <input type="hidden" name="search" value="{{search_str}}">
                 {{/search_str}}

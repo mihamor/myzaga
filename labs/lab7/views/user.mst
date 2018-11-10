@@ -1,44 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{{> head}}
+  <head>
 
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
+    <title>MyZaGa</title>
 
-    <div class=wrapper>
-         {{> header}}
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
-        <ul class="menu-bar">
-            <li class="menu-opt"><a href="/">Home</a></li>
-            <li class="menu-opt"><a class=active href="/users">Users</a></li>
-            <li class="menu-opt"><a href="/playlists">Playlists</a></li>
-            <li class="menu-opt"><a href="/tracks">Tracks</a></li>
-            <li class="menu-opt"><a href="/about">About</a></li>
-        </ul>
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
 
-        <div id="page-content">
-            <div class="center vis-text">
-                <h1>{{login}}`s profile</h1>
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-blue text-white">
+      <div class="container text-center">
+      <img class="rounded-circle inline-block user-img" src="{{currUser.avaUrl}}"></img>
+        <b class="bg-dark rounded" style="font-size: 32px; padding: 8px;">{{currUser.login}}</b>
+      </div>
+    </header>
+
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 mx-auto bg-gray rounded" style="padding: 50px;">
+                <p><b>Fullname: </b>{{currUser.fullname}}</p>
+                <p><b>Registration data:</b>{{currUser.registeredAt}}</p>
+                <p><b>Bio: </b>{{currUser.bio}}</p>
+            <hr>
+            <div class="text-center">
+             <a class="btn btn-primary" href="/playlists/{{currUser.uploaded_tracks}}">Uploaded tracks</a>
+            <a class="btn btn-primary" href="/playlists?user={{currUser._id}}">{{currUser.login}}`s playlists</a>
+            {{#isOwner}}
+            <a class="btn btn-primary" href="/users/{{currUser._id}}/update">Update user</a>
+            {{/isOwner}}
             </div>
-            <div class=vis-text>
-                <img class ="user-img" src="{{avaUrl}}" alt="Avatar">
-                <div class="user-info-table">
-                    <div class="user-data"><b>Login: </b>{{login}}</div>
-                    <div class="user-data"><b>Full name: </b>{{fullname}}</div>
-                    <div class="user-data"><b>Registration data: </b>{{registeredAt}}</div>
-                    <p><b>Bio: </b>{{bio}}</p>
-                    <div class="playlist-refs"><a class=action-button href="/playlists/{{uploaded_tracks}}">Uploaded tracks</a>
-                    <a class=action-button href="/playlists?user={{_id}}">{{login}}`s playlists</a>
-                    <a class=action-button href="/users/{{_id}}/update">Update user</a></div>
-                </div>
-            </div>
+          </div>
         </div>
-    
+      </div>
+    </section>
 
-        {{ >footer }}
-    </div>
+    {{>footer}}
 
-</body>
+  </body>
 
 </html>

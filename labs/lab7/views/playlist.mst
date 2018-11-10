@@ -26,7 +26,7 @@
       <div class="container text-center">
         <h1>Playlist</h1>
         <p class="lead">description: {{playlist.desc}}</p>
-        <p class="lead">uploaded by: <a class="btn btn-light" href="/users/{{userRef._id}}">{{playlist.userRef.login}}</a></p>
+        <p class="lead">uploaded by: <a class="btn btn-light" href="/users/{{playlist.userRef._id}}">{{playlist.userRef.login}}</a></p>
       </div>
     </header>
 

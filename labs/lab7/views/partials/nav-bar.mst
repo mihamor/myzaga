@@ -20,12 +20,14 @@
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="/playlists">Playlists</a>
             </li>
+            {{#user.role}}
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/users">Users</a>
+              </li>
+            {{/user.role}}
             <li class="dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/users/{{_id}}"><span class="caret">{{user.login}} </span></a>
               <ul class="dropdown-menu">
               <li><a class="btn" href="/users/{{_id}}">Profile</a></li>
-              {{#user.role}}
-              <li><a class="btn" href="/users">Users</a></li>
-              {{/user.role}}
               <li><a class="btn"href="/auth/logout">Logout</a></li>
               </ul>
             </li>

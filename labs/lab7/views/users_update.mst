@@ -1,58 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
-{{> head}}
+  <head>
 
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <div class=wrapper>
-     {{> header}}
+    <title>MyZaGa</title>
 
-    <ul class="menu-bar">
-      <li class="menu-opt"><a href="/">Home</a></li>
-      <li class="menu-opt"><a class=active href="/users">Users</a></li>
-      <li class="menu-opt"><a href="/playlists">Playlists</a></li>
-      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
-      <li class="menu-opt"><a href="/about">About</a></li>
-    </ul>
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
 
-    <div id="page-content">
-      <div class="center vis-text">
-        <h1>Users</h1>
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-blue text-white">
+      <div class="container text-center">
+        <h1>Update user</h1>
       </div>
+    </header>
 
-      <div class="center">
-      <!-- onsubmit="return validateForm()" -->
-      <form class = 'new-track-form' name= "form" action="/users/{{_id}}/update" method="POST" enctype="multipart/form-data">
-        <div class="row">
-          <div class="col-25">
-            <label for="name">Fullname:</label>
-          </div>
-          <div class="col-75">
-            <input type="text" id="name" name="name" placeholder="Fullname.." value="{{fullname}}" required>
-          </div>
+    <section class="bg-gray">
+      <div class="container">
+      <form action="/users/{{currUser._id}}/update" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="author">Fullname:</label>
+            <input type="text" class="form-control" id="author" value="{{currUser.fullname}}" name="name">
         </div>
-        <div class="row">
-          <div class="col-25">
-            <label for="bio">Bio:</label>
-          </div>
-          <div class="col-75">
-            <textarea type="text" id="bio" name="bio" placeholder="Bio..." required>{{bio}}</textarea>
-          </div>
+        <div class="form-group">
+            <label for="name">Bio:</label>
+            <input type="text" class="form-control" id="name" value="{{currUser.bio}}" name="bio">
         </div>
-        <br>
-        <div class="row">
-          <input type="submit" value="Submit">
+       <div class="form-group">
+            <label for="ava">Change ava image:</label>
+            <input type="file" id="ava" name="ava" accept="image/*">
         </div>
-      </form>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
       </div>
+    </section>
 
 
-    </div>
+    {{>footer}}
 
-  {{ >footer }}
-
-  </div>
-</body>
+  </body>
 
 </html>
