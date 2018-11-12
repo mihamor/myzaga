@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -26,6 +26,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "randomstring": "^1.1.5",
+    "sha256": "^0.2.0",
     "sha512": "0.0.1",
     "swig": "^1.4.2"
   },

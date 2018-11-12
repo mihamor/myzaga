@@ -130,7 +130,7 @@ app.get("/about", function(req, res){
 });
 
 
-app.get("/api/users/:id(\\d+)", function(req, res){
+/*app.get("/api/users/:id(\\d+)", function(req, res){
 
     let id = Number(req.params.id);
     User.getById(id)
@@ -192,7 +192,7 @@ app.get("/api/tracks/test_add", (req, res)=>{
         .then(x => x.toJSON())
         .then(x => res.json(x));
 });
-
+*/
 
 app.use( function(req, res){
     res.status(404);

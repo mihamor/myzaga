@@ -8,13 +8,13 @@ const cloudinary = require("cloudinary");
 const util = require("util");
 const config = require("../config")
 
-const sha512 = require("sha512");
+const sha256 = require("sha256");
 
 class Utils {
 
     static hash(str){
         let saltedStr = str + config.salt;
-        return sha512(str).toString("hex");
+        return sha256(saltedStr).toString("hex");
     }
 
     static insertUserWithPlaylist(user){
