@@ -37,8 +37,8 @@ router.get("/",
     Track.getAll()
         .then(tracks =>{
             //console.log(tracks);
-            let arr_after_search = search_throgh_arr(tracks, search_str);
-            let p_tracks = formItemsPage(arr_after_search, tracksPerPage, page);
+            let arr_after_search = Utils.search_throgh_arr(tracks, search_str);
+            let p_tracks = Utils.formItemsPage(arr_after_search, tracksPerPage, page);
             let next_page = page * tracksPerPage < arr_after_search.length ? page + 1 : 0;
             let prev_page = page - 1;
             let page_count = Math.ceil(arr_after_search.length / tracksPerPage);
@@ -189,28 +189,8 @@ router.get("/:id", (req, res, next)=>{
 (req, res)=>{
     let id = req.params.id;
     console.log("track/id");
-    Promise.all([
-        User.getAll(),
-        Track.getById(id)
-            .populate({
-                path: "uploadedListRef",
-                model: 'Playlist',
-                populate : {
-                    path: "userRef",
-                    model: 'User',
-                }
-            })
-            .populate({
-                path: "comments",
-                model: 'Comment',
-                populate : {
-                    path: "user",
-                    model: 'User',
-                }
-            })
-            .exec()
-        ])
-        .then(([users,track]) => {
+    Utils.getPopulatedTrack(id)
+        .then(track => {
             console.log(track);
             if(!track) 
                 return Promise.reject(new Error("No such track"));
@@ -225,10 +205,10 @@ router.get("/:id", (req, res, next)=>{
                 track.comments = track.comments.sort( (a , b) => {
                     return b.addedAt - a.addedAt;
                 });
-                res.render("track", {track: track, users: users, user:req.user, isOwner: isOwner})
+                res.render("track", {track: track, user:req.user, isOwner: isOwner})
             }
         })
-    .   catch(err => {
+        .catch(err => {
             console.log(err.message);
             req.next();
         });
@@ -274,31 +254,6 @@ router.post("/:id", (req, res, next)=>{
         });
 });
 
-
-function formItemsPage(arr, itemsPerPage, page){
-    let index_start = (page-1) * itemsPerPage;
-    let index_end = (page) * itemsPerPage;
-    index_end =  index_end < arr.length ? index_end : arr.length;
-    return arr.slice(index_start, index_end);
-}
-
-function search_throgh_arr(arr, search_str){
-    let arr_after_search = [];
-    if(!search_str) arr_after_search = arr;
-    else {
-        for(let track of arr){
-            if(compare_to_track(track, search_str)) 
-                arr_after_search.push(track);
-        }
-    }
-    return arr_after_search;
-}
-
-function compare_to_track(track, search_str){
-    search_str = search_str.toLowerCase();
-    return track.author.toLowerCase().includes(search_str)
-    || track.name.toLowerCase().includes(search_str);
-}
 
 function getFileExt(str){
     return str.split(".").pop();

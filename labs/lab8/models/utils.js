@@ -49,6 +49,26 @@ class Utils {
 
     }
 
+    static getPopulatedTrack(id){
+        return Track.getById(id)
+        .populate({
+            path: "uploadedListRef",
+            model: 'Playlist',
+            populate : {
+                path: "userRef",
+                model: 'User',
+            }
+        })
+        .populate({
+            path: "comments",
+            model: 'Comment',
+            populate : {
+                path: "user",
+                model: 'User',
+            }
+        })
+        .exec();
+    }
     static getAllPlaylistFromUser(user){
         if(!User.check_params(user)) 
             return Promise.reject(new Error("Invalid arguments"));
@@ -83,9 +103,38 @@ class Utils {
             console.log(newUser);
             return User.update(newUser);
           });
-        }
+    }
 
+
+    static formItemsPage(arr, itemsPerPage, page){
+        let index_start = (page-1) * itemsPerPage;
+        let index_end = (page) * itemsPerPage;
+        index_end =  index_end < arr.length ? index_end : arr.length;
+        return arr.slice(index_start, index_end);
+    }
+    
+    static search_throgh_arr(arr, search_str){
+        let arr_after_search = [];
+        if(!search_str) arr_after_search = arr;
+        else {
+            for(let track of arr){
+                if(compare_to_track(track, search_str)) 
+                    arr_after_search.push(track);
+            }
+        }
+        return arr_after_search;
+    }
 }
+
+
+function compare_to_track(track, search_str){
+    search_str = search_str.toLowerCase();
+    return track.author.toLowerCase().includes(search_str)
+    || track.name.toLowerCase().includes(search_str);
+}
+
+
+
 const handle_file_upload_promised = util.promisify(handleFileUpload);
 const delete_file_promised = util.promisify(deleteFile);
 function handleFileUpload(fileBuffer, callback) {

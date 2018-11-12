@@ -18,8 +18,14 @@ const cloudinary = require("cloudinary");
 // new imports
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const BasicStrategy = require('passport-http').BasicStrategy;
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+
+
+
+
+
 
 
 app.use(session({
@@ -44,7 +50,8 @@ passport.deserializeUser(async function(id, done) {
     }
 });
 
-passport.use(new LocalStrategy(async (username, password, done) => {
+
+async function onLogin(username, password, done) {
     try{
         console.log(username, password);
 
@@ -56,7 +63,10 @@ passport.use(new LocalStrategy(async (username, password, done) => {
         console.log(err.message);
         done(err, null);
     }
-}));
+}
+
+passport.use(new LocalStrategy(onLogin));
+passport.use(new BasicStrategy(onLogin));
 
 
 
@@ -124,77 +134,17 @@ app.use("/auth", authRouter);
 const commentRouter = require("./routes/comments");
 app.use("/comments", commentRouter);
 
+const apiV1= require("./routes/api");
+app.use("/api/v1", apiV1);
+
 
 app.get("/about", function(req, res){
     res.render('about', { user: req.user});
 });
 
 
-/*app.get("/api/users/:id(\\d+)", function(req, res){
 
-    let id = Number(req.params.id);
-    User.getById(id)
-        .then(track => {
-            if(!track) res.sendStatus(404)
-            else res.send(track);
-        })
-        .catch(err => {
-            console.log(err.message);
-            res.sendStatus(404);
-        });
-});
-app.get("/api/users", function(req, res){
-    User.getAll()
-        .populate("downloaded_tracks")
-        .exec()
-        .then(users => res.send(users))
-        .catch(err => res.sendStatus(404));
-});
-
-app.get("/api/users/test_add", (req, res)=>{
-
-    let UserModel = User.this_model();
-    let PlaylistModel = Playlist.this_model();
-    let u = new User(0, "123123123123", "djigolo", "Sanek Chert", 0, "/images/users/user2.jpeg", "шо вы малые блин!");
-    User.insert(u)
-    .then(x => res.send(x))
-    .catch(err => {
-        console.log(err);
-        req.next();
-    });
-
-});
-
-app.get("/api/users/populated", (req, res)=>{
-    let UserModel = User.this_model();
-    UserModel.find()
-    .populate("uploaded_tracks")
-    .exec()
-    .then(x => x.map(i => i.toJSON()))
-    .then(x => res.json(x));
-
-});
-
-
-app.get("/api/playlists/test_add", (req, res)=>{
-    
-    let PlaylistModel = Playlist.this_model();
-    let t = new Playlist("0", "Some desc", false);
-    new PlaylistModel(t).save()
-        .then(x => x.toJSON())
-        .then(x => res.json(x));
-});
-app.get("/api/tracks/test_add", (req, res)=>{
-    
-    let TrackModel = Track.this_model();
-    let t = new Track("Metallica", "shit", "shoto", ".", 12130, 20123, ",");
-    new TrackModel(t).save()
-        .then(x => x.toJSON())
-        .then(x => res.json(x));
-});
-*/
-
-app.use( function(req, res){
+app.use( (req, res) => {
     res.status(404);
     res.render('error', {error : ""});
 });
