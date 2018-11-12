@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+{{> head}}
+
+<body>
+
+  <div class=wrapper>
+     {{> header}}
+
+    <ul class="menu-bar">
+      <li class="menu-opt"><a href="/">Home</a></li>
+      <li class="menu-opt"><a class=active href="/users">Users</a></li>
+      <li class="menu-opt"><a href="/playlists">Playlists</a></li>
+      <li class="menu-opt"><a href="/tracks">Tracks</a></li>
+      <li class="menu-opt"><a href="/about">About</a></li>
+    </ul>
+
+    <div id="page-content">
+      <div class="center vis-text">
+        <h1>Users</h1>
+      </div>
+
+      <div class="center">
+      <!-- onsubmit="return validateForm()" -->
+      <form class = 'new-track-form' name= "form" action="/users/{{_id}}/update" method="POST" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-25">
+            <label for="name">Fullname:</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="name" name="name" placeholder="Fullname.." value="{{fullname}}" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="bio">Bio:</label>
+          </div>
+          <div class="col-75">
+            <textarea type="text" id="bio" name="bio" placeholder="Bio..." required>{{bio}}</textarea>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <input type="submit" value="Submit">
+        </div>
+      </form>
+      </div>
+
+
+    </div>
+
+  {{ >footer }}
+
+  </div>
+</body>
+
+</html>
