@@ -168,6 +168,8 @@ router.post("/:id/update",
             console.log(track);
             if(!track) 
                 return Promise.reject(new Error("No such track"));
+            else if(!is_track_owner(req.user, track))
+                return Promise.reject(new Error("Forbidden"));
             track.author = author;
             track.name = name;
             track.year = year;

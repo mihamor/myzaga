@@ -28,11 +28,13 @@ class Storage {
     static isExist(id){
         let curr_model = this.this_model()
         return curr_model.find({_id: id})
+            .catch(err =>{
+                return Promise.reject(new Error("Entity was not found"));
+            })
             .then(x => {
-                if(x.length !== 0) return Promise.resolve();
-                else return Promise.reject(
-                new Error(`${curr_model.baseModelName}: entity was not found`));
-            });
+                if(x.length !== 0) return Promise.resolve(true);
+                else return Promise.reject();
+            })
     }
     static update(ent) {
         if(!this.check_params(ent)) 

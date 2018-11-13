@@ -36,7 +36,7 @@ class User extends Storage{
         .then(x => {
             if(x.length == 0) return Promise.resolve();
             else return Promise.reject(
-            new Error(`${curr_model.baseModelName}: entity was found`));
+            new Error("Invalid login"));
         });
 }
 

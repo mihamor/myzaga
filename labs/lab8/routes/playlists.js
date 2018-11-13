@@ -87,7 +87,7 @@ auth_cbs.checkAuthRedirect,
         .exec()
         .then(playlist => {
             if (!playlist)
-                return Promise.reject("No such playlist");
+                return Promise.reject(new Error("No such playlist"));
 
             let isOwner = is_playlist_owner(req.user, playlist);
 

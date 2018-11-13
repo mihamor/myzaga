@@ -74,19 +74,19 @@ auth_cbs.checkAuth,
         return user;
     })
     .then(user => {
+        if(!is_user_owner(req.user, user))
+            return Promise.reject(new Error("Forbidden"));
+        user.bio = bio;
+        user.fullname = name;
+        return user;
+    })
+    .then(user => {
         if(ava_bin)
             return Utils.deleteFileAsync(
                 user.avaUrl.substring(user.avaUrl.lastIndexOf('/')+1))
                 .then(() => Utils.uploadBufferAsync(ava_bin.data))
                 .then(result => {user.avaUrl = result.url; return user;})
         else return user;
-    })
-    .then(user => {
-        if(!is_user_owner(req.user, user))
-            return Promise.reject(new Error("Forbidden"));
-        user.bio = bio;
-        user.fullname = name;
-        return user;
     })
     .then(user => User.update(user))
     .then(() => res.redirect(`/users/${id}`))

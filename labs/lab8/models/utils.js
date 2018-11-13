@@ -49,6 +49,13 @@ class Utils {
 
     }
 
+    static getPopulatedPlaylist(id){
+        return Playlist.getById(id)
+        .populate("userRef")
+        .populate("tracks")
+        .exec();
+    }
+
     static getPopulatedTrack(id){
         return Track.getById(id)
         .populate({
@@ -104,8 +111,7 @@ class Utils {
             return User.update(newUser);
           });
     }
-
-
+    
     static formItemsPage(arr, itemsPerPage, page){
         let index_start = (page-1) * itemsPerPage;
         let index_end = (page) * itemsPerPage;
@@ -114,16 +120,26 @@ class Utils {
     }
     
     static search_throgh_arr(arr, search_str){
-        let arr_after_search = [];
-        if(!search_str) arr_after_search = arr;
-        else {
-            for(let track of arr){
-                if(compare_to_track(track, search_str)) 
-                    arr_after_search.push(track);
-            }
-        }
-        return arr_after_search;
+        return search_throgh(arr, search_str, compare_to_track);
     }
+    static search_throgh_users(arr, search_str){
+        return search_throgh(arr, search_str, compare_to_user);
+    }
+    static search_throgh_playlists(arr, search_str){
+      return search_throgh(arr, search_str, compare_to_playlist);
+    }
+}
+
+function search_throgh(arr, search_str, cmp){
+    let arr_after_search = [];
+    if(!search_str) arr_after_search = arr;
+    else {
+        for(let track of arr){
+            if(cmp(track, search_str)) 
+                arr_after_search.push(track);
+        }
+    }
+    return arr_after_search;
 }
 
 
@@ -133,6 +149,17 @@ function compare_to_track(track, search_str){
     || track.name.toLowerCase().includes(search_str);
 }
 
+
+function compare_to_playlist(playlist, search_str){
+    search_str = search_str.toLowerCase();
+    return playlist.desc.toLowerCase().includes(search_str)
+}
+
+function compare_to_user(user, search_str){
+    search_str = search_str.toLowerCase();
+    return user.login.toLowerCase().includes(search_str)
+    || user.fullname.toLowerCase().includes(search_str)
+}
 
 
 const handle_file_upload_promised = util.promisify(handleFileUpload);
