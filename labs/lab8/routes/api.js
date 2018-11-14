@@ -167,15 +167,16 @@ async (req, res) => {
     console.log("POST track/id/update");
 
     try{
-        if(!check_body_update(req)) throw new Error("Bad request");
+        //if(!check_body_update(req)) throw new Error("Bad request");
         let track = await Track.getById(id);
         console.log(track);
         if(!track) throw new Error("No such entity");
         else if(!is_track_owner(req.user, track)) throw new Error("Forbidden");
-        track.author = author;
-        track.name = name;
-        track.year = year;
-        track.album = album;
+
+        track.author = author ? author : track.author;
+        track.name = name ? name : track.name;
+        track.year = !isNaN(Number(year)) ? Number(year) : track.year;
+        track.album = album ? album : track.album;
         const oldTrack = await Track.update(track);
         res.json(oldTrack);
     }catch(err){
@@ -306,22 +307,23 @@ async (req, res)=> {
     let tracks = req.body.tracks;
     let id = req.params.id;
     
-    if (!tracks) tracks = [];
-    else if (typeof tracks === "string")
+    //if (!tracks) tracks = [];
+    if (typeof tracks === "string")
         tracks = [tracks];
 
     console.log(tracks);
 
     try{
-        if(!desc) throw new Error("Bad request");
+        //if(!desc) throw new Error("Bad request");
         let playlist = await Playlist.getById(id);
+        if(tracks)
         for(const track of tracks){
             const isExist = await Track.isExist(track);
             if(!isExist) throw new Error("No such entity");
         }
 
-        playlist.desc = desc;
-        playlist.tracks = tracks;
+        playlist.desc = desc ? desc : playlist.desc;
+        playlist.tracks = tracks ? tracks : playlist.tracks;
         const oldPlaylist = await Playlist.update(playlist);
         res.json(oldPlaylist);
     }catch(err){
@@ -387,7 +389,7 @@ async (req, res) => {
     let id = req.params.id;
 
     try{ 
-        if(!check_body_upd_user(req)) throw new Error("Bad request");
+        //if(!check_body_upd_user(req)) throw new Error("Bad request");
         let user = await User.getById(id);
         if(!user) throw new Error("No such entity");
         if(!is_user_owner(req.user, user)) throw new Error("Forbidden");
@@ -397,8 +399,8 @@ async (req, res) => {
             let result = await Utils.uploadBufferAsync(ava_bin.data);
             user.avaUrl = result.url;
         }else if(req.files && req.files.ava) throw new Error("Bad request");
-        user.bio = bio;
-        user.fullname = name;
+        user.bio = bio ? bio : user.bio;
+        user.fullname = name ? name : user.fullname;
         let oldUser = await User.update(user);
         res.json(oldUser);
     }catch (err) {
@@ -613,7 +615,7 @@ function check_image_file(file){
     || file.mimetype === "image/png";
 }
 function valid_user_info(str){
-    return /^(\w{3,})+$/.test(str);
+    return str && /^(\w{3,})+$/.test(str);
 }
 
 function removeItemFromArr(arr, item){
