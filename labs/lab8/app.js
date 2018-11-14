@@ -137,6 +137,9 @@ app.use("/comments", commentRouter);
 const apiV1= require("./routes/api");
 app.use("/api/v1", apiV1);
 
+const developerV1 = require("./routes/developer");
+app.use("/developer/v1", developerV1);
+
 
 app.get("/about", function(req, res){
     res.render('about', { user: req.user});
