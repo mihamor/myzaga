@@ -34,17 +34,18 @@
         <div class="row">
           <div class="col-lg-8 mx-auto">
             <h2>Endpoints</h2>
-            <p class="lead"><b>NOTE:</b> <code>{entities}</code> is refers to <code>users</code>,<code>tracks</code>, <code>playlists</code>.</p>
+            <p class="lead"><b>NOTE:</b> <code>{entities}</code> is refers to <code>users</code>,<code>tracks</code>, <code>playlists</code>, <code>comments</code>.</p>
+            <p>Get current user: <code>GET /api/v1/me</code></p>
             <p>Get list of entities: <code>GET /api/v1/{entities}</code>
             <ul>
                 <li>queries: <i>search: search throught list by string, page: page number </i></li>
-                <li><i>user: get playlists by user id </i><b>only for <code>users</code> model</b></li>
+                <li><i>user: get playlists by user id </i><b>only for <code>playlists</code> model</b></li>
             </ul>
             <b>Responses with a paginated list</b>
             </p>
             <p>Get entity by id: <code>GET /api/v1/{entities}/:id</code><br>
             <b>Responses with a single entity</b></p>
-            <p>Create new entity: <code>POST /api/v1/{entities}</code><ul>
+            <p>Create new entity: <code>POST /api/v1/{entities}/new</code><ul>
                 <li>params for <code>users</code>: <i>login: alphanumeric string, pass: alphanumeric string</i></li>
                 <li>params for <code>playlists</code>: <i>desc: string, tracks: array of <code>track</code> ids</i></li>
                 <li>params for <code>tracks</code>: <i>author, album, name: string, year: number, track: audio file, image: image file</i></li>

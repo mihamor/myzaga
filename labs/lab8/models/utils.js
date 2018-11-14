@@ -125,6 +125,9 @@ class Utils {
     static search_throgh_users(arr, search_str){
         return search_throgh(arr, search_str, compare_to_user);
     }
+    static search_throgh_comments(arr, search_str){
+        return search_throgh(arr, search_str, compare_to_comment);
+    }
     static search_throgh_playlists(arr, search_str){
       return search_throgh(arr, search_str, compare_to_playlist);
     }
@@ -155,6 +158,11 @@ function compare_to_playlist(playlist, search_str){
     return playlist.desc.toLowerCase().includes(search_str)
 }
 
+
+function compare_to_comment(comment, search_str){
+    search_str = search_str.toLowerCase();
+    return comment.content.toLowerCase().includes(search_str);
+}
 function compare_to_user(user, search_str){
     search_str = search_str.toLowerCase();
     return user.login.toLowerCase().includes(search_str)

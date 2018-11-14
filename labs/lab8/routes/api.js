@@ -11,12 +11,6 @@ const passport = require('passport');
 const router = express.Router();
 
 
-router.get('/',
-passport.authenticate('basic', { session: false }),
-(req, res) => {
-    res.json({});
-});
-
 
 
 router.get('/me',
@@ -84,7 +78,7 @@ async (req, res) => {
 });
 
 
-router.post("/tracks/new",
+router.post("/tracks",
 passport.authenticate('basic', { session: false }),
 async (req, res) => {
     try {
@@ -250,7 +244,7 @@ async (req, res) => {
 });
 
 
-router.post("/playlists/new", 
+router.post("/playlists", 
 passport.authenticate('basic', { session: false }),
 async (req, res) => {
     console.log("NEW PLAYLIST");
@@ -439,12 +433,107 @@ async (req, res) => {
     }
 });
 
+router.get("/comments", 
+passport.authenticate('basic', { session: false}),
+async (req, res) => {
+    
+    let page = Number(req.query.page);
+    let search_str = req.query.search;
+    if (isNaN(page) || page < 1) page = 1;
+    if (!search_str) search_str = "";
+    console.log(req.url);
+    const commentsPerPage = 3;
+
+    try{
+        let comments = await Comment.getAll();
+
+        let arr_after_search = Utils.search_throgh_comments(comments, search_str);
+        let p_comments = Utils.formItemsPage(arr_after_search, commentsPerPage, page);
+        let page_count = Math.ceil(arr_after_search.length / commentsPerPage);
+        console.log(p_comments);
+        res.json({
+            comments: p_comments,
+            search_str: search_str,
+            page_count: page_count,
+            this_page: page
+        });
+    } catch(err) {
+        console.log(err.message);
+        res.status(400).json({ err: err.message });
+    }
+});
+
+router.get("/comments/:id", 
+passport.authenticate('basic', { session: false}),
+async (req, res) => {
+    let id = req.params.id;
+    console.log(id);
+    try{ 
+        const comment = await Comment.getById(id);
+        if (!comment) throw new Error("No such entity");
+        console.log("Comment: " + comment);
+        res.json(comment);
+    }catch(err) {
+        console.log(err.message);
+        res.status(400).json({ err: "No such entity" });
+    }
+});
+
+router.post("/comments/:track_id/new", 
+passport.authenticate('basic', { session: false}),
+async (req, res) => {
+    console.log("POST NEW COMMENT");
+    let trackId = req.params.track_id;
+    let userId = req.user._id;
+    let content = req.body.commentText;
+
+    try{
+        if(!check_body_comment(req.body)) throw new Error("Bad request");
+        let comment = new Comment(content, userId);
+
+        const isExist = await Track.isExist(trackId);
+        if(!isExist) throw new Error("No such entity");
+        let newId = await Comment.insert(comment);
+        await Track.insertComment(trackId, newId);
+
+        comment._id = newId;
+        res.json(comment);
+    }catch(err) {
+        console.log(err.message);
+        res.status(400).json({ err: err.message });
+    }
+});
+
+router.post("/comments/:id", 
+passport.authenticate('basic', { session: false}),
+async (req, res) => {
+    console.log("DELETE COMMENT");
+    let commentId = req.params.id;
+    let trackId = req.body.trackId;
+
+    try{
+        if(!trackId) throw new Error("Bad request");
 
 
+        let comment = await Comment.getById(commentId);
+        if(!is_comment_owner(req.user, comment)) throw new Error("Forbidden");
+        let track = await Utils.isTrackHasComment(trackId, commentId);
+        track.comments = removeItemFromArr(track.comments, commentId);
+        await Track.update(track);
+
+        let oldComment = await Comment.delete(commentId);
+        res.json(oldComment);
+    }catch(err) {
+        console.log(err.message);
+        res.status(400).json({ err: err.message });
+    }
+});
 
 
-
-
+router.use('/*',
+(req, res) => {
+    res.json({});
+});
 
 
 function is_comment_owner(user, comment) {
@@ -504,6 +593,14 @@ function check_body_upd_user(req) {
     && req.body.bio;
 }
 
+
+function check_body_comment(body){
+    let content = body.commentText;
+    return content
+        && content.length != 0;
+}
+
+
 function check_body_files(files) {
     return files && files.track && files.image
     && files.track.mimetype === "audio/mpeg"
@@ -517,6 +614,14 @@ function check_image_file(file){
 }
 function valid_user_info(str){
     return /^(\w{3,})+$/.test(str);
+}
+
+function removeItemFromArr(arr, item){
+    let index = arr.indexOf(item);
+    if(index > -1){
+        arr.splice(index, 1);
+    }
+    return arr;
 }
 
 module.exports = router;

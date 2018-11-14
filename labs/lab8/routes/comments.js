@@ -36,7 +36,7 @@ router.post("/:id/new", (req, res, next) => {
         });
 });
 
-router.post("/:id", function(req, res){
+router.post("/:id", (req, res) => {
     console.log("DELETE COMMENT");
     let commentId = req.params.id;
     let trackId = req.body.trackId;
