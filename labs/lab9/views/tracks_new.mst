@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MyZaGa</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    {{>nav-bar}}
+
+    <header class="bg-blue text-white">
+      <div class="container text-center">
+        <h1>Create new track</h1>
+      </div>
+    </header>
+
+    <section class="bg-gray">
+      <div class="container">
+      <form action="/tracks/new" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="author">Author:</label>
+            <input type="text" class="form-control" id="author" placeholder="Enter author..." name="author" required>
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter name..." name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="author">Album:</label>
+            <input type="text" class="form-control" id="album" placeholder="Enter album..." name="album" required>
+        </div>
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <input type="number" class="form-control" id="year" placeholder="Enter year..." name="year" required>
+        </div>
+        <div class="form-group">
+            <label for="timage">Select track image:</label>
+            <input type="file" id="timage" name="image" accept="image/*" required>
+        </div>
+        <div class="form-group">
+            <label for="tfile">Select track:</label>
+            <input type="file" id="tfile" name="track" accept = "audio/*" required>
+        </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </section>
+
+
+    {{>footer}}
+
+  </body>
+
+</html>
