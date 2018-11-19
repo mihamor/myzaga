@@ -13,5 +13,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="/javascripts/mustache.min.js"></script>
+
+       <script src="/javascripts/lib.js"></script>
   </head>

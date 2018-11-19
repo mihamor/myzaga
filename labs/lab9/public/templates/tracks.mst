@@ -1,0 +1,75 @@
+  <section class="track-list-container bg-gray">
+      <div class="container text-center">
+         <div class="row">
+         <div class="col-lg-8 mx-auto">
+          <form action="/tracks" method="GET">
+                <input type="search" id="tsearch" name="search" placeholder="Search track..." >
+                <button class = "btn btn-primary" type="submit">Search</button>
+            </form>
+            {{#search_str}}
+                <div class = "search-info">
+                Seacth results for: {{search_str}}
+                </div>
+            {{/search_str}}
+         </div>
+         </div>
+
+        
+        {{#tracks.length}}
+        <div class="bg-gray" id="trackList" style="max-height:600px; overflow-y: scroll; overflow-x: hidden; margin: 20px 0px;">
+        <hr>
+        {{#tracks}}
+        <div class="row">
+              <div class="col-md-4">
+              <form onsubmit="onGetTrack('{{_id}}'); return false;">
+              <input type=hidden name="id" value="{{_id}}"></input>
+               <button type="submit">
+                  <img class="img-fluid rounded-1 track-img" style="" src={{trackImage}} alt="">
+              </button>
+              </form>
+            </div>
+            <div class="col-md-6 bg-light rounded" style:"border-radius:20px;">
+              <h3 class="text-primary" style="margin-top:20px;">{{name}}</h3>
+              <p  style="margin-top:20px;" >by {{author}}</p>
+                <audio controls>
+                        <source src="{{location}}" type="audio/mpeg"> Your browser does not support the audio element.
+                </audio>
+                <div>
+                 <a class="btn btn-primary float-right"  style="margin-top:20px; margin-bottom:20px;" href="/tracks/{{_id}}">View track</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+         {{/tracks}}
+        </div>
+        <script src="/javascripts/tracks_pagination.js"></script>
+
+         
+         <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="page_refs">
+                {{this_page}} out of {{page_count}} 
+            </div>
+            <form style="margin-bottom:20px;"class="page_refs">
+                {{#search_str}}
+                <input type="hidden" name="search" value="{{search_str}}">
+                {{/search_str}}
+                {{#prev_page}}
+                <button type ="submit" class='btn btn-primary' name="page" value="{{prev_page}}">&laquo; Previous page</button>
+                <!--<a class = 'previous' href="/tracks?page={{prev_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&laquo; Previous page</a>-->
+                {{/prev_page}}
+                {{#next_page}}
+                <button type ="submit" class='btn btn-primary' name="page" value="{{next_page}}">&raquo; Next page</button>
+                <!--<a class = 'next'  href="/tracks?page={{next_page}}{{#search_str}}&search={{search_str}}{{/search_str}}">&raquo; Next page</a>-->
+                {{/next_page}}
+            </form>
+            {{/tracks.length}}
+
+            {{^tracks.length}}
+            <div class = "center vis-text">No tracks were found.</div>
+            {{/tracks.length}}
+            <a class ="btn btn-primary float-right" href="/tracks/new">Add new track</a>
+        </div>
+        </div>
+      </div>
+    </section>

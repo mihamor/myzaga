@@ -20,7 +20,7 @@ passport.authenticate('jwt', { session: false }),
 });
 
 router.get('/tracks',
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res) => {
 
     let page = Number(req.query.page);
@@ -52,7 +52,7 @@ async (req, res) => {
 
 
 router.get('/tracks/:id',
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res) => {
     let id = req.params.id;
     console.log("track/id");
@@ -79,7 +79,7 @@ async (req, res) => {
 
 
 router.post("/tracks",
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res) => {
     try {
         if (!check_body(req)) throw new Error("Bad request");
@@ -126,7 +126,7 @@ async (req, res) => {
 });
 
 router.delete("/tracks/:id",
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res) => {
     let id = req.params.id;
     console.log("TRACK DELETE:" + id);
@@ -156,7 +156,7 @@ async (req, res) => {
 
 
 router.put("/tracks/:id",
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res) => {
     
     let id = req.params.id;
@@ -187,7 +187,7 @@ async (req, res) => {
 
 
 router.get("/playlists", 
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res) => {
 
 
@@ -228,7 +228,7 @@ async (req, res) => {
 
 
 router.get("/playlists/:id", 
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res) => {
     let id = req.params.id;
     console.log(id);
@@ -246,7 +246,7 @@ async (req, res) => {
 
 
 router.post("/playlists", 
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res) => {
     console.log("NEW PLAYLIST");
     let desc = req.body.desc;
@@ -281,7 +281,7 @@ async (req, res) => {
 
 
 router.delete("/playlists/:id", 
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 check_playlist_id,
 async (req, res) =>{
 
@@ -299,7 +299,7 @@ async (req, res) =>{
 
 
 router.put("/playlists/:id", 
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 check_playlist_id,
 async (req, res)=> {
     console.log("UPDATE PLAYLIST");
@@ -334,7 +334,7 @@ async (req, res)=> {
 
 
 router.get("/users", 
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 auth_cbs.checkAdminApi,
 async (req, res) => {
 
@@ -366,7 +366,7 @@ async (req, res) => {
 });
 
 router.get("/users/:id", 
-passport.authenticate('basic', { session: false }),
+passport.authenticate('jwt', { session: false }),
 async (req, res)=>{
     let id = req.params.id;
     console.log(id);
@@ -382,7 +382,7 @@ async (req, res)=>{
 });
 
 router.put("/users/:id", 
-passport.authenticate('basic', { session: false}),
+passport.authenticate('jwt', { session: false}),
 async (req, res) => {
     let name = req.body.name;
     let bio = req.body.bio;
@@ -436,7 +436,7 @@ async (req, res) => {
 });
 
 router.get("/comments", 
-passport.authenticate('basic', { session: false}),
+passport.authenticate('jwt', { session: false}),
 async (req, res) => {
     
     let page = Number(req.query.page);
@@ -466,7 +466,7 @@ async (req, res) => {
 });
 
 router.get("/comments/:id", 
-passport.authenticate('basic', { session: false}),
+passport.authenticate('jwt', { session: false}),
 async (req, res) => {
     let id = req.params.id;
     console.log(id);
@@ -482,7 +482,7 @@ async (req, res) => {
 });
 
 router.post("/comments/:track_id", 
-passport.authenticate('basic', { session: false}),
+passport.authenticate('jwt', { session: false}),
 async (req, res) => {
     console.log("POST NEW COMMENT");
     let trackId = req.body.trackId;
@@ -507,7 +507,7 @@ async (req, res) => {
 });
 
 router.delete("/comments/:id", 
-passport.authenticate('basic', { session: false}),
+passport.authenticate('jwt', { session: false}),
 async (req, res) => {
     console.log("DELETE COMMENT");
     let commentId = req.params.id;
