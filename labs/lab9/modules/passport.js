@@ -48,33 +48,8 @@ async function onLogin(username, password, done) {
         done(err, null);
     }
 }
-
-
-async function onLoginJWT(jwtPayload, done) {
-    try{
-
-        console.log(jwtPayload);
-        let user = await User.getById(jwtPayload._id);
-        console.log("CYKAAAAAAAAAAAAAAA" +user);
-        if(user) done(null, user);
-        else done(null, false);
-    } catch(err) {
-        console.log(err.message);
-        done(err, null);
-    }
-}
-
-
-
 passport.use(new LocalStrategy(onLogin));
 //passport.use(new BasicStrategy(onLogin));
-
-
-passport.use(new JWTStrategy({
-       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-       secretOrKey   : config.secret
-   },onLoginJWT
-));
 
 
 

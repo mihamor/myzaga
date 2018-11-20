@@ -9,8 +9,38 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-          
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/about">About</a>
+            </li>
+            {{#user}}
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/tracks">Tracks</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/playlists">Playlists</a>
+            </li>
+            {{#user.role}}
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/users">Users</a>
+              </li>
+            {{/user.role}}
+            <li class="dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="/users/{{_id}}"><span class="caret">{{user.login}} </span></a>
+              <ul class="dropdown-menu">
+              <li><a class="btn" href="/users/{{_id}}">Profile</a></li>
+              {{#user.role}}
+              <li><a class="btn" href="/admin_menu">Admin menu</a></li>
+              {{/user.role}}
+              <li><a class="btn" href="/auth/logout">Logout</a></li>
+              </ul>
+            </li>
+            {{/user}}
+            {{^user}}
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="/auth/login">Login</a>
+            </li>
+            {{/user}}
+          </ul>
         </div>
       </div>
-    </nav>
-    <script src="/javascripts/navbar.js"></script>
+      </nav>

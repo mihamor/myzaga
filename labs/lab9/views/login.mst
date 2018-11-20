@@ -30,7 +30,6 @@
             <button type="submit" class="btn btn-primary" style="width: 100%">Continue</button>
         <div>
         </form>
-        <script src="/javascripts/login.js"></script>
       </div>
       </div>
     </section>

@@ -52,26 +52,12 @@ router.get("/login",
 });
 
 router.post("/login", 
+passport.authenticate('local', {
+    failureRedirect: '/auth/login'
+}),
 (req, res) => {
-    passport.authenticate('local', {session: true}, (err, user, info) => {
-        if (err || !user) {
-            return res.status(400).json({
-                message: `Something is not right: ${JSON.stringify(info)}`,
-                user: user
-            });
-        }
-        req.login(user,  {session: true}, (err) => {
-            if (err) { return res.send(err); }
-            
-            // generate a signed json web token with the contents of user object
-            const token = jwt.sign(user.toObject(), config.secret, {expiresIn: 86400 * 30});
-            jwt.verify(token, config.secret, function(err, data){
-                //console.log(err, data);
-           })
-            return res.json({ user, token });
-        });
-    })(req, res);
-})
+    res.redirect("/");
+});
 /*
 router.post("/login", 
 passport.authenticate('local', {

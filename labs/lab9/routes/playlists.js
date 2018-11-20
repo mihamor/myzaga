@@ -11,21 +11,16 @@ const router = express.Router();
 
 router.get("/", 
 auth_cbs.checkAuthRedirect,
-(req, res) => {
-
-    let playlists = null;
+async (req, res) => {
+    let user_search = null;
     let userId = req.query.user;
-    if (!userId) playlists = Playlist.getAllCreated();
-    else playlists = User.getById(userId)
-        .then(user => Utils.getAllPlaylistFromUser(user))
-
-
-    playlists
-        .then(x => res.render('playlists', { playlists: x, user: req.user }))
-        .catch(err => {
-            console.log(`ERROR in GET ${req.baseUrl}: ${err.message}`);
-            req.next();
-        });
+    try{
+        if (userId) user_search = await User.getById(userId);
+        res.render('playlists', { user: req.user, user_search: user_search });
+    }catch(err) {
+        console.log(`ERROR in GET ${req.baseUrl}: ${err.message}`);
+        req.next();
+    }
 });
 
 

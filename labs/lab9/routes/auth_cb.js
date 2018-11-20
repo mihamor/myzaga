@@ -6,6 +6,10 @@ function checkAuth(req, res, next) {
     next();  // пропускати далі тільки аутентифікованих
 }
 
+function checkAuthApi(req, res, next) {
+    if (!req.user) res.status(403).json({ err: "Unathorized"}); // 'Forbidden'
+    else next();  // пропускати далі тільки аутентифікованих із роллю 'admin'
+}
 
 function checkAuthRedirect(req, res, next) {
     if (!req.user) return res.redirect("/auth/login"); // 'Not authorized'
@@ -26,4 +30,4 @@ function checkAdminApi(req, res, next) {
 function authJWT(req, res, next) {
     passport.authenticate('jwt', {session: false});
 }
- module.exports = {checkAdmin, checkAuth, checkAuthRedirect, checkAdminApi, authJWT};
+ module.exports = {checkAdmin, checkAuth, checkAuthApi, checkAuthRedirect, checkAdminApi, authJWT};

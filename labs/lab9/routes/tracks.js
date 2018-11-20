@@ -14,43 +14,9 @@ function is_valid_seacrch(str){
     return str;
 }
 router.get("/", 
-//auth_cbs.checkAuthRedirect,
+auth_cbs.checkAuthRedirect,
 (req, res)=>{
-
-    let page = Number(req.query.page);
-    let search_str = req.query.search;
-    console.log(req.url);
-    const is_valid_str = is_valid_seacrch(search_str);
-    if(isNaN(page) 
-    || page < 1 ){
-
-        let query_search = !is_valid_str ? "" : `&search=${search_str}`;
-        res.redirect(`/tracks?page=1${query_search}`);
-        return;
-    }
-    const tracksPerPage = 3;
-
-    Track.getAll()
-        .then(tracks =>{
-            //console.log(tracks);
-            let arr_after_search = Utils.search_throgh_arr(tracks, search_str);
-            let p_tracks = Utils.formItemsPage(arr_after_search, tracksPerPage, page);
-            let next_page = page * tracksPerPage < arr_after_search.length ? page + 1 : 0;
-            let prev_page = page - 1;
-            let page_count = Math.ceil(arr_after_search.length / tracksPerPage);
-            console.log(`render tracks pages: ${next_page} ${prev_page}`);
-            res.render('tracks',  {tracks : p_tracks,
-                                   next_page: next_page,
-                                   prev_page : prev_page,
-                                   search_str : search_str,
-                                   page_count: page_count,
-                                   this_page: prev_page+1,
-                                   user: req.user});
-        })
-        .catch(err => {
-            console.log(err.message); 
-            req.next()
-        });
+    res.render('tracks', {user: req.user});
 });
 router.get("/new",(req, res, next)=>{
     if(!req.user){

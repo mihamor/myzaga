@@ -115,7 +115,6 @@ app.get("/about", function(req, res){
 
 
 app.get('/profile'
-,passport.authenticate('jwt', {session: false})
 ,(req,res) => {
     res.send(req.user);
 });
