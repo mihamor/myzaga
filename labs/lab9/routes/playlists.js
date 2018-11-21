@@ -15,7 +15,10 @@ async (req, res) => {
     let user_search = null;
     let userId = req.query.user;
     try{
-        if (userId) user_search = await User.getById(userId);
+        if (userId) {
+            user_search = await User.getById(userId);
+            if(!user_search) throw new Error("Bad request");
+        }
         res.render('playlists', { user: req.user, user_search: user_search });
     }catch(err) {
         console.log(`ERROR in GET ${req.baseUrl}: ${err.message}`);

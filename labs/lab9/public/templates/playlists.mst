@@ -1,26 +1,6 @@
-<section class="track-list-container bg-gray">
-      <div class="container text-center">
+{{#playlists.length}}
+ <div id="playlists_list" class="col-lg-12 mx-auto bg-light border rounded">
 
-
-        <div class="row">
-         <div class="col-lg-8 mx-auto">
-          <form style="width: 100%" onsubmit="onSearchPlaylists(this); return false;">
-                <input  style="width:85%;" type="search" id="search_field" name="search" placeholder="Search user..." >
-                <button class = "btn btn-primary" type="submit">Search</button>
-            </form>
-            {{#search_str}}
-                <div class = "search-info">
-                Seacth results for: {{search_str}}
-                <button class="close float-none" aria-label="Erase search" onclick="onPlaylistEraseSearch();" type="button" ><span aria-hidden="true">&times;</span></button>
-                </div>
-            {{/search_str}}
-         </div>
-         </div>
-
-
-        <div class="col-lg-12 mx-auto bg-light border rounded">
-
-        {{#playlists.length}}
          <div>
             <ul class="list-group">
         {{#playlists}}
@@ -34,30 +14,5 @@
          {{/playlists}}
             </ul>
         </div>
-        </div>
-
-        <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <div class="page_refs">
-                {{this_page}} out of {{page_count}} 
-            </div>
-            <form style="margin-bottom:20px;" onsubmit="return false;" id="page_refs">
-                {{#prev_page}}
-                <button type ="submit" search="{{search_str}}" class='btn btn-primary' onclick="onPagePlaylists(this);" name="page" value="{{prev_page}}">&laquo; Previous page</button>
-                {{/prev_page}}
-                {{#next_page}}
-                <button type ="submit"  search="{{search_str}}" class='btn btn-primary' onclick="onPagePlaylists(this);"  name="page" value="{{next_page}}">&raquo; Next page</button>
-                {{/next_page}}
-            </form>
-            {{/playlists.length}}
-
-            {{^playlists.length}}
-            <div class = "center vis-text">No playlists were found.</div>
-            {{/playlists.length}}
-        </div>    
-      </div>
-
-
-            <a class ="btn btn-primary float-right" style="margin-top:20px;" href="/playlists/new">Add new playlists</a>    
-      </div>
-    </section>
+</div>
+{{/playlists.length}}

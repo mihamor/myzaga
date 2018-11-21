@@ -1,32 +1,4 @@
-<header class="bg-blue text-white">
-      <div class="container text-center">
-        <h1>Users</h1>
-      </div>
-    </header>
-
-      <section style="user-list">
-      <div class="container text-center">
-
-        <div class="row">
-         <div class="col-lg-8 mx-auto">
-          <form style="width: 100%" onsubmit="onSearchUsers(this); return false;">
-                <input  style="width:85%;" type="search" id="search_field" name="search" placeholder="Search user..." >
-                <button class = "btn btn-primary" type="submit">Search</button>
-            </form>
-            {{#search_str}}
-                <div class = "search-info">
-                Seacth results for: {{search_str}}
-                <button class="close float-none" aria-label="Erase search" onclick="setUsersPage();" type="button" ><span aria-hidden="true">&times;</span></button>
-                </div>
-            {{/search_str}}
-         </div>
-         </div>
-
-
-
-        <div class="row">
-        <div class="col-lg-12 mx-auto">
-        {{#users.length}}
+  {{#users.length}}
             <table class="table table-hover bg-light rounded-1">
             <tr>
             <th>Login</th>
@@ -43,30 +15,4 @@
           </tr>
           {{/users}}
             </table>
-
-
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <div class="page_refs">
-                {{this_page}} out of {{page_count}} 
-            </div>
-            <form style="margin-bottom:20px;" onsubmit="return false;" id="page_refs">
-                {{#prev_page}}
-                <button type ="submit" search="{{search_str}}" class='btn btn-primary' onclick="onPageUsers(this);" name="page" value="{{prev_page}}">&laquo; Previous page</button>
-                {{/prev_page}}
-                {{#next_page}}
-                <button type ="submit"  search="{{search_str}}" class='btn btn-primary' onclick="onPageUsers(this);"  name="page" value="{{next_page}}">&raquo; Next page</button>
-                {{/next_page}}
-            </form>
-            {{/users.length}}
-
-             {{^users.length}}
-                 <div class = "center vis-text">No users were found.</div>
-            {{/users.length}}
-        </div>
-        </div>
-      </div>
-
-
-      
-    </section>
+  {{/users.length}}

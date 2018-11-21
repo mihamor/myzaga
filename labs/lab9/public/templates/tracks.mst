@@ -1,23 +1,4 @@
-  <section class="track-list-container bg-gray">
-      <div class="container text-center">
-         <div class="row">
-         <div class="col-lg-8 mx-auto">
-          <form onsubmit="onSearchTracks(this); return false;">
-                <input style="width:85%;"type="search" id="search_field" name="search" placeholder="Search track..." >
-                <button class = "btn btn-primary" type="submit">Search</button>
-            </form>
-            {{#search_str}}
-                <div class = "search-info">
-                Seacth results for: {{search_str}}
-                <button class="close float-none" aria-label="Erase search" onclick="setTracksPage();" type="button" ><span aria-hidden="true">&times;</span></button>
-                </div>
-            {{/search_str}}
-         </div>
-         </div>
-
-        
-        {{#tracks.length}}
-        <div class="bg-gray" id="trackList" style="max-height:600px; overflow-y: scroll; overflow-x: hidden; margin: 20px 0px;">
+{{#tracks.length}}
         <hr>
         {{#tracks}}
         <div class="row">
@@ -39,30 +20,5 @@
             </div>
         </div>
         <hr>
-         {{/tracks}}
-        </div>
-
-         
-         <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <div class="page_refs">
-                {{this_page}} out of {{page_count}} 
-            </div>
-            <form style="margin-bottom:20px;" onsubmit="return false;" id="page_refs">
-                {{#prev_page}}
-                <button type ="submit" search="{{search_str}}" class='btn btn-primary' onclick="onPageTracks(this);" name="page" value="{{prev_page}}">&laquo; Previous page</button>
-                {{/prev_page}}
-                {{#next_page}}
-                <button type ="submit"  search="{{search_str}}" class='btn btn-primary' onclick="onPageTracks(this);"  name="page" value="{{next_page}}">&raquo; Next page</button>
-                {{/next_page}}
-            </form>
-            {{/tracks.length}}
-
-            {{^tracks.length}}
-            <div class = "center vis-text">No tracks were found.</div>
-            {{/tracks.length}}
-            <a class ="btn btn-primary float-right" href="/tracks/new">Add new track</a>
-        </div>
-        </div>
-      </div>
-    </section>
+        {{/tracks}}
+{{/tracks.length}}
