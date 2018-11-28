@@ -6,7 +6,7 @@ const data = {
     userId: user_searchEl ? user_searchEl.getAttribute("value") : "",
 
     get nameFilter() {
-        return this._nameFilter.toLowerCase().trim();
+        return this._nameFilter.toLowerCase();
     },
     async setFilter(value) {
         this.curr_page = 1;

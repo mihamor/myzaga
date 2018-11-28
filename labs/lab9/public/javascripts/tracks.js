@@ -3,7 +3,7 @@ const data = {
     curr_page: 1,
 
     get nameFilter() {
-        return this._nameFilter.toLowerCase().trim();
+        return this._nameFilter.toLowerCase();
     },
     async setFilter(value) {
         this.curr_page = 1;
