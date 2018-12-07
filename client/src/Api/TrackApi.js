@@ -112,7 +112,16 @@ class TracksApi{
             const reqOptions = this.getOptions(jwt);
             reqOptions.method = 'POST';
             reqOptions.body = formData;
-            let response = await fetch(`${this.getHostName()}/api/v3/tracks`, reqOptions);
+
+            let response = await fetch(`${this.getHostName()}/api/v3/tracks`,  {
+                headers: {
+                     Authorization: `Bearer ${jwt}`,
+                     "Content-Type": 'multipart/form-data'
+                },
+                mode: "cors",
+                method: "POST"
+            });
+
 
             let data = await response.json();
             if(data.err)throw new Error(data.err);

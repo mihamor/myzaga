@@ -654,7 +654,8 @@ function check_body_comment(body){
 
 function check_body_files(files) {
     return files && files.track && files.image
-    && files.track.mimetype === "audio/mpeg"
+    && (files.track.mimetype === "audio/mpeg"
+    || files.track.mimetype === "audio/mp3")
     && (files.image.mimetype === "image/png"
     || files.image.mimetype === "image/jpeg");
 }
