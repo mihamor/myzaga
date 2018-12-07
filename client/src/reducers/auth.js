@@ -28,6 +28,7 @@ function login(state = initialState, action) {
     case USER_LOGIN:
       return Object.assign({}, state, {
         isFetchingLogin: true,
+        loginErr : null,
       })
     case RECEIVE_LOGIN_RESULT:
       return Object.assign({}, state, {

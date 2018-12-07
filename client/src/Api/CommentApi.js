@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch'
 class CommentApi {
 
     static setHostName(host){
@@ -10,7 +11,7 @@ class CommentApi {
         console.log(jwt);
         return {
             headers: { Authorization: `Bearer ${jwt}`, },
-            mode: "cors"
+           // mode: "cors"
         };
     }
     static async newComment(commnent, trackId){

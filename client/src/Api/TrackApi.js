@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch'
 class TracksApi{
 
     static setHostName(host){
@@ -10,7 +11,7 @@ class TracksApi{
         // console.log(jwt);
         return {
             headers: { Authorization: `Bearer ${jwt}`, },
-            mode: "cors"
+           // mode: "cors"
         };
     }
     static async getTracks(page, search_str){

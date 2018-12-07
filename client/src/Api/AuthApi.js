@@ -1,5 +1,5 @@
 import UserApi from './UserApi.js';
-
+import fetch from 'cross-fetch';
 class AuthApi {
 
     static setHostName(host){
@@ -13,8 +13,11 @@ class AuthApi {
         const bodyData = new  URLSearchParams({username: username, password: password});
         try{
             let authResult = await fetch(`${this.getHostName()}/auth/login`, 
-                { mode: "cors", method: 'POST', body: bodyData })
-                .then(x => x.json());
+                { 
+                    //mode: "cors", 
+                    method: 'POST',
+                    body: bodyData 
+                }).then(x => x.json());
             // console.log(authResult);
             if(authResult.message) throw new Error(authResult.message);
             const jwt = authResult.token;
