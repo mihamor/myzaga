@@ -29,7 +29,29 @@ class Section extends Component{
       this.className = props.className;
   }
   render() {
-      let className = this.className ? this.className : "bg-gray"; 
+      let className = this.className ? `${this.className} def-sect` : "bg-gray def-sect"; 
+      return(
+        <section className={className}>
+          <div className="container text-justify">
+            <div className="row">
+              <div className="col-lg-8 mx-auto">
+                {this.props.children}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+  }
+}
+
+
+class FlexSection extends Component{
+  constructor(props) {
+      super(props);
+      this.className = props.className;
+  }
+  render() {
+    let className = this.className ? `${this.className} flx-sect` : "bg-gray flx-sect"; 
       return(
         <section className={className}>
           <div className="container text-justify">
@@ -46,4 +68,4 @@ class Section extends Component{
 
 
 
-export {Section, HeaderSection};
+export {Section, FlexSection, HeaderSection};

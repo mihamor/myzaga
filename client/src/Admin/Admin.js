@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
-import { Section, HeaderSection } from '../Sections/Sections';
+import {FlexSection as Section, HeaderSection } from '../Sections/Sections';
 import Spinner from '../Spinner/Spinner';
 import { Link, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';

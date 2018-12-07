@@ -2,6 +2,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import React, { Component } from 'react';
 import {Home, About, ApiInfo, NoMatch} from '../Home/Home';
 import Auth from '../Auth/Auth';
+import '../Sections/Sections.css'
 import {
   TrackListPageContainer as TrackListPage,
   TrackPageContainer as TrackPage,
@@ -163,7 +164,7 @@ class Main extends Component{
     let path_to_user = this.state.user ?
        `/users/${this.state.user._id}` : "/auth/login";
     return (
-        <main>
+        <main className="bg-gray">
           <Switch>
             <Route
               exact path="/"

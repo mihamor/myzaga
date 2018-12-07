@@ -45,11 +45,11 @@ class App extends Component {
     // console.log("FULL APP RENDER");
     // console.log("USER IN APP CLASS");
     // console.log(this.state.user);
+    //<Footer user={this.state.user} />
     return (
       <div className="App">
         <Navbar user={this.state.user}  />
         <Main user={this.state.user}/>
-        <Footer user={this.state.user} />
         <Player user={this.state.user} />
       </div>
     );

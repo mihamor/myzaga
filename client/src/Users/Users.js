@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Users.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
-import { Section, HeaderSection } from '../Sections/Sections';
+import { Section, FlexSection, HeaderSection } from '../Sections/Sections';
 import Spinner from '../Spinner/Spinner';
 import {
   fetchUsers,
@@ -276,11 +276,11 @@ class UserPage extends Component {
     if (this.state.isLoading) {
       return (
         <div>
-          <Section>
+          <FlexSection>
             <div className="text-center">
               <Spinner />
             </div>
-          </Section>
+          </FlexSection>
         </div>);
     } else if (!user)
       return <HeaderSection><p className="lead">Error fetching</p></HeaderSection>;
@@ -395,11 +395,11 @@ const UserPageContainer = withRouter(connect(
           <HeaderSection>
             <h1>Update user</h1>
           </HeaderSection>
-          <Section>
+          <FlexSection>
             <div className="text-center">
               <Spinner />
             </div>
-          </Section>
+          </FlexSection>
         </div>);
     if (this.state.isUserUpdated) {
       let linkToUser = `/users/${this.state.userId}`;

@@ -650,12 +650,23 @@ function check_body_comment(body){
     return content
         && content.length != 0;
 }
-
+// AddType audio/aac .aac
+// AddType audio/mp4 .mp4 .m4a
+// AddType audio/mpeg .mp1 .mp2 .mp3 .mpg .mpeg
+// AddType audio/ogg .oga .ogg
+// AddType audio/wav .wav
+// AddType audio/webm .webm
 
 function check_body_files(files) {
     return files && files.track && files.image
     && (files.track.mimetype === "audio/mpeg"
-    || files.track.mimetype === "audio/mp3")
+    || files.track.mimetype === "audio/mp3"
+    || files.track.mimetype === "audio/aac"
+    || files.track.mimetype === "audio/m4a"
+    || files.track.mimetype === "audio/wav"
+    || files.track.mimetype === "audio/webm"
+    || files.track.mimetype === "audio/ogg"
+    )
     && (files.image.mimetype === "image/png"
     || files.image.mimetype === "image/jpeg");
 }

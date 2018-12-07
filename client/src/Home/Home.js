@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Section, HeaderSection} from '../Sections/Sections';
+import {Section, HeaderSection, FlexSection} from '../Sections/Sections';
 import { Link } from 'react-router-dom'
 
 
@@ -165,9 +165,9 @@ const NoMatch = () => {
         <HeaderSection>
             <h2>Error 404</h2>
         </HeaderSection>
-        <Section>
+        <FlexSection>
             <h3>Something went wrong...</h3>
-        </Section>
+        </FlexSection>
     </div>
     );
 }

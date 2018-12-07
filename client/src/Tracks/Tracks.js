@@ -3,7 +3,7 @@ import './Tracks.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import ModalDelete from '../ModalDelete/ModalDelete';
-import {Section, HeaderSection} from '../Sections/Sections';
+import {FlexSection as Section, Section as FlexSection, HeaderSection} from '../Sections/Sections';
 import Spinner from '../Spinner/Spinner';
 import {
   fetchTracks,
@@ -426,8 +426,7 @@ class TrackPage extends Component{
             <button className="btn btn-primary w-100" onClick={this.handlePlayClick}>Play track</button>
           </div>
             {operButtons}
-        </Section>
-        <Section>
+          <hr className="delim"/>
           <form onSubmit={this.handleCommentAdd}>
             <div className="form-group">
               <label forhtml="comment-cont">Comment:</label>

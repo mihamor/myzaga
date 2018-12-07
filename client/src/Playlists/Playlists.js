@@ -3,7 +3,7 @@ import './Playlists.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import ModalDelete from '../ModalDelete/ModalDelete';
-import { Section, HeaderSection } from '../Sections/Sections';
+import { FlexSection as Section, HeaderSection } from '../Sections/Sections';
 import Spinner from '../Spinner/Spinner';
 import {
   fetchPlaylists,
@@ -317,7 +317,16 @@ class PlaylistPage extends Component{
           </Section>
         </div>);
     }else if(!playlist)
-      return <HeaderSection><p className="lead">Error fetching</p></HeaderSection>;
+      return (
+        <div>
+        <HeaderSection>
+          <p className="lead">
+          Error 404</p></HeaderSection>
+          <Section>
+            <h1>Something went wrong</h1>
+          </Section>
+        </div>        
+      )
 
     let isOwner = is_playlist_owner(this.user, playlist);
     let linkToUser = `/users/${playlist.userRef._id}`;
