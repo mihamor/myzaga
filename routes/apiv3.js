@@ -100,6 +100,9 @@ router.post("/tracks",
 auth_cbs.authJWT,
 async (req, res) => {
     try {
+        console.log("BODYYYYYYYYYYYYYYYY");
+        console.log(req.body);
+        console.log(req.files);
         if (!check_body(req)) throw new Error("Bad request");
 
         let author = req.body.author;

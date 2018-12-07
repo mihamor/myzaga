@@ -647,14 +647,18 @@ class TrackCreatePage extends Component {
   handleSubmit(event){
     event.preventDefault();
     let formEl = event.target;
-    let formData = new FormData(formEl);
+    //let formData = new FormData(formEl);
     // console.log("FORM DATA");
     // console.log(formData);
-    let actual_FormData = {};
-    for(let [key,value] of formData.entries()){
-      // console.log(key, value);
-      actual_FormData[key] = value;
-    }
+    //let actual_FormData = {};
+
+    let formData = new FormData();
+    formData.append("author", formEl.elements["author"].value);
+    formData.append("name", formEl.elements["name"].value);
+    formData.append("album", formEl.elements["year"].value);
+    formData.append("image", formEl.elements["image"].files[0]);
+    formData.append("track", formEl.elements["track"].files[0]);
+
     this.dispatch(fetchCreateTrack(formData));
   }
 

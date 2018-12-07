@@ -14,7 +14,7 @@ class AuthApi {
         try{
             let authResult = await fetch(`${this.getHostName()}/auth/login`, 
                 { 
-                    //mode: "cors", 
+                    mode: "cors", 
                     method: 'POST',
                     body: bodyData 
                 }).then(x => x.json());

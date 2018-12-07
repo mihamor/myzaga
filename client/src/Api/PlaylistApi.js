@@ -11,7 +11,7 @@ class PlaylistApi{
             console.log(jwt);
             return {
                 headers: { Authorization: `Bearer ${jwt}`, },
-                //mode: "cors"
+                mode: "cors"
             };
         }
         static async getPlaylists(page, search_str, user){

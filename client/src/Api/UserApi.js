@@ -1,4 +1,4 @@
-import fetch from 'cross-fetch'
+import fetch from 'cross-fetch';
 class UserApi {
     static setHostName(host){
         //this.getHostName = () => host;
@@ -10,7 +10,7 @@ class UserApi {
         // // console.log(jwt);
         return {
             headers: { Authorization: `Bearer ${jwt}`, },
-            //mode: "cors"
+            mode: "cors"
         };
     }
     static async getAuthUser(){
