@@ -1,65 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
-  <head>
+{{> head}}
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>MyZaGa</title>
+<body>
+  <div class=wrapper>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+  {{> header}}
 
-    <!-- Custom styles for this template -->
-    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
+  <ul class="menu-bar">
+    <li class="menu-opt"><a href="/">Home</a></li>
+    <li class="menu-opt"><a class="active" href="/users">Users</a></li>
+    <li class="menu-opt"><a href="/playlists">Playlists</a></li>
+    <li class="menu-opt"><a href="/tracks">Tracks</a></li>
+    <li class="menu-opt"><a href="/about">About</a></li>
+  </ul>
 
-  </head>
-
-  <body id="page-top">
-
-    {{>nav-bar}}
-
-    <header class="bg-blue text-white">
-      <div class="container text-center">
+  <div id="page-content">
+    <div class="center vis-text">
         <h1>Users</h1>
-      </div>
-    </header>
-
-      <section style="user-list">
-      <div class="container text-center">
-        <div class="row">
-        <div class="col-lg-12 mx-auto">
-        {{#users.length}}
-            <table class="table table-hover bg-light rounded-1">
-            <tr>
+    </div>
+    {{#users.length}}
+    <!-- user-table -->
+    <div class="vis-text user-table">
+      <div class=user-link-container>
+        <table class ="table table-condensed">
+          <tr>
             <th>Login</th>
             <th>Fullname</th>
             <th>Registered</th>
           </tr>
           {{#users}}
           <tr>
-            <td><a href="/users/{{id}}"><img class="rounded-circle" style="position: relative; margin:5px; height:30px; width:30px;" src="{{avaUrl}}"> {{login}}</a><span style="margin-left: 5px; padding:2px;" class="user-status online text-white rounded-circle">online</span></td>
+            <td><a href="/users/{{id}}">{{login}}</a> <span class="user-status online">online</span></td>
             <td>{{fullname}}</td>
             <td>{{registeredAt}}</td>
           </tr>
           {{/users}}
-            </table>
-        {{/users.length}}
-
-        {{^users.length}}
-           No users were found.
-        {{/users.length}}
-        <a class ="btn btn-primary float-right" href="/users/new">Add new user</a>
-        </div>
-        </div>
+        </table>
       </div>
-    </section>
+    </div>
+    {{/users.length}}
 
-    {{>footer}}
+    {{^users.length}}
+      <div class = "center vis-text">No users were found.</div>
+    {{/users.length}}
 
-  </body>
+
+    <a style="margin-top: 20px; float: right;"class="action-button" href="/users/new">Create new user</a>
+  </div>
+  {{ >footer }}
+</body>
 
 </html>
