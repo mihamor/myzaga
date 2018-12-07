@@ -31,7 +31,7 @@
               {{#user.role}}
               <li><a class="btn" href="/admin_menu">Admin menu</a></li>
               {{/user.role}}
-              <li><a class="btn"href="/auth/logout">Logout</a></li>
+              <li><a class="btn" href="/auth/logout">Logout</a></li>
               </ul>
             </li>
             {{/user}}
@@ -43,4 +43,4 @@
           </ul>
         </div>
       </div>
-    </nav>
+      </nav>

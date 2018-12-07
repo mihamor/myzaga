@@ -13,21 +13,12 @@ const busboyBodyParser = require('busboy-body-parser');
 const mongoose = require('mongoose');
 const config = require("./config");
 const cloudinary = require("cloudinary");
+const session = require('express-session');
 
 
 // new imports
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const BasicStrategy = require('passport-http').BasicStrategy;
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
-
-
-
-
-
-
-
 app.use(session({
     secret: config.secret,
     resave: false,
@@ -37,53 +28,22 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function(user, done) {
-    done(null, user._id);
-});
-passport.deserializeUser(async function(id, done) {
-
-    try{
-        let user = await User.getById(id)
-        done(null, user);
-    } catch(err) {
-        done(err, null);
-    }
-});
+require("./modules/passport")
 
 
-async function onLogin(username, password, done) {
-    try{
-        console.log(username, password);
-
-        let hashedPass = Utils.hash(password);
-        let user = await User.getByLoginAndHashPass(username, hashedPass);
-        if(user) done(null, user);
-        else done(null, false);
-    } catch(err) {
-        console.log(err.message);
-        done(err, null);
-    }
-}
-
-passport.use(new LocalStrategy(onLogin));
-passport.use(new BasicStrategy(onLogin));
-
-
-
-
-
-const viewsDir = path.join(__dirname, 'views');
-app.engine('mst', mustache(path.join(viewsDir, 'partials')));
-app.set("views", path.join(__dirname, 'views'));
-app.set('view engine', 'mst');
+// const viewsDir = path.join(__dirname, 'views');
+// app.engine('mst', mustache(path.join(viewsDir, 'partials')));
+// app.set("views", path.join(__dirname, 'views'));
+// app.set('view engine', 'mst');
 
 
 // will open public directory files for http requests
-const publicPath = path.join(__dirname, "public");
+const publicPath = path.join(__dirname, "client/public");
 app.use(express.static(publicPath));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }));
 app.use(busboyBodyParser({limit: '15mb'}));
+app.use(cookieParser());
 
 const url = config.mongo_url;
 const connectOptions = { 
@@ -103,9 +63,10 @@ mongoose.connect(url, connectOptions)
     })
     .catch((err) => console.log("ERROR: " + err.message));
 
-app.get("/", function(req, res){
-    res.render('index',{ user: req.user});
-});
+// app.get("/", (req, res) => {
+//     res.render('index',{ user: req.user});
+// });
+
 
 app.get('/data/fs/:filename', (req, res) => {
     const fileName = req.params.filename;
@@ -116,38 +77,35 @@ app.get('/data/fs/:filename', (req, res) => {
     });
 });
 
-const userRouter = require("./routes/users");
-app.use("/users", userRouter);
 
-const trackRouter = require("./routes/tracks");
-app.use("/tracks", trackRouter);
+// const adminRouter = require("./routes/admin_menu");
+// app.use("/admin_menu", adminRouter);
 
-const playlistRouter = require("./routes/playlists");
-app.use("/playlists", playlistRouter);
+function enableCors(req, res, next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "PUT, POST, DELETE, GET");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
+    next();
+}
 
-const adminRouter = require("./routes/admin_menu");
-app.use("/admin_menu", adminRouter);
 
 const authRouter = require("./routes/auth");
-app.use("/auth", authRouter);
+app.use("/auth", enableCors, authRouter);
 
-const commentRouter = require("./routes/comments");
-app.use("/comments", commentRouter);
-
-const apiV1= require("./routes/api");
+const apiV1= require("./routes/apiv1");
 app.use("/api/v1", apiV1);
+const apiV2= require("./routes/apiv2");
+app.use("/api/v2", apiV2);
+const apiV3= require("./routes/apiv3");
+app.use("/api/v3", enableCors, apiV3);
 
-const developerV1 = require("./routes/developer");
-app.use("/developer/v1", developerV1);
 
-
-app.get("/about", function(req, res){
-    res.render('about', { user: req.user});
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 
-
-app.use( (req, res) => {
-    res.status(404);
-    res.render('error', {error : ""});
-});
+// app.use( (req, res) => {
+//     res.status(404);
+//     res.render('index', {error : ""});
+// });

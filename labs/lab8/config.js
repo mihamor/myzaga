@@ -8,7 +8,8 @@ let config = {
         api_secret: "C5Ls75nQCs14NQNdQ8ycqQmcpQY"
     },
     salt : "mYzAg@@@S@/\T=)",
-    secret : "=)))"
+    secret : "=)))",
+    jwt_secret: "mYzAg@@@jiiiiweeeteee@@##33()"
 }
 
 module.exports = config;

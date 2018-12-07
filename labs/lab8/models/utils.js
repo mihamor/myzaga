@@ -56,6 +56,28 @@ class Utils {
         .exec();
     }
 
+    static getPopulatedTracks(){
+        return Track.getAll()
+        .populate({
+            path: "uploadedListRef",
+            model: 'Playlist',
+            populate : {
+                path: "userRef",
+                model: 'User',
+            }
+        })
+        .populate({
+            path: "comments",
+            model: 'Comment',
+            populate : {
+                path: "user",
+                model: 'User',
+            }
+        })
+        .exec();
+    }
+
+
     static getPopulatedTrack(id){
         return Track.getById(id)
         .populate({
@@ -84,7 +106,10 @@ class Utils {
         let arr = user.custom_playlists.map(ele => new mongoose.Types.ObjectId(ele._id));
         return PlaylistModel.find({
             _id: { $in: arr}
-        });
+        })
+        .populate("userRef")
+        .populate("tracks")
+        .exec();
     }
     static uploadBufferAsync(fileBuffer){
         return handle_file_upload_promised(fileBuffer);
