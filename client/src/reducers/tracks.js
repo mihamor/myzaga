@@ -37,6 +37,7 @@ const initialState = {
     
     isFetchingTrackCreate: false,
     errOnCreateTrack: null,
+    isTrackCreated: false,
 
 
     isFetchingTrackDelete: false,
@@ -60,6 +61,7 @@ function getTracks(state = initialState, action) {
       return Object.assign({}, state, {
         isTrackUpdated: false,
         isDeletedComment : false,
+        isTrackCreated: false,
         isCreatedComment: false,
         isTrackDeleted: false,
         isFetchingTracks: action.isFetching,
@@ -70,6 +72,7 @@ function getTracks(state = initialState, action) {
       return Object.assign({}, state, {
         isTrackUpdated: false,
         isDeletedComment : false,
+        isTrackCreated: false,
         isTrackDeleted: false,
         isCreatedComment: false,
         tracksOnPage: action.tracks,
@@ -89,6 +92,7 @@ function getTrackById(state = initialState, action) {
       return Object.assign({}, state, {
         isTrackUpdated: false,
         isDeletedComment : false,
+        isTrackCreated: false,
         isTrackDeleted: false,
         isCreatedComment: false,
         isFetchingTrack: action.isFetching,
@@ -98,6 +102,7 @@ function getTrackById(state = initialState, action) {
       return Object.assign({}, state, {
         isTrackUpdated: false,
         isTrackDeleted: false,
+        isTrackCreated: false,
         isDeletedComment : false,
         isCreatedComment: false,
         trackOnView: action.track,
@@ -110,6 +115,7 @@ function getTrackById(state = initialState, action) {
         isCreatedComment: false,
         isDeletedComment : false,
         isTrackDeleted: false,
+        isTrackCreated: false,
         trackOnView: action.track,
         isFetchingTrack: action.isFetching
       })
@@ -144,11 +150,13 @@ function createTrack(state = initialState, action) {
   switch (action.type) {
     case CREATE_TRACK:
       return Object.assign({}, state, {
+        trackOnView: null,
         isFetchingTrackCreate: action.isFetching,
       })
     case CREATE_TRACK_RESULT:{
       return Object.assign({}, state, {
-        trackOnView: action.newTrack, //needs to refetch
+       // trackOnView: action.newTrack, //needs to refetch
+        isTrackCreated: action.newTrack,
         errOnCreateTrack: action.err,
         isFetchingTrackCreate: action.isFetching
       })

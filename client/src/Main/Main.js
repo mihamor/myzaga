@@ -1,6 +1,6 @@
 import { Switch, Route, Redirect } from 'react-router-dom'
 import React, { Component } from 'react';
-import {Home, About, ApiInfo} from '../Home/Home';
+import {Home, About, ApiInfo, NoMatch} from '../Home/Home';
 import Auth from '../Auth/Auth';
 import {
   TrackListPageContainer as TrackListPage,
@@ -8,6 +8,8 @@ import {
   TrackUpdatePageContainer as TrackUpdatePage,
   TrackNewPageContainer as TrackNewPage,
 } from '../Tracks/Tracks';
+
+import AdminMenu from '../Admin/Admin';
 
 import {
   PlaylistsListPageContainer as PlaylistListPage,
@@ -170,6 +172,7 @@ class Main extends Component{
             <Route path='/about' component={About}/>
             <Route path='/profile' render={props => <Redirect to={path_to_user}/>}/>
             <Route path='/developer/v3' component={ApiInfo}/>
+            <Route path='/admin_menu' render={props => <AdminMenu user={this.state.user}/>}/>
             <Route 
               path ='/tracks'
               render={props => <TracksRoute user={this.state.user}/>}
@@ -186,6 +189,7 @@ class Main extends Component{
               path='/auth' 
               render={props => <Auth match='/auth'/>}
             />
+            <Route component={NoMatch} />
           </Switch>
         </main>
     );

@@ -19,17 +19,12 @@ const store = createStore(
   rootReducer,
   applyMiddleware(
     thunkMiddleware, // lets us dispatch() functions
-    //loggerMiddleware // neat middleware that logs actions
+    loggerMiddleware // neat middleware that logs actions
   )
 );
 store.dispatch(fetchAuth()).then(() => console.log(store.getState()));
-//store.dispatch(fetchPosts('reactjs')).then(() => console.log(store.getState()))
 
 
-
-
-
-//import * as serviceWorker from './serviceWorker';
 ReactDOM.render((
   <Provider store={store}>
     <BrowserRouter>

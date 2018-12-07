@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Tracks.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
+import ModalDelete from '../ModalDelete/ModalDelete';
 import {Section, HeaderSection} from '../Sections/Sections';
 import Spinner from '../Spinner/Spinner';
 import {
@@ -105,7 +106,7 @@ class TrackList extends Component {
     else if(tracks.length === 0) listTracks = <div className="text-center">Not found</div>;
     else listTracks = this.state.tracks.map((track) => <TrackContainer key={track._id} track={track}/>);//<Track key={tracks[0]._id} track={tracks[0]}/>;
     return(
-      <div className="bg-gray track-list" id="trackList" >
+      <div className="track-list-wrap bg-gray" id="trackList" >
         <hr/>
         {listTracks}
       </div>
@@ -130,6 +131,8 @@ const SearchInfo = ({onClick, filter}) => {
       </button>
     </div>);
 }
+
+
 
 
 class TrackListPage extends Component{
@@ -204,11 +207,18 @@ class TrackListPage extends Component{
       let trackList = <TrackList tracks={this.state.tracksOnPage} isLoading={this.state.isLoading}/>
       return(
         <div>
-          <Section>       
-            <input className="track-filter"type="search" value={this.state.searchFilter} onChange={this.handleFilterChange} id="search_field" name="search" placeholder="Search track..." />
-            <button id="search" onClick={this.handleSearchSumbit} className="btn btn-primary track-search" type="button" >Search</button>
+          <Section>
+            <form onSubmit={this.handleSearchSumbit} className="form-inline">       
+              <div class="form-group col-lg-10 ">
+                <input className="form-control w-100"type="search" value={this.state.searchFilter} onChange={this.handleFilterChange} id="search_field" name="search" placeholder="Search track..." />
+              </div>
+              <button id="search" className="btn btn-primary track-search" type="submit" >Search</button>
+            </form>
             {search_info}
-            {trackList}
+            <div>
+              {trackList}
+              <Link className ="btn btn-primary float-right" to="/tracks/new">Add new track</Link>
+            </div>
             <div className="row">
               <div className="col-lg-8 mx-auto">
                 <div className="text-center">
@@ -216,7 +226,6 @@ class TrackListPage extends Component{
                     {page_info}
                     {next_page_button}
                 </div>
-                <Link className ="btn btn-primary float-right" to="/tracks/new">Add new track</Link>
               </div>
             </div>
           </Section>
@@ -271,6 +280,10 @@ const Comment = ({comment, isOwner, onClick}) => {
       {delButton}
     </div>);
 }
+
+
+
+
 
 class TrackPage extends Component{
   constructor(props) {
@@ -368,9 +381,10 @@ class TrackPage extends Component{
         <hr/>
         <Link className ="btn btn-primary track-update-btn" to={linkToUpdate}>Update</Link>
         <div className ="float-right track-update-btn">
-          <button className ="btn btn-primary" data-toggle="modal" data-target="#delete_modal" onClick={this.handleDelete}>
+          <button className ="btn btn-primary" data-toggle="modal" data-target="#delete_modal" >
             Delete
           </button>
+          <ModalDelete onClick={this.handleDelete} name="track" id="delete_modal"/>
         </div>
       </div> : "";
 
@@ -607,7 +621,8 @@ class TrackCreatePage extends Component {
       name : props.track ? props.track.name : null,
       album : props.track ? props.track.album : null,
       year : props.track ? props.track.year : null,
-      trackId : props.track ? props.track._id : props.match.params.id 
+      trackId : props.track ? props.track._id : props.match.params.id,
+      trackCreated : false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     /*this.handleNameChange = this.handleNameChange.bind(this);
@@ -645,16 +660,16 @@ class TrackCreatePage extends Component {
 
 
   componentWillMount(){
-    /*if(!this.props.track){
-      this.dispatch(fetchTrackById(this.state.trackId))
-    }*/
+    // if(!this.props.track){
+    //   this.dispatch(fetchTrackById(this.state.trackId))
+    // }
   }
 
   componentWillReceiveProps(props){
-    /*if(props.track) {
+    if(props.track) {
       let {author, name, album, year, _id} = props.track;
       let isLoading = props.isLoading;
-      let isTrackUpdated = props.isTrackUpdated;
+      let trackCreated = true;
       this.setState({
         author,
         name,
@@ -662,36 +677,62 @@ class TrackCreatePage extends Component {
         year,
         trackId: _id,
         isLoading,
+        trackCreated
       })
     }else {
       let isLoading = props.isLoading;;
       this.setState({isLoading});
-    }*/
+    }
   }
   render(){
-    return (
-    <div>
+
+
+    let header =(
       <HeaderSection>
         <h1>Create new track</h1>
       </HeaderSection>
+    );
+
+    if(this.state.trackCreated){
+      let linkToTrack = `/tracks/${this.state.trackId}`;
+      return <Redirect to={linkToTrack}/>;
+    }
+    if(this.state.isLoading){
+      return (
+        <div>
+          {header}
+          <Section>
+            <div className="text-center">
+            <Spinner/>
+            </div>
+          </Section>
+        </div>
+      );
+    }
+
+
+
+    return (
+    <div>
+      {header}
 
     <Section>
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
             <label forhtml="author">Author:</label>
-            <input type="text" className="form-control" id="author" /*onChange={this.handleAuthorChange} value={this.state.author}*/ name="author"/>
+            <input type="text" className="form-control" id="author" required name="author"/>
         </div>
         <div className="form-group">
             <label forhtml="name">Name:</label>
-            <input type="text" className="form-control" id="name" /*onChange={this.handleNameChange}  value={this.state.name}*/ name="name"/>
+            <input type="text" className="form-control" id="name" required name="name"/>
         </div>
         <div className="form-group">
             <label forhtml="author">Album:</label>
-            <input type="text" className="form-control" id="album" /*onChange={this.handleAlbumChange}  value={this.state.album}*/ name="album"/>
+            <input type="text" className="form-control" id="album" required name="album"/>
         </div>
         <div className="form-group">
             <label forhtml="year">Year:</label>
-            <input type="number" className="form-control" id="year" /*onChange={this.handleYearChange}  value={this.state.year}*/ name="year"/>
+            <input type="number" className="form-control" id="year" required name="year"/>
         </div>
         <div className="form-group">
             <label forhtml="timage">Select track image:</label>
@@ -714,8 +755,8 @@ const trackNewMapStateToProps = state => {
   // console.log(state.tracks);
   //// console.log(state.loggedInUser);
   return {
-    track: state.tracks.trackOnView,
-    isLoading: state.tracks.isFetchingTrack
+    track: state.tracks.isTrackCreated,
+    isLoading: state.tracks.isFetchingTrackCreate,
   };
 }
 const TrackNewPageContainer = withRouter(connect(

@@ -42,6 +42,48 @@ export function receiveUser(user, err) {
   }
 }
 
+export const GET_ADMIN_MENU = 'GET_ADMIN_MENU';
+export function requestAdminMenu() {
+  return {
+    type: GET_ADMIN_MENU,
+    isFetching : true,
+  }
+}
+
+export const GET_ADMIN_MENU_RESULT = 'GET_ADMIN_MENU_RESULT';
+export function receiveAdminMenu(data, err) {
+  return {
+    type: GET_ADMIN_MENU_RESULT,
+    data,
+    err,
+    isFetching : false,
+  }
+}
+
+
+export const UPDATE_ADMIN_MENU = 'UPDATE_ADMIN_MENU';
+export function requestAdminMenuUpdate(selected) {
+  return {
+    selected,
+    type: UPDATE_ADMIN_MENU,
+    isFetching : true,
+  }
+}
+
+export const UPDATE_ADMIN_MENU_RESULT = 'UPDATE_ADMIN_MENU_RESULT';
+export function receiveAdminMenuUpdate(err) {
+  return {
+    type: UPDATE_ADMIN_MENU_RESULT,
+    err,
+    isFetching : false,
+  }
+}
+
+
+
+
+
+
 
 export const SET_USER_ON_VIEW = 'SET_USER_ON_VIEW';
 export function setUserOnView(user) {
@@ -122,4 +164,35 @@ export function fetchUpdateUser(id, formData) {
       );
   }
 }
+export function fetchAdminMenuData() {
+  return function (dispatch) {
+    dispatch(requestAdminMenu());
+    return UserApi.getAdminMenu()
+      .then(res => {
+        // console.log("RESULT");
+        // console.log(res);
+       // let {not_selected, err} = res;
+        return dispatch(receiveAdminMenu(res, res.err))
+      }).catch(err =>
+        dispatch(receiveAdminMenu(null, err))
+      );
+  }
+}
+export function fetchAdminMenuUpdate(selected) {
+  return function (dispatch) {
+    dispatch(requestAdminMenuUpdate(selected));
+    return UserApi.updateAdmins(selected)
+      .then(res => {
+        // console.log("RESULT");
+        // console.log(res);
+       // let {not_selected, err} = res;
+        return dispatch(receiveAdminMenuUpdate(res.err))
+      }).catch(err =>
+        dispatch(receiveAdminMenuUpdate(err))
+      );
+  }
+}
+
+
+
 

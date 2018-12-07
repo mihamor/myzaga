@@ -96,6 +96,55 @@ class UserApi {
         return result;
     }
 
+    static async getAdminMenu(){
+        let result = {selected:null, not_selected:null, err:null};
+        const jwt = localStorage.getItem('jwt');
+        if(jwt)
+        try{
+            const reqOptions = this.getOptions(jwt);
+            reqOptions.method = 'GET';
+            let response = await fetch(`${this.getHostName()}/admin_menu`, reqOptions);
+
+            let data = await response.json();
+            if(data.err)throw new Error(data.err);
+
+            // // console.log(data);
+            result.selected = data.selected;
+            result.not_selected = data.not_selected;
+        }catch(error){
+            // // console.log(error); 
+            result.err = error;
+        }
+        else result.err = "Missing JWT, login first";
+        return result;
+    }
+
+    static async updateAdmins(selected){
+        let result = {status:null, err:null};
+        const jwt = localStorage.getItem('jwt');
+        if(jwt)
+        try{
+            selected = JSON.stringify(selected);
+            const bodyData = new  URLSearchParams({admins: selected});
+            const reqOptions = this.getOptions(jwt);
+            reqOptions.method = 'POST';
+            reqOptions.body = bodyData;
+            console.log(selected);
+            let response = await fetch(`${this.getHostName()}/admin_menu`, reqOptions);
+
+            let data = await response.json();
+            if(data.err)throw new Error(data.err);
+
+            // console.log(data);
+            result.status = data.status;
+        }catch(error){
+            // console.log(error); 
+            result.err = error;
+        }
+        else result.err = "Missing JWT, login first";
+        return result;
+    }
+
     
     /*
     static async getList(page=1, search_str=""){

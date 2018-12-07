@@ -20,6 +20,7 @@ const initialState = {
     isFetchingLogin: false,
     isFetchingAuth: false,
     isFetchingRegister: false,
+    isRegistered: false,
 };
 
 function login(state = initialState, action) {
@@ -52,6 +53,7 @@ function register(state = initialState, action) {
     case USER_REGISTER_RESPONSE:
       return Object.assign({}, state, {
         //loggedInUser: action.user,
+        isRegistered : action.err ? false : true,
         registerErr: action.err,
         isFetchingRegister: false
       })

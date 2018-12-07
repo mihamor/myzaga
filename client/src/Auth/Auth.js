@@ -194,7 +194,7 @@ const registerMapStateToProps = state => {
     // console.log("MAPPING");
     //// console.log(state.loggedInUser);
     return {
-        isRegistered: !state.auth.registerErr,
+        isRegistered: state.auth.isRegistered,
         errInfo: state.auth.registerErr
     };
 }

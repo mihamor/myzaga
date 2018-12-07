@@ -23,7 +23,7 @@ audio{
     margin-top:20px;
     margin-bottom:20px;
 }
-.track-list{
+.track-list-wrap{
     max-height:600px;
     overflow-y: scroll;
     overflow-x: hidden;

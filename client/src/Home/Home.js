@@ -159,6 +159,18 @@ const ApiInfo = () => {
 }
 
 
+const NoMatch = () => {
+    return (
+    <div>
+        <HeaderSection>
+            <h2>Error 404</h2>
+        </HeaderSection>
+        <Section>
+            <h3>Something went wrong...</h3>
+        </Section>
+    </div>
+    );
+}
 
 
-export { Home, About, ApiInfo};
+export { Home, About, ApiInfo, NoMatch};

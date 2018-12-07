@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Playlists.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
+import ModalDelete from '../ModalDelete/ModalDelete';
 import { Section, HeaderSection } from '../Sections/Sections';
 import Spinner from '../Spinner/Spinner';
 import {
@@ -326,10 +327,11 @@ class PlaylistPage extends Component{
         <hr/>
         <Link className ="btn btn-primary track-update-btn" to={linkToUpdate}>Update</Link>
         <div className ="float-right track-update-btn">
-          <button className ="btn btn-primary" data-toggle="modal" data-target="#delete_modal" onClick={this.handleDelete}>
+          <button className ="btn btn-primary" data-toggle="modal" data-target="#delete_modal" >
             Delete
           </button>
         </div>
+        <ModalDelete onClick={this.handleDelete} name="playlist" id="delete_modal"/>
       </div> : "";
 
     let tracks = playlist.tracks && playlist.tracks.length !== 0 ? playlist.tracks.map(track => {

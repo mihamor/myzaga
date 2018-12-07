@@ -1,9 +1,10 @@
 import {
-    GET_USERS, GET_USERS_RESULT,
-   GET_USER_BY_ID, GET_USER_BY_ID_RESULT,
-   SET_USER_ON_VIEW,
-    UPDATE_USER,
-    UPDATE_USER_RESULT,
+  GET_USERS, GET_USERS_RESULT,
+  GET_USER_BY_ID, GET_USER_BY_ID_RESULT,
+  SET_USER_ON_VIEW,UPDATE_USER,
+  UPDATE_USER_RESULT, GET_ADMIN_MENU,
+  GET_ADMIN_MENU_RESULT, UPDATE_ADMIN_MENU,
+  UPDATE_ADMIN_MENU_RESULT
 } from '../actions/users'
 
 
@@ -15,22 +16,25 @@ import {
 
 
 const initialState = {
-    usersOnPage: [],
-    errorOnFetch: null,
-    currentPage: 0,
-    searchFilter: '',
-    isFetchingUsers: false,
-    pageCount: 0,
+  usersOnPage: [],
+  errorOnFetch: null,
+  currentPage: 0,
+  searchFilter: '',
+  isFetchingUsers: false,
+  pageCount: 0,
 
 
-    userOnView: null,
-    userOnViewId: null,
-    isFetchingUser: false,
-    errorOnFetchUser: null,
+  userOnView: null,
+  userOnViewId: null,
+  isFetchingUser: false,
+  errorOnFetchUser: null,
 
 
-    isFetchingUserUpdate: false,
-    isUserUpdated: false,
+  isFetchingUserUpdate: false,
+  isUserUpdated: false,
+
+  isFetchingAdminMenu: false,
+  adminMenuData:  null,
 };
 
 function getUsers(state = initialState, action) {
@@ -40,7 +44,7 @@ function getUsers(state = initialState, action) {
         isUserUpdated: false,
         isFetchingUsers: action.isFetching,
         currentPage: action.page,
-        searchFilter : action.searchFilter,
+        searchFilter: action.searchFilter,
       })
     case GET_USERS_RESULT:
       return Object.assign({}, state, {
@@ -48,8 +52,22 @@ function getUsers(state = initialState, action) {
         usersOnPage: action.users,
         errorOnFetch: action.err,
         pageCount: action.pageCount,
-        currentPage : action.currentPage,
+        currentPage: action.currentPage,
         isFetchingUsers: action.isFetching
+      })
+    case GET_ADMIN_MENU:
+      return Object.assign({}, state, {
+        isAdminsUpdated: false,
+        isUserUpdated: false,
+        isFetchingAdminMenu: action.isFetching
+      })
+    case GET_ADMIN_MENU_RESULT:
+      return Object.assign({}, state, {
+        isAdminsUpdated: false,
+        isUserUpdated: false,
+        isFetchingAdminMenu: action.isFetching,
+        adminMenuData : action.data,
+        errorOnFetch : action.err
       })
     default:
       return state;
@@ -88,17 +106,26 @@ function updateUser(state = initialState, action) {
   switch (action.type) {
     case UPDATE_USER:
       return Object.assign({}, state, {
-        isUserUpdated : action.isUpdated,
+        isUserUpdated: action.isUpdated,
         isFetchingUserUpdate: action.isFetching,
       })
-    case UPDATE_USER_RESULT:{
+    case UPDATE_USER_RESULT:
       return Object.assign({}, state, {
         userOnView: null, //needs to refetch
         errorOnFetchUser: action.err,
-        isUserUpdated : action.isUpdated,
+        isUserUpdated: action.isUpdated,
         isFetchingUserUpdate: action.isFetching
       })
-    }
+    case UPDATE_ADMIN_MENU:
+      return Object.assign({}, state, {
+        isAdminsUpdated: false,
+        isFetchingAdminUpdate: action.isFetching,
+      })
+    case UPDATE_ADMIN_MENU_RESULT:
+      return Object.assign({}, state, {
+        isAdminsUpdated: !action.err ,
+        isFetchingAdminUpdate: action.isFetching,
+      })
     default:
       return state;
   }
@@ -106,19 +133,23 @@ function updateUser(state = initialState, action) {
 
 
 
-function combinedReducer(state = initialState, action){
+function combinedReducer(state = initialState, action) {
   switch (action.type) {
     case GET_USERS:
     case GET_USERS_RESULT:
+    case GET_ADMIN_MENU:
+    case GET_ADMIN_MENU_RESULT:
       return getUsers(state, action);
     case GET_USER_BY_ID:
     case GET_USER_BY_ID_RESULT:
     case SET_USER_ON_VIEW:
-       return getUserById(state, action);
+      return getUserById(state, action);
     case UPDATE_USER:
     case UPDATE_USER_RESULT:
-       return updateUser(state, action);
-  
+    case UPDATE_ADMIN_MENU:
+    case UPDATE_ADMIN_MENU_RESULT:
+      return updateUser(state, action);
+
     default:
       return state;
   }

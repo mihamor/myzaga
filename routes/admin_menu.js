@@ -7,7 +7,7 @@ const auth_cbs = require("./auth_cb");
 const router = express.Router();
 
 router.get("/",
-auth_cbs.checkAuthRedirect,
+auth_cbs.authJWT,
 auth_cbs.checkAdmin,
 async (req, res) => {
     try {
@@ -15,27 +15,29 @@ async (req, res) => {
         let selected = await User.this_model().find({role: 1});
         let not_selected = getArrDiff(users, selected);
         //console.log(selected + "-------------------" + not_selected);
-        res.render('admin_menu',{selected: selected,not_selected: not_selected, user: req.user});
+        res.json({selected: selected,not_selected: not_selected});
     } catch(err) {
         console.log(err.message);
-        req.next();
+        res.status(400).json({err : err.message});
     }
 });
 
 router.post("/",
-auth_cbs.checkAuth,
+auth_cbs.authJWT,
 auth_cbs.checkAdmin,
 async (req, res) =>{
     let users_to_update = [];
 
-    let newAdminsIdRaw = req.body.admins;
+    console.log("ADMINS")
+    console.log(req.body);
     
-    console.log(newAdminsIdRaw);
+    let newAdminsIdRaw = JSON.parse(req.body.admins);
+    
+    // console.log(newAdminsIdRaw);
 
-    if (!newAdminsIdRaw) newAdminsIdRaw = [];
-    else if (typeof newAdminsIdRaw === "string")
-        newAdminsIdRaw = [newAdminsIdRaw];
-
+    // if (!newAdminsIdRaw) newAdminsIdRaw = [];
+    // else if (typeof newAdminsIdRaw === "string")
+    //     newAdminsIdRaw = [newAdminsIdRaw];
     let newAdminsId = newAdminsIdRaw.map(ele => new mongoose.Types.ObjectId(ele));
     
     console.log(newAdminsId);
@@ -52,10 +54,10 @@ async (req, res) =>{
     }
 
     Promise.all(users_to_update)
-    .then(() => res.redirect("/admin_menu"))
+    .then(() => res.json({status:true}))
     .catch(err => {
         console.log(err.message);
-        res.sendStatus(400);
+        res.status(400).json({err : err.message});
     })
 
 });

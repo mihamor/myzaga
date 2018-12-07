@@ -29,14 +29,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require("./modules/passport")
-
-
-// const viewsDir = path.join(__dirname, 'views');
-// app.engine('mst', mustache(path.join(viewsDir, 'partials')));
-// app.set("views", path.join(__dirname, 'views'));
-// app.set('view engine', 'mst');
-
-
 // will open public directory files for http requests
 const publicPath = path.join(__dirname, "client/build/");
 app.use(express.static(publicPath));
@@ -92,6 +84,9 @@ function enableCors(req, res, next){
 const authRouter = require("./routes/auth");
 app.use("/auth", enableCors, authRouter);
 
+const admin_menu = require("./routes/admin_menu");
+app.use("/admin_menu", enableCors, admin_menu);
+
 const apiV1= require("./routes/apiv1");
 app.use("/api/v1", apiV1);
 const apiV2= require("./routes/apiv2");
@@ -101,5 +96,5 @@ app.use("/api/v3", enableCors, apiV3);
 
 app.get("*", (req, res) => {
     //res.status(404);
-    res.sendFile(path.join(__dirname + 'client/build/index.html'));
+    res.sendFile(process.cwd() + '/client/build/index.html');
 });
