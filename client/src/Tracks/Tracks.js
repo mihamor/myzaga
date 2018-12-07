@@ -209,7 +209,7 @@ class TrackListPage extends Component{
         <div>
           <Section>
             <form onSubmit={this.handleSearchSumbit} className="form-inline">       
-              <div class="form-group col-lg-10 ">
+              <div className="form-group col-lg-10 ">
                 <input className="form-control w-100"type="search" value={this.state.searchFilter} onChange={this.handleFilterChange} id="search_field" name="search" placeholder="Search track..." />
               </div>
               <button id="search" className="btn btn-primary track-search" type="submit" >Search</button>

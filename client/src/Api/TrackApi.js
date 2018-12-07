@@ -116,10 +116,11 @@ class TracksApi{
             let response = await fetch(`${this.getHostName()}/api/v3/tracks`,  {
                 headers: {
                      Authorization: `Bearer ${jwt}`,
-                     "Content-Type": 'multipart/form-data'
+                    // "Content-Type": 'multipart/form-data'
                 },
                 mode: "cors",
-                method: "POST"
+                method: "POST",
+                body: formData
             });
 
 
