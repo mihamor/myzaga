@@ -1,31 +1,49 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs-promise');
+const fs = require("fs-promise");
 const mustache = require('mustache-express');
-const {User} = require('./models/user.js');
-const {Track} = require('./models/track.js');
-const {Comment} = require('./models/comment.js');
-const {Playlist} = require('./models/playlist.js');
+const {User} = require('./models/user');
+const {Track} = require('./models/track');
+const {Utils} = require('./models/utils');
+const {Comment} = require('./models/comment');
+const {Playlist} = require('./models/playlist');
 const app = express();
 const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
 const mongoose = require('mongoose');
 const config = require("./config");
 const cloudinary = require("cloudinary");
+const session = require('express-session');
 
-const viewsDir = path.join(__dirname, 'views');
-app.engine('mst', mustache(path.join(viewsDir, 'partials')));
-app.set("views", path.join(__dirname, 'views'));
-app.set('view engine', 'mst');
 
-Track.setStoragePath("./data/tracks.json")
+// new imports
+const passport = require('passport');
+const cookieParser = require('cookie-parser');
+app.use(session({
+    secret: config.secret,
+    resave: false,
+    saveUninitialized: true
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+require("./modules/passport")
+
+
+// const viewsDir = path.join(__dirname, 'views');
+// app.engine('mst', mustache(path.join(viewsDir, 'partials')));
+// app.set("views", path.join(__dirname, 'views'));
+// app.set('view engine', 'mst');
+
 
 // will open public directory files for http requests
-const publicPath = path.join(__dirname, "public");
+const publicPath = path.join(__dirname, "client/build/");
 app.use(express.static(publicPath));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }));
 app.use(busboyBodyParser({limit: '15mb'}));
+app.use(cookieParser());
 
 const url = config.mongo_url;
 const connectOptions = { 
@@ -38,25 +56,6 @@ cloudinary.config({
     api_secret: config.cloudinary.api_secret
 });
 
-// in request handler with file
-function handleFileUpload(req, res) {
-    const fileObject = req.files.someFile;
-    const fileBuffer = fileObject.data.data;
-    cloudinary.v2.uploader.upload_stream({ resource_type: 'raw' },
-        function (error, result) { 
-            console.log(result, error) 
-            // do stuff...
-            // create web response
-            res.send(result);
-        })
-        .end(fileBuffer);
-    // ...
-}
-
-
-
-
-
 mongoose.connect(url, connectOptions)
     .then((x) => {
         console.log("Mongo database connected " + mongoose.connection);
@@ -64,9 +63,10 @@ mongoose.connect(url, connectOptions)
     })
     .catch((err) => console.log("ERROR: " + err.message));
 
-app.get("/", function(req, res){
-    res.render('index');
-});
+// app.get("/", (req, res) => {
+//     res.render('index',{ user: req.user});
+// });
+
 
 app.get('/data/fs/:filename', (req, res) => {
     const fileName = req.params.filename;
@@ -77,90 +77,29 @@ app.get('/data/fs/:filename', (req, res) => {
     });
 });
 
-const userRouter = require("./routes/users.js");
-app.use("/users", userRouter);
 
-const trackRouter = require("./routes/tracks.js");
-app.use("/tracks", trackRouter);
+// const adminRouter = require("./routes/admin_menu");
+// app.use("/admin_menu", adminRouter);
 
-const playlistRouter = require("./routes/playlists.js");
-app.use("/playlists", playlistRouter);
-
-
-const commentRouter = require("./routes/comments.js");
-app.use("/comments", commentRouter);
+function enableCors(req, res, next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "PUT, POST, DELETE, GET");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
+    next();
+}
 
 
-app.get("/about", function(req, res){
-    res.render('about');
-});
+const authRouter = require("./routes/auth");
+app.use("/auth", enableCors, authRouter);
 
+const apiV1= require("./routes/apiv1");
+app.use("/api/v1", apiV1);
+const apiV2= require("./routes/apiv2");
+app.use("/api/v2", apiV2);
+const apiV3= require("./routes/apiv3");
+app.use("/api/v3", enableCors, apiV3);
 
-app.get("/api/users/:id(\\d+)", function(req, res){
-
-    let id = Number(req.params.id);
-    User.getById(id)
-        .then(track => {
-            if(!track) res.sendStatus(404)
-            else res.send(track);
-        })
-        .catch(err => {
-            console.log(err.message);
-            res.sendStatus(404);
-        });
-});
-app.get("/api/users", function(req, res){
-    User.getAll()
-        .populate("downloaded_tracks")
-        .exec()
-        .then(users => res.send(users))
-        .catch(err => res.sendStatus(404));
-});
-
-app.get("/api/users/test_add", (req, res)=>{
-
-    let UserModel = User.this_model();
-    let PlaylistModel = Playlist.this_model();
-    let u = new User(0, "djigolo", "Sanek Chert", 0, "/images/users/user2.jpeg", "шо вы малые блин!");
-    User.insert(u)
-    .then(x => res.send(x))
-    .catch(err => {
-        console.log(err);
-        req.next();
-    });
-
-});
-
-app.get("/api/users/populated", (req, res)=>{
-    let UserModel = User.this_model();
-    UserModel.find()
-    .populate("uploaded_tracks")
-    .exec()
-    .then(x => x.map(i => i.toJSON()))
-    .then(x => res.json(x));
-
-});
-
-
-app.get("/api/playlists/test_add", (req, res)=>{
-    
-    let PlaylistModel = Playlist.this_model();
-    let t = new Playlist("0", "Some desc", false);
-    new PlaylistModel(t).save()
-        .then(x => x.toJSON())
-        .then(x => res.json(x));
-});
-app.get("/api/tracks/test_add", (req, res)=>{
-    
-    let TrackModel = Track.this_model();
-    let t = new Track("Metallica", "shit", "shoto", ".", 12130, 20123, ",");
-    new TrackModel(t).save()
-        .then(x => x.toJSON())
-        .then(x => res.json(x));
-});
-
-
-app.use( function(req, res){
-    res.status(404);
-    res.render('error', {error : ""});
+app.get("*", (req, res) => {
+    //res.status(404);
+    res.sendFile(path.join(__dirname + 'client/build/index.html'));
 });

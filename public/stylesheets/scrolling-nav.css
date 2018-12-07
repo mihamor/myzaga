@@ -8,6 +8,11 @@ header {
   padding: 154px 0 100px;
 }
 
+
+.register-sec{
+  padding: 500px 0 100px;
+}
+
 @media (min-width: 992px) {
   header {
     padding: 156px 0 100px;
@@ -22,8 +27,12 @@ header {
 section {
   padding: 150px 0;
 }
+section.user-list{
+  padding: 10px 0;
+}
 .track-list-container{
   min-height: 900px;
+  padding-top: 80px;
 }
 .track-ref{
   font-size: 20px;
@@ -35,6 +44,15 @@ section {
   border: 3px solid #787FCA;
   height:200px;
   margin-top: 30px;
+  margin-bottom: 10px;
+  width:200px
+}
+
+.user-img{
+  border: 3px solid #787FCA;
+  height:200px;
+  margin-top: 0px;
+  margin-right: 50px;
   margin-bottom: 10px;
   width:200px
 }
@@ -64,4 +82,28 @@ audio{
   margin-top: 30px; 
   width : 80%;
   min-width: 100px;
+}
+
+
+.auth-bg{
+
+  background-image: url('/images/bg1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+
+.header-bg{
+  
+    background-image: url('/images/user_header.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+span.user-status.admin{
+  background: #ED090C;
+}
+span.user-status.user{
+  background: #1D43A1;
 }

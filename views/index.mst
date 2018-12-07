@@ -1,32 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>MyZaGa</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="/stylesheets//scrolling-nav.css" rel="stylesheet">
-
-  </head>
+{{>head}}
 
   <body id="page-top">
 
     {{>nav-bar}}
 
-    <header class="bg-blue text-white">
+    <header class="bg-blue text-white auth-bg">
       <div class="container text-center">
         <h1>Welcome to MyZaGa!</h1>
         <p class="w-50 lead d-inline-block">A world’s leading social sound platform where anyone can listen to or create sounds and share
           them everywhere.</p>
+        {{^user}}
+        <br>
+        <a class ="btn btn-light" href="/auth/register">Join the MyZaGa</a>
+        {{/user}}
       </div>
     </header>
 
@@ -59,5 +48,3 @@
     {{>footer}}
 
   </body>
-
-</html>

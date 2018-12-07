@@ -6,9 +6,16 @@ const {Track} = require('./track.js');
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
 const util = require("util");
+const config = require("../config")
 
+const sha256 = require("sha256");
 
 class Utils {
+
+    static hash(str){
+        let saltedStr = str + config.salt;
+        return sha256(saltedStr).toString("hex");
+    }
 
     static insertUserWithPlaylist(user){
         if(!User.check_params(user)) 
@@ -42,6 +49,55 @@ class Utils {
 
     }
 
+    static getPopulatedPlaylist(id){
+        return Playlist.getById(id)
+        .populate("userRef")
+        .populate("tracks")
+        .exec();
+    }
+
+    static getPopulatedTracks(){
+        return Track.getAll()
+        .populate({
+            path: "uploadedListRef",
+            model: 'Playlist',
+            populate : {
+                path: "userRef",
+                model: 'User',
+            }
+        })
+        .populate({
+            path: "comments",
+            model: 'Comment',
+            populate : {
+                path: "user",
+                model: 'User',
+            }
+        })
+        .exec();
+    }
+
+
+    static getPopulatedTrack(id){
+        return Track.getById(id)
+        .populate({
+            path: "uploadedListRef",
+            model: 'Playlist',
+            populate : {
+                path: "userRef",
+                model: 'User',
+            }
+        })
+        .populate({
+            path: "comments",
+            model: 'Comment',
+            populate : {
+                path: "user",
+                model: 'User',
+            }
+        })
+        .exec();
+    }
     static getAllPlaylistFromUser(user){
         if(!User.check_params(user)) 
             return Promise.reject(new Error("Invalid arguments"));
@@ -50,7 +106,10 @@ class Utils {
         let arr = user.custom_playlists.map(ele => new mongoose.Types.ObjectId(ele._id));
         return PlaylistModel.find({
             _id: { $in: arr}
-        });
+        })
+        .populate("userRef")
+        .populate("tracks")
+        .exec();
     }
     static uploadBufferAsync(fileBuffer){
         return handle_file_upload_promised(fileBuffer);
@@ -70,15 +129,72 @@ class Utils {
           .then(x => x.userRef)
           .then(user => {
             console.log("removePlaylistId" + user);
-            let newUser = new User(user.login, user.fullname, user.role, user.avaUrl, user.bio, user.uploaded_tracks, user.isDisabled, user.registeredAt);
+            let newUser = new User(user.login, user.passhash, user.fullname, user.role, user.avaUrl, user.bio, user.uploaded_tracks, user.isDisabled, user.registeredAt);
             newUser._id = user._id;
             newUser.custom_playlists = removeItemFromArr(user.custom_playlists, plid);
             console.log(newUser);
             return User.update(newUser);
           });
-      }
-
+    }
+    
+    static formItemsPage(arr, itemsPerPage, page){
+        let index_start = (page-1) * itemsPerPage;
+        let index_end = (page) * itemsPerPage;
+        index_end =  index_end < arr.length ? index_end : arr.length;
+        return arr.slice(index_start, index_end);
+    }
+    
+    static search_throgh_arr(arr, search_str){
+        return search_throgh(arr, search_str, compare_to_track);
+    }
+    static search_throgh_users(arr, search_str){
+        return search_throgh(arr, search_str, compare_to_user);
+    }
+    static search_throgh_comments(arr, search_str){
+        return search_throgh(arr, search_str, compare_to_comment);
+    }
+    static search_throgh_playlists(arr, search_str){
+      return search_throgh(arr, search_str, compare_to_playlist);
+    }
 }
+
+function search_throgh(arr, search_str, cmp){
+    let arr_after_search = [];
+    if(!search_str) arr_after_search = arr;
+    else {
+        for(let track of arr){
+            if(cmp(track, search_str)) 
+                arr_after_search.push(track);
+        }
+    }
+    return arr_after_search;
+}
+
+
+function compare_to_track(track, search_str){
+    search_str = search_str.toLowerCase();
+    return track.author.toLowerCase().includes(search_str)
+    || track.name.toLowerCase().includes(search_str);
+}
+
+
+function compare_to_playlist(playlist, search_str){
+    search_str = search_str.toLowerCase();
+    return playlist.desc.toLowerCase().includes(search_str)
+}
+
+
+function compare_to_comment(comment, search_str){
+    search_str = search_str.toLowerCase();
+    return comment.content.toLowerCase().includes(search_str);
+}
+function compare_to_user(user, search_str){
+    search_str = search_str.toLowerCase();
+    return user.login.toLowerCase().includes(search_str)
+    || user.fullname.toLowerCase().includes(search_str)
+}
+
+
 const handle_file_upload_promised = util.promisify(handleFileUpload);
 const delete_file_promised = util.promisify(deleteFile);
 function handleFileUpload(fileBuffer, callback) {
@@ -98,7 +214,7 @@ function deleteFile(id, callback){
         result = info.result;
         console.log(err, result);
         if(err) callback(err)
-        else if(result != "ok") callback(new Error("No file to delete"))
+       // else if(result != "ok") callback(new Error("No file to delete"))
         else callback (null, result);
     }, { resource_type: 'raw' });
 }

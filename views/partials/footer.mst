@@ -20,4 +20,4 @@
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom JavaScript for this theme -->
-    <script src="/javasripts/scrolling-nav.js"></script>
+    <script src="/javascripts/scrolling-nav.js"></script>

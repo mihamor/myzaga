@@ -25,15 +25,20 @@ class Playlist extends Storage{
   }
 
   static getAllCreated(){
-    return this.this_model().find({isUserUploads: false});
+    return this.this_model()
+      .find({isUserUploads: false})
+      .populate("userRef")
+      .populate("tracks")
+      .exec();;
   }
 
   static isRemoveble(id){
     return this.getById(id)
       .then(x => {
-        if(x.isUserUploads) 
+        if(!x) return Promise.reject(new Error("Entity was not found"));
+        else if(x.isUserUploads) 
           return Promise.reject(new Error("Playlist is not removeble"));
-        return Promise.resolve();
+        return x;
       });
   }
 

@@ -28,15 +28,17 @@ class Storage {
     static isExist(id){
         let curr_model = this.this_model()
         return curr_model.find({_id: id})
+            .catch(err =>{
+                return Promise.reject(new Error("Entity was not found"));
+            })
             .then(x => {
-                if(x.length !== 0) return Promise.resolve();
-                else return Promise.reject(
-                new Error(`${curr_model.baseModelName}: entity was not found`));
-            });
+                if(x.length !== 0) return Promise.resolve(true);
+                else return Promise.reject();
+            })
     }
     static update(ent) {
         if(!this.check_params(ent)) 
-            return Promise.reject(new Error("Invalid argument"));
+            return Promise.reject(new Error("Invalid argument in update "+ this.this_model().modelName + ent.toString()));
         let curr_model = this.this_model();
         console.log(`${curr_model.modelName} UPDATE`);
         return curr_model.findOneAndUpdate({ _id: ent._id},ent, {upsert : true});

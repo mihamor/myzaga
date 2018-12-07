@@ -1,0 +1,11 @@
+.playlists-item{
+    margin: 5px 0;
+}
+.track-list{
+    padding: 20px;
+    margin: 10px;
+    background-color: #CDCDFB
+}
+.btn-add{
+    margin-top: 10px;
+}

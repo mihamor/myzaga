@@ -1,0 +1,48 @@
+
+audio{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 30px; 
+    width : 90%;
+    min-width: 100px;
+}
+.track-border{
+    border-radius:20px;
+}
+.track-name{
+    margin-top:20px;
+}
+.track-img{
+    border: 3px solid #787FCA;
+    height:200px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    width:200px
+}  
+.track-link{
+    margin-top:20px;
+    margin-bottom:20px;
+}
+.track-list{
+    max-height:600px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin: 20px 0px;
+}
+.track-filter{
+    width:85%;
+}
+.track-search{
+    margin-left: 10px;
+}
+.track-page-info{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.track-update-btn{
+    display:inline-block;
+}
+.comment-body{
+    margin-top: 20px;
+    padding: 10px;
+}

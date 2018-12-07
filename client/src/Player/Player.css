@@ -1,0 +1,10 @@
+.player{
+    height: 100px;
+    padding-left: 100px;
+    padding-top: 0px;
+    
+}
+.player-audio{
+    width: 70%;
+    margin-top: 0px;
+}

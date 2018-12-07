@@ -1,4 +1,3 @@
-#Mykhailo Moroz KP-73 webprogbase repository
+#Mykhailo Moroz KP-73 webprogbase2 repository
 
-[Link to lab1 website](https://mihamor.github.io/webprogbase-lab1/)
-[Link to lab6 website](http://myzaga.herokuapp.com)
+[TZ](https://docs.google.com/document/d/1h-RnWP71WORwZu5cbzbDQp8jPKo7cFlGF5hn2gTyXCs/edit)
