@@ -283,7 +283,16 @@ class UserPage extends Component {
           </FlexSection>
         </div>);
     } else if (!user)
-      return <HeaderSection><p className="lead">Error fetching</p></HeaderSection>;
+    return (
+      <div>
+      <HeaderSection>
+        <p className="lead">
+        Error 404</p></HeaderSection>
+        <Section>
+          <h1>Something went wrong</h1>
+        </Section>
+      </div>        
+    )
 
     let isOwner = is_user_owner(this.user, user);
     let linkToUpdate = `/users/update/${user._id}`;

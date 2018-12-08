@@ -371,7 +371,16 @@ class TrackPage extends Component{
           </Section>
         </div>);
     }else if(!track)
-      return <HeaderSection><p className="lead">Error fetching</p></HeaderSection>;
+    return (
+      <div>
+      <HeaderSection>
+        <p className="lead">
+        Error 404</p></HeaderSection>
+        <Section>
+          <h1>Something went wrong</h1>
+        </Section>
+      </div>        
+    )
 
     let isOwner = is_track_owner(this.user, track);
     let userPlaylistRef = `/playlists/${track.uploadedListRef._id}`;
