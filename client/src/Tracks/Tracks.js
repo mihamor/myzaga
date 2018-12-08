@@ -477,7 +477,7 @@ class TrackUpdatePage extends Component {
       name : props.track ? props.track.name : null,
       album : props.track ? props.track.album : null,
       year : props.track ? props.track.year : null,
-      trackId : props.track ? props.track._id : props.match.params.id 
+      trackId :  props.match.params.id 
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -510,9 +510,9 @@ class TrackUpdatePage extends Component {
 
 
   componentWillMount(){
-    if(!this.props.track){
+    //if(!this.props.track){
       this.dispatch(fetchTrackById(this.state.trackId))
-    }
+    //}
   }
 
   componentWillReceiveProps(props){

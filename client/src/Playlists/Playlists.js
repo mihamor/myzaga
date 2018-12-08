@@ -398,7 +398,7 @@ class PlaylistUpdatePage extends Component {
       isLoading : !props.data.playlist,
       desc : props.data.playlist ? props.data.playlist.decs : null,
       tracks : props.data.playlist ? props.data.playlist.tracks : [],
-      playlistId : props.data.playlist ? props.data.playlist._id : props.match.params.id,
+      playlistId : props.match.params.id,
       allTracks : props.data.tracks ? props.data.tracks : []
     };
     this.handleSubmit = this.handleSubmit.bind(this);

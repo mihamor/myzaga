@@ -347,7 +347,7 @@ const UserPageContainer = withRouter(connect(
       isLoading: !props.userOnView,
       bio: props.userOnView ? props.userOnView.bio : null,
       fullname: props.userOnView ? props.userOnView.fullname : null,
-      userId: props.userOnView ? props.userOnView._id : props.match.params.id
+      userId: props.match.params.id
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -364,9 +364,9 @@ const UserPageContainer = withRouter(connect(
 
 
   componentWillMount() {
-    if (!this.props.userOnView) {
+    //if (!this.props.userOnView) {
       this.dispatch(fetchUserById(this.state.userId))
-    }
+    //}
   }
 
   componentWillReceiveProps(props) {
