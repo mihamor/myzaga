@@ -340,8 +340,10 @@ const UserPageContainer = withRouter(connect(
     super(props);
     this.dispatch = props.dispatch;
 
+    this.user = props.user;
     this.state = {
       isUserUpdated: false,
+      user: null,
       isLoading: !props.userOnView,
       bio: props.userOnView ? props.userOnView.bio : null,
       fullname: props.userOnView ? props.userOnView.fullname : null,
@@ -374,6 +376,7 @@ const UserPageContainer = withRouter(connect(
       let isUserUpdated = props.isUserUpdated;
       this.setState({
         bio,
+        user : props.userOnView,
         fullname,
         userId: _id,
         isLoading,
@@ -406,6 +409,7 @@ const UserPageContainer = withRouter(connect(
       console.log("REDIRECT TO " + linkToUser);
       return <Redirect to={linkToUser} />;
     }
+    if(this.state.user && !is_user_owner(this.user, this.state.user)) return <Redirect to="/users"/>;
     return (
       <div>
         <HeaderSection>

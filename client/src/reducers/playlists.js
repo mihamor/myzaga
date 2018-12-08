@@ -56,6 +56,10 @@ function getPlaylists(state = initialState, action) {
   switch (action.type) {
     case GET_PLAYLISTS:
       return Object.assign({}, state, {
+        updateData: {
+          tracks: null,
+          playlist: null
+        },  
         isPlaylistUpdated: false,
         isFetchingPlaylistCreate: false,
         isPlaylistDeleted: false,
@@ -67,6 +71,10 @@ function getPlaylists(state = initialState, action) {
       })
     case GET_PLAYLISTS_RESULT:
       return Object.assign({}, state, {
+        updateData: {
+          tracks: null,
+          playlist: null
+        },  
         isPlaylistUpdated: false,
         isFetchingPlaylistCreate: false,
         isPlaylistDeleted: false,
@@ -85,6 +93,10 @@ function getPlaylistById(state = initialState, action) {
   switch (action.type) {
     case GET_PLAYLIST_BY_ID:
       return Object.assign({}, state, {
+        updateData: {
+          tracks: null,
+          playlist: null
+        },  
         isPlaylistUpdated: false,
         isFetchingPlaylistCreate: false,
         isPlaylistDeleted: false,
@@ -93,6 +105,10 @@ function getPlaylistById(state = initialState, action) {
       })
     case GET_PLAYLIST_BY_ID_RESULT:
       return Object.assign({}, state, {
+        updateData: {
+          tracks: null,
+          playlist: null
+        },  
         isPlaylistUpdated: false,
         isFetchingPlaylistCreate: false,
         isPlaylistDeleted: false,
@@ -102,6 +118,10 @@ function getPlaylistById(state = initialState, action) {
       })
     case SET_PLAYLIST_ON_VIEW:
       return Object.assign({}, state, {
+        updateData: {
+          tracks: null,
+          playlist: null
+        },  
         isPlaylistUpdated: false,
         isPlaylistDeleted: false,
         isFetchingPlaylistCreate: false,

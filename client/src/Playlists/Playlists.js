@@ -391,7 +391,9 @@ class PlaylistUpdatePage extends Component {
      super(props);
      this.dispatch = props.dispatch;
 
+    this.user = props.user;
     this.state = {
+      playlist : null,
       isPlaylistUpdated : false,
       isLoading : !props.data.playlist,
       desc : props.data.playlist ? props.data.playlist.decs : null,
@@ -434,6 +436,7 @@ class PlaylistUpdatePage extends Component {
       this.setState({
         allTracks: props.data.allTracks,
         desc,
+        playlist: props.data.playlist,
         tracks,
         playlistId: _id,
         isLoading,
@@ -466,6 +469,9 @@ class PlaylistUpdatePage extends Component {
       return <Redirect to={linkToPlaylist}/>;
     }
 
+   // let isOwner = is_playlist_owner(this.user, this.state.playlist);
+
+    if(!this.state.playlist || !is_playlist_owner(this.user, this.state.playlist) ) return <Redirect to="/playlists"/>;
 
     let unselected = formUnSelectedArr(this.state.allTracks, this.state.tracks);
     return (

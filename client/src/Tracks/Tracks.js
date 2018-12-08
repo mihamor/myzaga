@@ -468,8 +468,9 @@ class TrackUpdatePage extends Component {
   constructor(props){
     super(props);
     this.dispatch = props.dispatch;
-    
+    this.user = props.user;
     this.state = {
+      track: null,
       isTrackUpdated : false,
       isLoading : !props.track,
       author : props.track ? props.track.author : null,
@@ -520,6 +521,7 @@ class TrackUpdatePage extends Component {
       let isLoading = props.isLoading;
       let isTrackUpdated = props.isTrackUpdated;
       this.setState({
+        track : props.track,
         author,
         name,
         album,
@@ -537,6 +539,7 @@ class TrackUpdatePage extends Component {
     }
   }
   render(){
+    if(!this.user) return <Redirect to="/auth/login"/>;
     if(this.state.isLoading)
       return(
         <div>
@@ -554,6 +557,8 @@ class TrackUpdatePage extends Component {
       // console.log("REDIRECT TO "+ linkToTrack);
       return <Redirect to={linkToTrack}/>;
     }
+
+    if(this.state.track && !is_track_owner(this.user, this.state.track)) return <Redirect to="/tracks"/>;
     return (
     <div>
       <HeaderSection>
