@@ -239,6 +239,7 @@ function combinedReducer(state = initialState, action){
       return getTracks(state, action);
     case GET_TRACK_BY_ID:
     case GET_TRACK_BY_ID_RESULT:
+    case SET_TRACK_ON_VIEW:
       return getTrackById(state, action);
     case UPDATE_TRACK:
     case UPDATE_TRACK_RESULT:

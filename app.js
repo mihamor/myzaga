@@ -8,12 +8,14 @@ const {Utils} = require('./models/utils');
 const {Comment} = require('./models/comment');
 const {Playlist} = require('./models/playlist');
 const app = express();
+let http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
 const mongoose = require('mongoose');
 const config = require("./config");
 const cloudinary = require("cloudinary");
 const session = require('express-session');
+const io = require('socket.io')(http);
 
 
 // new imports
@@ -51,7 +53,7 @@ cloudinary.config({
 mongoose.connect(url, connectOptions)
     .then((x) => {
         console.log("Mongo database connected " + mongoose.connection);
-       app.listen(config.port, function() { console.log('Server is ready\n' + publicPath); });
+       http.listen(config.port, function() { console.log('Server is ready\n' + publicPath); });
     })
     .catch((err) => console.log("ERROR: " + err.message));
 
@@ -97,4 +99,60 @@ app.use("/api/v3", enableCors, apiV3);
 app.get("*", (req, res) => {
     //res.status(404);
     res.sendFile(process.cwd() + '/client/build/index.html');
+});
+
+
+io.on('connection', function(socket){
+    console.log("GOT NEW CONNECTION");
+    let currTrack = 'default';
+    socket.on('ontrack', (trackId) => {
+        console.log("JOINING "+ trackId);
+        currTrack = trackId;
+        socket.join(trackId); 
+    });
+    socket.on('leaveTrack', (trackId) => {
+        console.log("LEAVING "  + trackId)
+        currTrack = null;
+        socket.leave(trackId); 
+     });
+    socket.on('sendcomment',async ({commentText, id, user}) => {
+        if(!currTrack) {
+            console.log("ERROR");
+            return;
+        }
+        console.log('comment sended '+ commentText);
+        console.log("POST NEW COMMENT");
+        let trackId = id;
+        let userId = user;
+        let content = commentText;
+    
+        console.log(content);
+        console.log(trackId);
+        try{
+            //if(!check_body_comment(req.body)) throw new Error("Bad request");
+            let comment = new Comment(content, userId);
+    
+            const isExist = await Track.isExist(trackId);
+            const userPop = await User.getById(userId);
+            if(!isExist || !userPop) throw new Error("No such entity");
+            let newId = await Comment.insert(comment);
+            await Track.insertComment(trackId, newId);
+    
+            //comment._id = newId;
+            //comment.user = userPop;
+            let newTrack = await Utils.getPopulatedTrack(trackId);
+            io.sockets.in(currTrack).emit('successComment', newTrack);
+        }catch(error) {
+            console.log(error);
+            io.sockets.in(currTrack).emit('failedComment', error);
+        }
+    });
+
+    socket.on('disconnect', function () {
+
+        console.log('USER DISCONNECTED');
+      });
+    //socket.on('sendcomment', ({commentText, id, user}) => {
+    //   console.log('comment sended '+ commentText);
+    //});
 });

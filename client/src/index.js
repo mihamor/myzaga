@@ -11,8 +11,12 @@ import { fetchAuth } from './actions/auth';
 import rootReducer from './reducers/reducers';
 import TracksApi from './Api/TrackApi';
 import CommentApi from './Api/CommentApi';
+import io from 'socket.io-client';
+let socket = io('http://localhost:3016');
 TracksApi.setHostName('http://localhost:3016');
 CommentApi.setHostName('http://localhost:3016');
+
+
 
 const loggerMiddleware = createLogger();
 const store = createStore(
@@ -28,7 +32,7 @@ store.dispatch(fetchAuth()).then(() => console.log(store.getState()));
 ReactDOM.render((
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <App socket={socket} />
     </BrowserRouter>
   </Provider>
   ), document.getElementById('root'))

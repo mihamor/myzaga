@@ -289,6 +289,7 @@ class TrackPage extends Component{
   constructor(props) {
     super(props);
     this.user = props.user;
+    this.socket = props.socket;
     // console.log("PROPS ON TRACK PAGE");
     // console.log(this.props);
     let cashedTrack = null;
@@ -307,18 +308,27 @@ class TrackPage extends Component{
     this.handlePlayClick = this.handlePlayClick.bind(this);
     this.handleCommentAdd = this.handleCommentAdd.bind(this);
     this.handleCommentChange = this.handleCommentChange.bind(this);
+    this.onSuccesComment = this.onSuccesComment.bind(this);
+
+
   }
 
 
   componentWillMount(){
+    this.socket.emit("ontrack", this.state.trackOnViewId.toString());
     if(!this.state.trackOnView)
       this.dispatch(fetchTrackById(this.state.trackOnViewId));
     else this.dispatch(setTrackOnView(this.state.trackOnView));
+
+    this.socket.on('successComment', this.onSuccesComment);
+  }
+  onSuccesComment(newTrackOnView){
+    this.dispatch(setTrackOnView(newTrackOnView));
   }
 
   componentWillReceiveProps(props) {
-    // console.log("RECEIVING PROPS TRACK CONTAINER");
-    // console.log(props);
+     console.log("RECEIVING PROPS TRACK CONTAINER");
+     console.log(props);
     if(props.isAddedComment || props.isDeletedComment) //refetch
       this.dispatch(fetchTrackById(this.state.trackOnViewId))
     else this.setState({
@@ -331,10 +341,19 @@ class TrackPage extends Component{
   handlePlayClick(){
     this.dispatch(setTrack(this.state.trackOnView));
   }
+  componentWillUnmount(){
+    this.socket.emit("leaveTrack", this.state.trackOnViewId.toString());
+  }
   handleCommentAdd(event){
     event.preventDefault();
     let commentText = this.state.commentText;
-    this.dispatch(fetchCreateComment({commentText}, this.state.trackOnViewId));
+    this.socket.emit("sendcomment", {
+      commentText,
+      id: this.state.trackOnView._id.toString(),
+      user: this.user._id
+    });
+    this.setState({commentText: ''});
+    //this.dispatch(fetchCreateComment({commentText}, this.state.trackOnViewId));
   }
   handleCommentChange(event){
     this.setState({commentText : event.target.value});
@@ -439,7 +458,7 @@ class TrackPage extends Component{
           <form onSubmit={this.handleCommentAdd}>
             <div className="form-group">
               <label forhtml="comment-cont">Comment:</label>
-              <textarea type="text" className="form-control" id="comment-cont" onChange={this.handleCommentChange} value={this.state.commentText} placeholder="Leave a comment..." name="commentText"></textarea>
+              <textarea type="text" className="form-control" id="comment-cont" onChange={this.handleCommentChange} value={this.state.commentText} placeholder="Leave a comment..." name="commentText" required></textarea>
             </div>
             <button type="submit" className="btn btn-primary float-right">Submit</button>
           </form>
@@ -478,6 +497,7 @@ class TrackUpdatePage extends Component {
     super(props);
     this.dispatch = props.dispatch;
     this.user = props.user;
+    this.socket = props.socket;
     this.state = {
       track: null,
       isTrackUpdated : false,

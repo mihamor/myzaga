@@ -37,7 +37,7 @@ function checkIfTheSameUser(user1, user2){
     && (user1.login ===  user2.login));
 }
 
-const OpTrackRoute = ({user}) => (
+const OpTrackRoute = ({user, socket}) => (
   <Switch>
     <Route
       path='/tracks/update/:id'
@@ -49,12 +49,12 @@ const OpTrackRoute = ({user}) => (
     />
     <Route
       exact path='/tracks/:id'
-      render={props => <TrackPage user={user}/>}
+      render={props => <TrackPage user={user} socket={socket}/>}
     />
   </Switch>
 );
 
-const TracksRoute = ({user}) => (
+const TracksRoute = ({user, socket}) => (
   <Switch>
      <Route
         exact path='/tracks'
@@ -62,7 +62,7 @@ const TracksRoute = ({user}) => (
       />
       <Route
         path='/tracks/:id'
-        render={props => <OpTrackRoute user={user}/>}
+        render={props => <OpTrackRoute user={user} socket={socket}/>}
       />
 
   </Switch>
@@ -147,6 +147,7 @@ class Main extends Component{
   constructor(props){
     super(props);
     this.state = {user: props.user};
+    this.socket = props.socket;
     // console.log(props);
   }
 
@@ -176,7 +177,7 @@ class Main extends Component{
             <Route path='/admin_menu' render={props => <AdminMenu user={this.state.user}/>}/>
             <Route 
               path ='/tracks'
-              render={props => <TracksRoute user={this.state.user}/>}
+              render={props => <TracksRoute user={this.state.user} socket={this.socket}/>}
             />
             <Route 
               path ='/users'

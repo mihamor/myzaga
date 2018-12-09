@@ -31,6 +31,7 @@ function checkIfTheSameUser(user1, user2){
 class App extends Component {
   constructor(props){
     super(props);
+    this.socket = props.socket;
     this.state = {user: props.user};
   }
 
@@ -49,7 +50,7 @@ class App extends Component {
     return (
       <div className="App">
         <Navbar user={this.state.user}  />
-        <Main user={this.state.user}/>
+        <Main user={this.state.user} socket={this.socket}/>
         <Player user={this.state.user} />
       </div>
     );
@@ -60,6 +61,8 @@ class AppWrapper extends Component {
   constructor(props){
     super(props);
     this.state = {isLoaded : false, user: null};
+
+    this.socket= props.socket;
   }
 
   
@@ -75,7 +78,7 @@ class AppWrapper extends Component {
     const user = this.state.user;
     // console.log("IN APP WRAPPER USER");
     // console.log(user);
-    return <App user={user}/>;
+    return <App user={user} socket={this.socket}/>;
   }
 }
 const mapStateToProps = state => {
