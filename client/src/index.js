@@ -12,7 +12,7 @@ import rootReducer from './reducers/reducers';
 import TracksApi from './Api/TrackApi';
 import CommentApi from './Api/CommentApi';
 import io from 'socket.io-client';
-let socket = io('http://localhost:3016');
+let socket = io();
 TracksApi.setHostName('http://localhost:3016');
 CommentApi.setHostName('http://localhost:3016');
 
