@@ -4,7 +4,7 @@ Backend is written in node.js using express.js.
 Frontend written with usage of React, Redux, socket.io.
 
 
-# Starting
+### Starting
 To start server you need to setup your config.js in folowing format:
 ```js
 let config = {
