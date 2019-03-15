@@ -1,7 +1,7 @@
 # Myzaga
 Myzaga is a social sound platform.
 Backend is written in node.js using express.js.
-Frontend written with usage of React, Redux, socket.io.
+Frontend is written with usage of React, Redux, socket.io.
 
 
 ### Starting
