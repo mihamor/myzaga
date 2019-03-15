@@ -103,3 +103,4 @@ chrome-user-data
 .vscode
 *.swp
 *.swo
+config.js

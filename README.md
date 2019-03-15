@@ -1,3 +1,34 @@
-#Mykhailo Moroz KP-73 webprogbase2 repository
+#Myzaga
+Myzaga is a social sound platform.
+Backend is written in node.js using express.js.
+Frontend written with usage of React+Redux.
 
-[TZ](https://docs.google.com/document/d/1h-RnWP71WORwZu5cbzbDQp8jPKo7cFlGF5hn2gTyXCs/edit)
+
+#Starting
+To start server you need to setup your config.js in folowing format:
+```js
+let config = {
+    port : ""
+    mongo_url: ""
+    cloudinary: {
+        cloud_name: ""
+        api_key: "",
+        api_secret: ""
+    },
+    salt : "",
+    secret : "",
+    jwt_secret: ""
+}
+
+module.exports = config;
+```
+
+Starting server: 
+```
+npm start
+```
+Building client app:
+```
+cd client
+npm run build
+```
