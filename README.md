@@ -32,3 +32,6 @@ Building client app:
 cd client
 npm run build
 ```
+
+Live app:
+https://myzaga.herokuapp.com/
