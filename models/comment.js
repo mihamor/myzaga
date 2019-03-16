@@ -4,9 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema({
-  //userRef:{type: Schema.Types.ObjectId, ref: "Playlist", required: true},
   user: {type: Schema.Types.ObjectId, ref: "User", required: true},
- // playlistRef: [{type: Schema.Types.ObjectId, ref: "Playlist"}],
   content: {type: String, required: true},
   addedAt: {type: Date, default: Date.now }
 });

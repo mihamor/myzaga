@@ -111,8 +111,8 @@ class Utils {
         .populate("tracks")
         .exec();
     }
-    static uploadBufferAsync(fileBuffer){
-        return handle_file_upload_promised(fileBuffer);
+    static uploadBufferAsync(fileBuffer, resource_type = "raw"){
+        return handle_file_upload_promised({fileBuffer, resource_type});
     }
 
     static deleteFileAsync(id){
@@ -197,8 +197,8 @@ function compare_to_user(user, search_str){
 
 const handle_file_upload_promised = util.promisify(handleFileUpload);
 const delete_file_promised = util.promisify(deleteFile);
-function handleFileUpload(fileBuffer, callback) {
-    cloudinary.v2.uploader.upload_stream({ resource_type: 'raw' },
+function handleFileUpload({fileBuffer, resource_type}, callback) {
+    cloudinary.v2.uploader.upload_stream({ resource_type },
         function (error, result) { 
             console.log(result, error)
             if (error) callback(error) 

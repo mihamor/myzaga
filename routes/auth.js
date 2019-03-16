@@ -11,15 +11,6 @@ const config = require("../config");
 
 const router = express.Router();
 
-// router.get("/register", (req, res, next) => {
-//     if(req.user) res.status(401).end("Allready registered");
-//     else next();
-// },
-// (req, res) => {
-//     const error = req.query.error;
-//     res.render("register", {error : error});
-// });
-
 router.post("/register", (req, res, next) => {
     if(req.user) res.status(401).json({err: "Allready registered"});
     else next();
@@ -45,25 +36,6 @@ router.post("/register", (req, res, next) => {
     });
 });
 
-
-// router.get("/login",
-// (req, res, next) => {
-//     if(req.user) res.redirect("/");
-//     else next();
-// },
-// (req, res) => {
-//     res.render("login");
-// });
-
-/*
-router.post("/login", 
-passport.authenticate('local', {
-    failureRedirect: '/auth/login'
-}),
-(req, res) => {
-    res.redirect("/");
-});*/
-
 router.post("/login", 
 (req, res) => {
 passport.authenticate('local', {session: false}, (err, user, info) => {
@@ -83,14 +55,6 @@ passport.authenticate('local', {session: false}, (err, user, info) => {
     });
 })(req, res);
 });
-
-
-
-// router.get("/logout", (req, res) => {
-//     req.logout();
-//     res.redirect("/");
-// });
-    
 
 function valid_user_info(str){
     return /^(\w{3,})+$/.test(str);

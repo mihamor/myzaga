@@ -119,8 +119,8 @@ async (req, res) => {
         if (!isExist) throw new Error("No such entity");
 
         let [location, trackImage] = await Promise.all([
-            Utils.uploadBufferAsync(track_bin.data),
-            Utils.uploadBufferAsync(image_bin.data)
+            Utils.uploadBufferAsync(track_bin.data, "video"),
+            Utils.uploadBufferAsync(image_bin.data, "image")
         ]);
 
         let track = new Track(userPlaylistId, author, name, album, location.url, length, year, trackImage.url);

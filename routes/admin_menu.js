@@ -11,10 +11,10 @@ auth_cbs.authJWT,
 auth_cbs.checkAdmin,
 async (req, res) => {
     try {
-        let users = await User.getAll();
-        let selected = await User.this_model().find({role: 1});
-        let not_selected = getArrDiff(users, selected);
-        //console.log(selected + "-------------------" + not_selected);
+        const users = await User.getAll();
+        const selected = await User.this_model().find({role: 1});
+        const not_selected = getArrDiff(users, selected);
+
         res.json({selected: selected,not_selected: not_selected});
     } catch(err) {
         console.log(err.message);
@@ -31,34 +31,30 @@ async (req, res) =>{
     console.log("ADMINS")
     console.log(req.body);
     
-    let newAdminsIdRaw = JSON.parse(req.body.admins);
-    
-    // console.log(newAdminsIdRaw);
+    const newAdminsIdRaw = JSON.parse(req.body.admins);
 
-    // if (!newAdminsIdRaw) newAdminsIdRaw = [];
-    // else if (typeof newAdminsIdRaw === "string")
-    //     newAdminsIdRaw = [newAdminsIdRaw];
-    let newAdminsId = newAdminsIdRaw.map(ele => new mongoose.Types.ObjectId(ele));
+    const newAdminsId = newAdminsIdRaw.map(ele => new mongoose.Types.ObjectId(ele));
     
     console.log(newAdminsId);
     
-    let newAdmins = await User.this_model().find()
-    .where('_id')
-    .in(newAdminsId)
-    .exec();
+    const newAdmins = await User.this_model().find()
+        .where('_id')
+        .in(newAdminsId)
+        .exec();
     console.log(newAdmins);
 
-    for(let admin of newAdmins){
+    for(const admin of newAdmins){
         admin.role = 1;
         users_to_update.push(User.update(admin));
     }
 
-    Promise.all(users_to_update)
-    .then(() => res.json({status:true}))
-    .catch(err => {
+    try{
+        await Promise.all(users_to_update);
+        res.json({status:true});
+    }catch(err){
         console.log(err.message);
         res.status(400).json({err : err.message});
-    })
+    }
 
 });
 

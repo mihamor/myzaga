@@ -53,6 +53,7 @@ class Player extends Component {
           this.refs.audio.pause();
           this.refs.audio.load();
           this.refs.audio.play();
+          console.log(this.refs.audio.readyState);
         }
       });
       console.log(this.state);
@@ -67,10 +68,10 @@ class Player extends Component {
       `${this.state.name} - ${this.state.author}` : "Select track...";
 
     console.log(this.state.trackUrl);
-    let shouldShow = !this.state.trackUrl;
+    let shouldShow = !this.state.trackUrl ;
     let audioEl =
       <audio className="player-audio" controls ref="audio" hidden={shouldShow}>
-        <source src={this.state.trackUrl} type="audio/mpeg" />
+        <source src={this.state.trackUrl} type='audio/mpeg'/>
         Your browser does not support the audio element.
       </audio>;
     return (

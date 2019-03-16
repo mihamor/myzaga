@@ -11,7 +11,7 @@ const StorageSchema = new mongoose.Schema({
 
 class Storage {
 
-    //static field to overdrive
+    //static field to override
     static storage_path(){return '.';};
 
     static this_model(){ return StorageModel;};
